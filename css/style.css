@@ -1,0 +1,112 @@
+/* ======================================== */
+/* 基础和通用样式 */
+/* ======================================== */
+
+html {
+    overflow: hidden; /* 禁止网页滚动 */
+    height: 100%;
+}
+
+body {
+    font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+    background-color: #374151; /* 深灰色背景，突出原型 */
+    margin: 0;
+    padding: 20px 20px 160px 20px; /* 底部留出足够空间给控制区域 */
+    box-sizing: border-box;
+    min-height: 100vh;
+    overflow: hidden; /* 禁止网页滚动 */
+}
+
+.screen-container {
+    width: 480px;
+    height: 800px;
+    background-color: #000000; /* 遵循文档规范：暗色模式背景 */
+    position: relative;
+    overflow: hidden;
+    border-radius: 24px;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+    transition: background-color 2s;
+    margin: 0 auto; /* 水平居中 */
+    /* 禁用文本选择 */
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+    /* 禁用拖拽 */
+    -webkit-user-drag: none;
+    -khtml-user-drag: none;
+    -moz-user-drag: none;
+    -o-user-drag: none;
+    /* 全面屏手势支持 */
+    touch-action: pan-y pan-x;
+    cursor: default;
+}
+
+.page {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    color: #FFFFFF; /* 遵循文档规范：主要文本色 */
+    display: flex;
+    flex-direction: column;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.4s ease-in-out, visibility 0.4s;
+    padding: 24px; /* 恢复正常的内边距 */
+    box-sizing: border-box;
+}
+
+.page.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.page-header {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    height: 56px;
+    margin-top: 24px;
+    flex-shrink: 0;
+}
+
+.page-header .back-button {
+    position: absolute;
+    left: 0;
+    top: 50%;
+    transform: translateY(-50%);
+    cursor: pointer;
+    padding: 8px;
+}
+
+.page-title {
+    font-size: 24px; /* H2 */
+    font-weight: 700;
+    text-align: center;
+}
+
+.primary-button {
+    background-color: #0D47A1; /* 主色调 */
+    color: white;
+    border: none;
+    padding: 16px;
+    border-radius: 12px;
+    font-size: 20px; /* 按钮文字 */
+    font-weight: 700;
+    cursor: pointer;
+    width: 100%;
+    transition: background-color 0.3s;
+}
+
+.primary-button:disabled { 
+    background-color: #E0E0E0; 
+    color: #9E9E9E; 
+    cursor: not-allowed; 
+}
+
+.primary-button:hover:not(:disabled) { 
+    background-color: #1565C0; 
+}

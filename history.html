@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 历史数据</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/gestures.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 手势边缘区域 -->
+        <div class="gesture-edge top" data-gesture="top"></div>
+        <div class="gesture-edge bottom" data-gesture="bottom"></div>
+        <div class="gesture-edge left" data-gesture="left"></div>
+        <div class="gesture-edge right" data-gesture="right"></div>
+        
+        <!-- 滑动指示器 -->
+        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
+        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
+        
+        <div id="page-history" class="page active">
+            <!-- 页面头部 -->
+            <div class="page-header">
+                <div class="back-button" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <h1 class="page-title">历史数据</h1>
+            </div>
+
+            <!-- 用户切换 -->
+            <div class="user-switcher">
+                <div class="user-list" id="history-user-list">
+                    <div class="user-avatar active" data-user="华仔">
+                        <div class="avatar-circle" style="background-color: #2563EB;">华</div>
+                        <div class="avatar-name">华仔</div>
+                    </div>
+                    <div class="user-avatar" data-user="亦菲">
+                        <div class="avatar-circle" style="background-color: #DB2777;">亦</div>
+                        <div class="avatar-name">亦菲</div>
+                    </div>
+                    <div class="user-avatar" data-user="志玲">
+                        <div class="avatar-circle" style="background-color: #059669;">志</div>
+                        <div class="avatar-name">志玲</div>
+                    </div>
+                    <div class="user-avatar" data-user="访客">
+                        <div class="avatar-circle" style="background-color: #616161;">G</div>
+                        <div class="avatar-name">访客</div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 历史记录列表 -->
+            <div class="history-list" id="history-list">
+                <!-- 历史记录项将通过JavaScript动态生成 -->
+            </div>
+
+            <!-- 无数据提示 -->
+            <div class="no-history" id="no-history" style="display: none;">
+                暂无历史记录
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateToPage('home')">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+                    <span>主页</span>
+                </div>
+                <div class="nav-item" onclick="navigateToPage('measure')">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"></path></svg>
+                    <span>开始测量</span>
+                </div>
+                <div class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"></path></svg>
+                    <span>历史数据</span>
+                </div>
+                <div class="nav-item" onclick="navigateToPage('settings')">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19-.15-.24.42-.12-.64l2 3.46c.12-.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg>
+                    <span>设置</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn user-华仔" onclick="selectUser('华仔')">华仔</button>
+            <button class="control-btn user-亦菲" onclick="selectUser('亦菲')">亦菲</button>
+            <button class="control-btn user-志玲" onclick="selectUser('志玲')">志玲</button>
+            <button class="control-btn user-访客" onclick="selectUser('访客')">访客</button>
+            <button class="control-btn delete" onclick="clearHistory()">清空记录</button>
+        </div>
+    </div>
+
+    <script src="js/history.js"></script>
+    <script src="js/gestures.js"></script>
+</body>
+</html>

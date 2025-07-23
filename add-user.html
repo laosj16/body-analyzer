@@ -1,0 +1,1517 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 添加用户</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/gestures.css">
+    <style>
+        /* 虚拟键盘样式 */
+        .virtual-keyboard {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: #1f2937;
+            border-top: 2px solid #374151;
+            border-radius: 16px 16px 0 0;
+            transform: translateY(100%);
+            transition: all 0.3s ease;
+            z-index: 100;
+            height: 400px;
+            box-shadow: 0 -4px 20px rgba(0, 0, 0, 0.3);
+        }
+        
+        .virtual-keyboard.show {
+            transform: translateY(0);
+        }
+        
+        .keyboard-header {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 12px 20px;
+            border-bottom: 1px solid #374151;
+            height: 50px;
+        }
+        
+        .keyboard-title {
+            color: #f3f4f6;
+            font-size: 16px;
+            font-weight: 500;
+        }
+        
+        .keyboard-actions {
+            display: flex;
+            gap: 12px;
+            align-items: center;
+        }
+        
+        .input-mode-switch {
+            background: #4b5563;
+            border: 1px solid #6b7280;
+            color: #f3f4f6;
+            padding: 6px 12px;
+            border-radius: 6px;
+            font-size: 14px;
+            cursor: pointer;
+            transition: all 0.2s;
+        }
+        
+        .input-mode-switch:hover {
+            background: #6b7280;
+        }
+        
+        .input-mode-switch.active {
+            background: #3b82f6;
+            border-color: #2563eb;
+        }
+        
+        .key.input-mode-switch {
+            background: #4b5563;
+            border-color: #6b7280;
+            font-size: 16px;
+            font-weight: 600;
+            flex: 1;
+        }
+        
+        .key.input-mode-switch:hover {
+            background: #6b7280;
+        }
+        
+        .keyboard-close {
+            background: none;
+            border: none;
+            color: #9ca3af;
+            font-size: 24px;
+            cursor: pointer;
+            padding: 6px;
+            border-radius: 50%;
+            width: 36px;
+            height: 36px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .keyboard-close:hover {
+            background: #374151;
+            color: #f3f4f6;
+        }
+        
+        .keyboard-body {
+            padding: 20px;
+            height: calc(100% - 50px);
+            overflow: hidden;
+        }
+        
+        .pinyin-area {
+            margin-bottom: 16px;
+            height: 88px; /* 增加高度从80px到88px，适应更高的输入框 */
+            display: block !important; /* 始终显示候选区域 */
+        }
+        
+        .pinyin-input {
+            background: #374151;
+            border: 1px solid #4b5563;
+            border-radius: 8px;
+            padding: 0 14px; /* 移除垂直padding，让flex居中处理 */
+            color: #f3f4f6;
+            font-size: 16px;
+            margin-bottom: 10px;
+            height: 40px; /* 保持高度40px */
+            line-height: normal; /* 重置line-height */
+            overflow: hidden; /* 防止内容溢出 */
+            white-space: nowrap; /* 防止换行 */
+            display: flex; /* 使用flex布局 */
+            align-items: center; /* 垂直居中 */
+        }
+        
+        .pinyin-suggestions {
+            display: flex;
+            flex-wrap: nowrap; /* 改为不换行，单行显示 */
+            gap: 8px;
+            height: 46px; /* 保持高度 */
+            overflow-y: hidden; /* 隐藏垂直滚动条 */
+            overflow-x: auto; /* 启用水平滚动 */
+            padding: 0 4px; /* 添加左右内边距 */
+            /* 隐藏滚动条但保持滚动功能 */
+            scrollbar-width: none; /* Firefox */
+            -ms-overflow-style: none; /* IE 和 Edge */
+            /* 阻止触摸手势事件 */
+            touch-action: pan-x; /* 只允许水平平移 */
+            -webkit-touch-callout: none; /* 禁用iOS上的长按菜单 */
+            -webkit-user-select: none; /* 禁用文本选择 */
+            user-select: none; /* 禁用文本选择 */
+        }
+        
+        /* 隐藏 WebKit 浏览器的滚动条 */
+        .pinyin-suggestions::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .suggestion-item {
+            background: #4b5563;
+            color: #f3f4f6;
+            padding: 8px 12px; /* 保持垂直和水平内边距 */
+            border-radius: 6px;
+            font-size: 16px;
+            cursor: pointer;
+            border: none;
+            transition: all 0.2s;
+            height: 40px; /* 保持高度 */
+            display: flex;
+            align-items: center;
+            white-space: nowrap; /* 防止文本换行 */
+            flex-shrink: 0; /* 防止项目收缩 */
+            min-width: fit-content; /* 根据内容调整最小宽度 */
+        }
+        
+        .suggestion-item:hover {
+            background: #6b7280;
+        }
+        
+        .suggestion-item.selected {
+            background: #3b82f6;
+        }
+        
+        .keyboard-grid {
+            display: flex;
+            flex-direction: column;
+            gap: 8px;
+            height: calc(100% - 104px); /* 调整高度计算，从96px改为104px，适应更高的候选区域 */
+            margin-top: 15px;
+        }
+        
+        .keyboard-row {
+            display: flex;
+            gap: 4px;
+            justify-content: center;
+            flex: 1;
+        }
+        
+        .key {
+            background: #374151;
+            border: 1px solid #4b5563;
+            color: #f3f4f6;
+            border-radius: 8px;
+            font-size: 18px;
+            font-weight: 500;
+            cursor: pointer;
+            min-width: 40px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.2s;
+            user-select: none;
+            flex: 1;
+        }
+        
+        .key:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+        
+        .key:active {
+            background: #6b7280;
+            transform: scale(0.95);
+        }
+        
+        .key.space {
+            flex: 3;
+        }
+        
+        .key.backspace {
+            background: #dc2626;
+            border-color: #b91c1c;
+            flex: 1.5;
+        }
+        
+        .key.backspace:hover {
+            background: #b91c1c;
+        }
+        
+        /* 强制删除键显示正确符号 */
+        .key.backspace::before {
+            content: "⌫";
+            font-size: 18px;
+        }
+        
+        .key.backspace {
+            font-size: 0 !important; /* 隐藏原始文本 */
+        }
+        
+        .key.confirm {
+            background: #059669;
+            border-color: #047857;
+            flex: 1.5;
+        }
+        
+        .key.confirm:hover {
+            background: #047857;
+        }
+        
+        .key.shift {
+            background: #6b7280;
+            border-color: #9ca3af;
+            flex: 1.5;
+        }
+        
+        .key.shift:hover {
+            background: #9ca3af;
+        }
+        
+        .key.shift.active {
+            background: #3b82f6;
+            border-color: #2563eb;
+        }
+        
+        /* 输入框聚焦时样式 */
+        .form-input.keyboard-active {
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.3);
+        }
+        
+        /* 键盘显示时页面适配 */
+        .screen-container.keyboard-open {
+            overflow: hidden;
+        }
+        
+        /* 移除页面上移效果，保持页面固定 */
+        .screen-container.keyboard-open .page {
+            overflow: hidden;
+        }
+        
+        .screen-container.keyboard-open .page .form-group:last-of-type {
+            margin-bottom: 80px;
+        }
+        
+        /* 控制按钮颜色区分 */
+        .control-btn.purple {
+            background: #7C3AED !important;
+            border-color: #6D28D9 !important;
+        }
+        
+        .control-btn.purple:hover {
+            background: #6D28D9 !important;
+        }
+        
+        .control-btn.back {
+            background: #EF4444 !important;
+            border-color: #DC2626 !important;
+        }
+        
+        .control-btn.back:hover {
+            background: #DC2626 !important;
+        }
+        
+        .control-btn.home {
+            background: #10B981 !important;
+            border-color: #059669 !important;
+        }
+        
+        .control-btn.home:hover {
+            background: #059669 !important;
+        }
+        
+        /* 性别选择器样式 */
+        .gender-selector {
+            display: flex;
+            gap: 16px;
+            justify-content: center;
+        }
+        
+        .gender-option {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 8px;
+            padding: 16px 24px;
+            background: #374151;
+            border: 2px solid #4b5563;
+            border-radius: 12px;
+            color: #f3f4f6;
+            cursor: pointer;
+            transition: all 0.2s;
+            flex: 1;
+            max-width: 120px;
+        }
+        
+        .gender-option:hover {
+            background: #4b5563;
+            border-color: #6b7280;
+        }
+        
+        .gender-option.selected {
+            background: #3b82f6;
+            border-color: #2563eb;
+            color: white;
+        }
+        
+        .gender-icon {
+            font-size: 32px;
+        }
+        
+        /* 数字输入框样式 */
+        .number-input-container {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+        
+        .number-input {
+            padding-right: 50px !important;
+        }
+        
+        .input-unit {
+            position: absolute;
+            right: 16px;
+            color: #9ca3af;
+            font-size: 16px;
+            font-weight: 500;
+            pointer-events: none;
+        }
+        
+        /* 数字输入框特殊样式 */
+        input[type="number"]::-webkit-outer-spin-button,
+        input[type="number"]::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
+        }
+        
+        input[type="number"] {
+            -moz-appearance: textfield;
+            appearance: textfield;
+        }
+    </style>
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 手势边缘区域 -->
+        <div class="gesture-edge top" data-gesture="top"></div>
+        <div class="gesture-edge bottom" data-gesture="bottom"></div>
+        <div class="gesture-edge left" data-gesture="left"></div>
+        <div class="gesture-edge right" data-gesture="right"></div>
+        
+        <!-- 滑动指示器 -->
+        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
+        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
+        
+        <!-- 添加用户页 -->
+        <div id="page-add-user" class="page active">
+            <div class="page-header">
+                <div class="back-button" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </div>
+                <h1 class="page-title">添加新用户</h1>
+            </div>
+            <div class="form-group">
+                <label for="nickname-input" class="form-label">昵称</label>
+                <input type="text" id="nickname-input" class="form-input" placeholder="请输入昵称" maxlength="10" readonly onclick="showKeyboard()">
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">性别</label>
+                <div class="gender-selector">
+                    <button type="button" class="gender-option" data-gender="male" onclick="selectGender('male')">
+                        <span class="gender-icon">👨</span>
+                        <span>男</span>
+                    </button>
+                    <button type="button" class="gender-option" data-gender="female" onclick="selectGender('female')">
+                        <span class="gender-icon">👩</span>
+                        <span>女</span>
+                    </button>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="age-input" class="form-label">年龄</label>
+                <div class="number-input-container">
+                    <input type="number" id="age-input" class="form-input number-input" placeholder="请输入年龄" min="1" max="120">
+                    <span class="input-unit">岁</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="height-input" class="form-label">身高</label>
+                <div class="number-input-container">
+                    <input type="number" id="height-input" class="form-input number-input" placeholder="请输入身高" min="50" max="250" step="0.1">
+                    <span class="input-unit">cm</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label for="weight-input" class="form-label">体重</label>
+                <div class="number-input-container">
+                    <input type="number" id="weight-input" class="form-input number-input" placeholder="请输入体重" min="10" max="500" step="0.1">
+                    <span class="input-unit">kg</span>
+                </div>
+            </div>
+            
+            <div class="form-group">
+                <label class="form-label">选择头像和颜色</label>
+                <div id="avatar-picker" class="avatar-picker"></div>
+            </div>
+            <button id="save-user-button" class="primary-button" disabled>保存</button>
+        </div>
+
+        <!-- 虚拟键盘 -->
+        <div id="virtual-keyboard" class="virtual-keyboard">
+            <div class="keyboard-header">
+                <div class="keyboard-actions">
+                    <button class="keyboard-close" onclick="hideKeyboard()">×</button>
+                </div>
+            </div>
+            <div class="keyboard-body">
+                <!-- 候选词区域 (中文和英文模式都显示) -->
+                <div class="pinyin-area" id="pinyin-area">
+                    <div id="pinyin-input" class="pinyin-input" placeholder="拼音输入"></div>
+                    <div id="pinyin-suggestions" class="pinyin-suggestions"></div>
+                </div>
+                <!-- 键盘区域 -->
+                <div class="keyboard-grid" id="keyboard-grid">
+                    <!-- 统一键盘布局 -->
+                    <div id="unified-keyboard">
+                        <div class="keyboard-row">
+                            <button class="key" data-key="q">q</button>
+                            <button class="key" data-key="w">w</button>
+                            <button class="key" data-key="e">e</button>
+                            <button class="key" data-key="r">r</button>
+                            <button class="key" data-key="t">t</button>
+                            <button class="key" data-key="y">y</button>
+                            <button class="key" data-key="u">u</button>
+                            <button class="key" data-key="i">i</button>
+                            <button class="key" data-key="o">o</button>
+                            <button class="key" data-key="p">p</button>
+                        </div>
+                        <div class="keyboard-row">
+                            <button class="key" data-key="a">a</button>
+                            <button class="key" data-key="s">s</button>
+                            <button class="key" data-key="d">d</button>
+                            <button class="key" data-key="f">f</button>
+                            <button class="key" data-key="g">g</button>
+                            <button class="key" data-key="h">h</button>
+                            <button class="key" data-key="j">j</button>
+                            <button class="key" data-key="k">k</button>
+                            <button class="key" data-key="l">l</button>
+                        </div>
+                        <div class="keyboard-row">
+                            <button class="key shift" data-key="shift" onclick="toggleShift()" style="display: none;">⇧</button>
+                            <button class="key" data-key="z">z</button>
+                            <button class="key" data-key="x">x</button>
+                            <button class="key" data-key="c">c</button>
+                            <button class="key" data-key="v">v</button>
+                            <button class="key" data-key="b">b</button>
+                            <button class="key" data-key="n">n</button>
+                            <button class="key" data-key="m">m</button>
+                            <button class="key backspace" data-key="backspace"></button>
+                        </div>
+                        <div class="keyboard-row">
+                            <button class="key input-mode-switch" onclick="toggleInputMode()" id="mode-switch-key">En</button>
+                            <button class="key space" data-key="space" id="space-key">空格</button>
+                            <button class="key confirm" onclick="confirmInput()" id="confirm-key">确定</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav purple" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn home" onclick="goToIndex()">主页</button>
+        </div>
+    </div>
+
+    <script>
+        // 虚拟键盘相关变量
+        let currentPinyin = '';
+        let currentInput = '';
+        let currentInputMode = 'chinese'; // 'chinese' 或 'english'
+        let isShiftActive = false; // 英文模式下的Shift状态
+        
+        // 英文人名字典 - 按首字母分组
+        const englishNamesDict = {
+            'a': ['Alice', 'Amy', 'Anna', 'Alex', 'Adam', 'Andrew', 'Aaron', 'Angela'],
+            'b': ['Bob', 'Betty', 'Bill', 'Brian', 'Bruce', 'Barbara', 'Ben', 'Bella'],
+            'c': ['Chris', 'Carol', 'Carl', 'Catherine', 'Charles', 'Cindy', 'Claire', 'Colin'],
+            'd': ['David', 'Diana', 'Dan', 'Deborah', 'Daniel', 'Donna', 'Derek', 'Diane'],
+            'e': ['Emily', 'Eric', 'Emma', 'Edward', 'Elizabeth', 'Ellen', 'Ethan', 'Eva'],
+            'f': ['Frank', 'Fiona', 'Fred', 'Faith', 'Felix', 'Frances', 'Francis', 'Flora'],
+            'g': ['George', 'Grace', 'Gary', 'Gloria', 'Greg', 'Gina', 'Gordon', 'Gail'],
+            'h': ['Helen', 'Henry', 'Hannah', 'Harry', 'Holly', 'Howard', 'Heather', 'Hugh'],
+            'i': ['Ian', 'Iris', 'Ivan', 'Isabel', 'Isaac', 'Irene', 'Isaiah', 'Ivy'],
+            'j': ['John', 'Jane', 'Jack', 'Julia', 'James', 'Jennifer', 'Jason', 'Jessica', 'Johnny', 'Julie', 'Jim', 'Joan'],
+            'k': ['Kate', 'Kevin', 'Karen', 'Keith', 'Kelly', 'Kim', 'Kenneth', 'Kathy'],
+            'l': ['Lisa', 'Luke', 'Linda', 'Larry', 'Laura', 'Louis', 'Lucy', 'Leo'],
+            'm': ['Mary', 'Mike', 'Maria', 'Mark', 'Michelle', 'Martin', 'Monica', 'Michael'],
+            'n': ['Nancy', 'Nick', 'Nicole', 'Nathan', 'Natalie', 'Neil', 'Nina', 'Noah'],
+            'o': ['Oscar', 'Olivia', 'Oliver', 'Owen', 'Ophelia', 'Olga', 'Omar', 'Opal'],
+            'p': ['Paul', 'Patricia', 'Peter', 'Pamela', 'Patrick', 'Penny', 'Philip', 'Priscilla'],
+            'q': ['Queen', 'Quincy', 'Quinn', 'Quentin'],
+            'r': ['Robert', 'Rose', 'Richard', 'Rachel', 'Ryan', 'Rebecca', 'Roger', 'Ruby'],
+            's': ['Steve', 'Sarah', 'Sam', 'Susan', 'Scott', 'Stephanie', 'Simon', 'Sophia'],
+            't': ['Tom', 'Tina', 'Tony', 'Teresa', 'Tim', 'Tracy', 'Thomas', 'Taylor'],
+            'u': ['Uma', 'Ursula', 'Ulysses', 'Unity'],
+            'v': ['Victor', 'Victoria', 'Vincent', 'Vivian', 'Vanessa', 'Violet', 'Vera', 'Vince'],
+            'w': ['William', 'Wendy', 'Walter', 'Wanda', 'Wayne', 'Whitney', 'Wilson', 'Wilma'],
+            'x': ['Xavier', 'Xander', 'Xiomara'],
+            'y': ['Yolanda', 'York', 'Yvonne', 'Yale'],
+            'z': ['Zachary', 'Zoe', 'Zara', 'Zelda', 'Zeus', 'Zina']
+        };
+        
+        // 扩展的拼音字典 - 支持简化输入和组合输入
+        const pinyinDict = {
+            // 单字母简化输入 - 大幅扩展
+            'a': ['安', '爱', '阿', '啊', '按', '案', '暗', '岸', '傲', '奥', '八', '巴', '把', '爸', '霸', '白', '百', '拜', '败', '班'],
+            'b': ['白', '北', '本', '比', '不', '被', '包', '变', '边', '表', '别', '把', '爸', '八', '巴', '霸', '百', '拜', '败', '班', '办', '半', '帮', '保', '报', '抱', '背', '备', '奔', '笨'],
+            'c': ['陈', '成', '出', '从', '曹', '程', '常', '长', '场', '车', '吃', '重', '才', '采', '菜', '参', '层', '差', '产', '长', '唱', '超', '朝', '沉', '称', '城', '承', '迟', '持', '抽', '穿', '床', '创', '春', '词', '次', '存'],
+            'd': ['的', '大', '到', '地', '对', '都', '道', '第', '点', '定', '董', '东', '丁', '邓', '得', '打', '答', '达', '带', '代', '待', '当', '党', '导', '倒', '低', '底', '弟', '店', '电', '调', '掉', '丢', '动', '度', '断', '段', '队', '多'],
+            'e': ['二', '而', '儿', '额', '恶', '饿', '耳'],
+            'f': ['发', '方', '分', '风', '放', '飞', '非', '费', '傅', '付', '富', '范', '房', '冯', '反', '法', '翻', '饭', '犯', '返', '防', '访', '仿', '费', '分', '份', '丰', '封', '夫', '服', '府', '复', '父', '负', '副', '附'],
+            'g': ['个', '国', '过', '关', '工', '公', '高', '刚', '给', '郭', '果', '光', '管', '广', '感', '干', '敢', '刚', '钢', '港', '搞', '告', '哥', '歌', '格', '根', '跟', '更', '攻', '功', '共', '够', '构', '古', '故', '顾', '挂', '怪', '关', '观', '官', '馆', '惯', '规', '鬼', '贵'],
+            'h': ['和', '好', '很', '还', '会', '后', '回', '黄', '或', '活', '胡', '华', '话', '换', '红', '韩', '何', '河', '贺', '海', '害', '含', '汉', '行', '喝', '黑', '恨', '横', '红', '候', '厚', '呼', '湖', '户', '护', '花', '划', '画', '欢', '环', '坏', '怀', '缓', '慌', '皇', '辉', '回', '混', '活', '火', '货'],
+            'i': ['一', '以', '意', '已', '因', '音', '银', '引', '印', '应'],
+            'j': ['就', '进', '家', '见', '经', '将', '今', '金', '叫', '教', '结', '接', '江', '几', '己', '继', '机', '集', '加', '假', '价', '间', '简', '建', '健', '键', '交', '角', '脚', '叫', '较', '阶', '接', '街', '节', '解', '姐', '介', '界', '借', '仅', '紧', '近', '尽', '进', '精', '九', '久', '救', '举', '具', '局', '句', '决', '绝'],
+            'k': ['可', '看', '开', '客', '快', '空', '康', '考', '靠', '科', '课', '肯', '坑', '口', '哭', '苦', '酷', '夸', '块', '宽'],
+            'l': ['了', '来', '里', '李', '老', '路', '两', '林', '刘', '力', '立', '流', '六', '连', '亮', '良', '梁', '廖', '罗', '洛', '吕', '陆', '拉', '啦', '浪', '劳', '累', '类', '冷', '离', '礼', '理', '历', '利', '例', '联', '脸', '练', '恋', '量', '亮', '聊', '料', '列', '林', '临', '零', '领', '另', '留', '楼', '路', '论', '落'],
+            'm': ['没', '们', '么', '马', '妈', '买', '米', '面', '明', '名', '民', '目', '母', '美', '每', '门', '毛', '苗', '妙', '吗', '满', '慢', '忙', '猫', '贸', '么', '美', '妹', '蒙', '梦', '迷', '密', '免', '面', '民', '敏', '明', '模', '摸', '某', '木', '目'],
+            'n': ['那', '年', '你', '能', '女', '男', '内', '南', '难', '倪', '拿', '哪', '奶', '男', '南', '脑', '闹', '呢', '内', '嫩', '能', '你', '年', '念', '鸟', '您', '牛', '女', '暖', '努'],
+            'o': ['哦', '噢', '喔', '欧'],
+            'p': ['朋', '跑', '片', '平', '品', '潘', '盘', '彭', '鹏', '皮', '拍', '排', '盘', '判', '旁', '胖', '抛', '泡', '配', '朋', '碰', '批', '皮', '偏', '片', '票', '拼', '频', '品', '平', '破', '普'],
+            'q': ['去', '前', '起', '其', '七', '清', '情', '全', '却', '齐', '期', '千', '钱', '强', '亲', '青', '轻', '请', '穷', '球', '区', '取', '群'],
+            'r': ['人', '让', '如', '日', '认', '任', '然', '染', '热', '容', '融', '肉', '如', '入', '软'],
+            's': ['是', '说', '上', '时', '生', '什', '三', '所', '手', '水', '思', '死', '孙', '损', '宋', '送', '苏', '素', '沈', '申', '史', '石', '舒', '书', '谁', '身', '深', '神', '甚', '升', '声', '省', '剩', '失', '十', '石', '时', '实', '识', '使', '始', '式', '示', '世', '市', '事', '视', '试', '收', '首', '受', '书', '数', '树', '双', '水', '睡', '瞬', '死', '送', '搜', '苏', '算', '虽', '随', '孙', '所'],
+            't': ['他', '她', '它', '天', '头', '听', '同', '通', '太', '体', '题', '提', '特', '谭', '谈', '唐', '糖', '汤', '陶', '桃', '滕', '讨', '套', '特', '疼', '踢', '提', '题', '体', '添', '田', '甜', '条', '跳', '铁', '听', '停', '挺', '通', '同', '投', '头', '突', '图', '土', '推', '腿', '退'],
+            'u': ['呜', '嗯', '唔'],
+            'v': ['微', '为', '位', '维', '围', '违', '唯', '伟', '尾', '未', '味', '温', '文', '稳', '问', '我', '握', '无', '五', '午', '舞', '务', '物', '勿'],
+            'w': ['我', '王', '望', '网', '为', '位', '文', '问', '物', '无', '五', '万', '外', '完', '玩', '晚', '忘', '往', '武', '吴', '邬', '汪', '魏', '伟', '韦', '温', '挖', '娃', '瓦', '袜', '歪', '外', '弯', '晚', '碗', '万', '王', '网', '往', '忘', '危', '威', '微', '为', '围', '唯', '维', '伟', '尾', '卫', '未', '位', '味', '谓', '温', '文', '闻', '稳', '问', '我', '卧', '握', '污', '屋', '无', '五', '午', '舞', '勿', '务', '物', '雾'],
+            'x': ['下', '想', '小', '新', '行', '学', '现', '些', '心', '信', '星', '姓', '兴', '西', '希', '需', '先', '像', '向', '项', '消', '谢', '些', '徐', '许', '虚', '萧', '习', '薛', '血', '洗', '系', '细', '戏', '喜', '夏', '吓', '下', '先', '鲜', '闲', '显', '险', '现', '线', '限', '相', '香', '箱', '详', '想', '响', '向', '象', '消', '小', '笑', '效', '些', '协', '写', '血', '学', '雪', '寻', '训'],
+            'y': ['一', '有', '也', '要', '用', '以', '又', '于', '与', '月', '年', '眼', '样', '已', '意', '因', '应', '音', '银', '阴', '杨', '阳', '扬', '姚', '要', '余', '鱼', '雨', '喻', '俞', '袁', '元', '圆', '云', '运', '尹', '压', '呀', '牙', '亚', '言', '颜', '严', '研', '盐', '演', '眼', '羊', '养', '样', '腰', '药', '要', '爷', '也', '页', '夜', '业', '叶', '医', '依', '移', '已', '以', '易', '议', '义', '艺', '忆', '益', '因', '音', '引', '印', '英', '应', '硬', '影', '永', '用', '优', '由', '游', '友', '有', '又', '右', '幼', '于', '鱼', '愉', '渔', '与', '语', '雨', '域', '遇', '预', '元', '原', '员', '圆', '源', '远', '院', '愿', '约', '月', '越', '云', '运'],
+            'z': ['在', '这', '中', '自', '张', '章', '长', '真', '正', '知', '只', '直', '之', '志', '作', '做', '走', '最', '昨', '左', '右', '赵', '照', '找', '早', '怎', '增', '曾', '周', '州', '舟', '朱', '猪', '主', '住', '注', '祖', '足', '邹', '湛', '战', '战', '占', '站', '张', '长', '掌', '招', '找', '照', '者', '这', '着', '真', '正', '整', '政', '之', '知', '直', '职', '植', '只', '指', '纸', '至', '制', '治', '致', '志', '质', '中', '钟', '终', '种', '重', '众', '周', '州', '舟', '竹', '逐', '主', '住', '助', '注', '祝', '抓', '专', '转', '赚', '装', '状', '撞', '准', '桌', '捉', '子', '字', '自', '总', '走', '租', '足', '组', '嘴', '最', '罪', '昨', '左', '作', '做', '坐', '座'],
+            
+            // 双字母组合快捷输入 - 大幅扩展
+            'hd': ['好的', '滑动', '核对', '会的', '很多', '黄豆', '华东', '获得', '海底', '活动', '怀疑', '华为', '回到', '红豆'],
+            'wd': ['我的', '温度', '无敌', '问的', '完毕', '外地', '网点', '舞蹈', '微信', '为了', '忘记', '问题', '王者', '完成'],
+            'nd': ['你的', '年代', '难道', '那个', '内地', '南方', '女的', '能够', '女人', '男的', '南京', '女孩', '年轻', '内容'],
+            'td': ['他的', '太多', '态度', '同等', '通道', '天地', '听到', '天天', '头发', '谈话', '特别', '同学', '天气', '停止'],
+            'zd': ['知道', '这的', '怎么', '住地', '重点', '制定', '中等', '总是', '真的', '字典', '自己', '这样', '中文', '注意'],
+            'rd': ['人的', '如何', '然后', '认为', '热点', '容易', '日期', '让我', '人们', '如果', '软件', '认识', '日子', '任何'],
+            'sd': ['是的', '什么', '时代', '手动', '速度', '所以', '说的', '手机', '时间', '生活', '谁的', '实在', '身体', '上海'],
+            'xd': ['想到', '下面', '新的', '心得', '现代', '小的', '需要', '学校', '系统', '信息', '想要', '下载', '学生', '希望'],
+            'yd': ['一点', '要的', '已经', '意思', '用的', '有点', '月底', '音乐', '一样', '运动', '游戏', '医院', '语言', '眼睛'],
+            'md': ['没有', '明白', '马上', '面对', '美的', '目的', '买的', '门口', '每天', '母亲', '面前', '买了', '名字', '满意'],
+            'bd': ['不对', '不是', '本地', '保持', '比较', '变得', '必须', '帮助', '表示', '部分', '不会', '北京', '办法', '并且'],
+            'dd': ['大的', '到达', '对的', '打开', '当时', '地点', '等等', '大家', '电话', '电脑', '地方', '到了', '大学', '第一'],
+            'gd': ['给的', '更多', '关于', '过的', '高度', '工作', '国家', '个人', '感觉', '公司', '刚才', '关系', '过去', '刚刚'],
+            'ld': ['来的', '了的', '老的', '里面', '两个', '路上', '力度', '老师', '历史', '朋友', '离开', '理解', '礼物', '旅游'],
+            'fd': ['发的', '方面', '非常', '分析', '风格', '放心', '反对', '发现', '父亲', '房子', '方法', '服务', '发生', '附近'],
+            'cd': ['出来', '成为', '错的', '长的', '吃的', '车的', '超过', '创建', '出去', '城市', '吃饭', '产品', '参加', '窗户'],
+            'pd': ['跑的', '平时', '朋友', '品质', '普通', '配置', '拍的', '漂亮', '培训', '批评', '平安', '皮肤', '票据', '爬山'],
+            'kd': ['看的', '快的', '开的', '可以', '空的', '客户', '考虑', '开始', '课程', '可能', '看到', '开心', '科技', '口袋'],
+            'jd': ['就的', '进入', '家的', '结果', '今天', '精彩', '决定', '机会', '结束', '价格', '交通', '建议', '记住', '经济'],
+            'qd': ['去的', '前面', '其他', '清楚', '全部', '起来', '确定', '情况', '亲戚', '钱包', '汽车', '清洁', '取消', '签名'],
+            
+            // 更多双字母组合
+            'hw': ['很晚', '会晤', '华为', '荒无', '黄瓜', '欢迎', '环绕', '话务'],
+            'sh': ['说话', '上海', '生活', '时候', '什么', '设计', '社会', '手机'],
+            'dh': ['大海', '电话', '冬天', '动画', '打击', '队伍', '堆积', '定义'],
+            'th': ['太好', '天河', '痛苦', '通话', '同行', '听话', '甜美', '体会'],
+            'zh': ['中华', '终于', '这样', '真正', '政治', '注意', '知识', '组织'],
+            'ch': ['出现', '成功', '尝试', '车辆', '产品', '常常', '程序', '春天'],
+            'lh': ['联合', '录音', '理解', '丽华', '老虎', '篮球', '蓝海', '流行'],
+            'jh': ['机会', '教学', '结合', '积极', '基础', '金融', '家庭', '计划'],
+            'qh': ['清华', '请问', '强化', '气候', '轻松', '全面', '企业', '球赛'],
+            'xh': ['新华', '学会', '兴趣', '信号', '效果', '现象', '细节', '想象'],
+            'fh': ['发挥', '方向', '发展', '复合', '分析', '风险', '费用', '服务'],
+            'gh': ['工会', '国际', '功能', '概念', '光明', '规划', '高兴', '感觉'],
+            
+            // 三字母组合（常用词汇） - 大幅扩展
+            'nhy': ['你好吗', '你还要', '能回应', '年轻人', '南海岸'],
+            'whm': ['我还没', '为何没', '我很忙', '问候语', '完成了'],
+            'thd': ['太好了', '他很多', '听话的', '天津市', '特别的'],
+            'zhy': ['真好用', '这很有', '知道吗', '中华民', '专业化'],
+            'dzy': ['都知道', '对着你', '打字员', '大众化', '德智体'],
+            'xhd': ['谢谢你', '想回到', '新华都', '学会的', '信息化'],
+            'hdc': ['好多次', '很多次', '回到从', '华东区', '活动场'],
+            'wds': ['我都是', '问点事', '完全是', '网点数', '为大师'],
+            'yds': ['一定是', '又都是', '有点事', '运动商', '眼睛湿'],
+            'bzy': ['不知道', '并且有', '表示有', '保障员', '比较有'],
+            'sjj': ['什么叫', '时间久', '手机坏', '谁家的', '生活节'],
+            'xyx': ['学一学', '想一想', '选一选', '信一信', '新一轮'],
+            'hyh': ['很有趣', '还有呢', '好友会', '华盈华', '海洋馆'],
+            'mjm': ['没见面', '买家们', '米加面', '民间人', '明天见'],
+            'ljl': ['老家里', '来教练', '路径里', '联机了', '立即来'],
+            'qjq': ['去见去', '请进请', '球技强', '轻松去', '清洁器'],
+            'ddd': ['大大的', '等等等', '滴滴滴', '到到到', '的的的'],
+            'hhh': ['哈哈哈', '呵呵呵', '很很很', '好好好', '嘿嘿嘿'],
+            'www': ['我我我', '哇哇哇', '网网网', '问问问', '玩玩玩'],
+            'yyy': ['呀呀呀', '有有有', '要要要', '一一一', '也也也'],
+            'zzz': ['在在在', '怎怎怎', '真真真', '这这这', '走走走'],
+            'xxx': ['想想想', '小小小', '新新新', '笑笑笑', '心心心'],
+            'sss': ['说说说', '是是是', '谁谁谁', '什什什', '上上上'],
+            'ttt': ['太太太', '天天天', '他他他', '听听听', '痛痛痛'],
+            'kkk': ['看看看', '可可可', '开开开', '快快快', '哭哭哭'],
+            'jjj': ['就就就', '叫叫叫', '家家家', '今今今', '急急急'],
+            'lll': ['来来来', '了了了', '老老老', '里里里', '累累累'],
+            'mmm': ['没没没', '么么么', '妈妈妈', '买买买', '慢慢慢'],
+            'nnn': ['你你你', '那那那', '年年年', '难难难', '能能能'],
+            'ppp': ['跑跑跑', '怕怕怕', '朋朋朋', '品品品', '便便便'],
+            'rrr': ['人人人', '让让让', '如如如', '认认认', '热热热'],
+            'ggg': ['给给给', '过过过', '个个个', '国国国', '高高高'],
+            'fff': ['发发发', '放放放', '分分分', '风风风', '非非非'],
+            'ccc': ['出出出', '从从从', '车车车', '成成成', '吃吃吃'],
+            'bbb': ['不不不', '把把把', '被被被', '本本本', '比比比'],
+            'vvv': ['V字型', '很很很', '微微微', '为为为', '我我我'],
+            'aaa': ['啊啊啊', '爱爱爱', '安安安', '阿阿阿', '按按按'],
+            'eee': ['诶诶诶', '额额额', '而而而', '恩恩恩', '儿儿儿'],
+            'iii': ['一一一', '诶诶诶', '咦咦咦', '呀呀呀', '唉唉唉'],
+            'ooo': ['哦哦哦', '喔喔喔', '噢噢噢', '哎哎哎', '呃呃呃'],
+            'uuu': ['呜呜呜', '嗯嗯嗯', '唔唔唔', '诶诶诶', '啊啊啊'],
+            
+            // 四字母组合（短语）
+            'nhyd': ['你好意思', '年会安排', '能回应的'],
+            'whmm': ['我还没买', '为何没来', '问候妈妈'],
+            'zhyd': ['知道意思', '真好意思', '这很有趣'],
+            'bwjd': ['不懂就问', '别无选择', '表现较好'],
+            'xnkl': ['新年快乐', '辛苦了', '谢你客气'],
+            'smyj': ['什么意见', '生命意义', '深刻印象'],
+            'rjrj': ['人家人家', '让开让开', '如今如今'],
+            'dksm': ['都可以啊', '动了感情', '对不起啊'],
+            'tjxl': ['太激动了', '推荐学习', '提醒下次'],
+
+            // 完整拼音
+            'zhang': ['张', '章', '长', '涨', '掌', '丈'],
+            'li': ['李', '里', '理', '利', '力', '立', '丽', '历', '礼', '离'],
+            'wang': ['王', '望', '网', '忘', '往', '旺'],
+            'liu': ['刘', '流', '六', '留', '柳'],
+            'chen': ['陈', '晨', '沉', '臣', '尘'],
+            'yang': ['杨', '阳', '扬', '羊', '洋', '养'],
+            'zhao': ['赵', '照', '找', '朝', '招'],
+            'huang': ['黄', '皇', '荒', '慌', '煌'],
+            'zhou': ['周', '州', '舟', '洲'],
+            'wu': ['吴', '武', '无', '五', '午', '舞', '务', '物'],
+            'xu': ['徐', '许', '虚', '需', '续'],
+            'sun': ['孙', '损', '笋'],
+            'ma': ['马', '妈', '麻', '码'],
+            'zhu': ['朱', '猪', '主', '住', '注', '竹', '珠'],
+            'hu': ['胡', '虎', '户', '湖', '护', '互'],
+            'guo': ['郭', '国', '果', '过', '锅'],
+            'he': ['何', '和', '河', '合', '核', '贺'],
+            'gao': ['高', '搞', '告', '糕'],
+            'lin': ['林', '临', '邻', '淋'],
+            'luo': ['罗', '洛', '落', '骆'],
+            'zheng': ['郑', '正', '整', '证', '政'],
+            'liang': ['梁', '良', '凉', '两', '亮', '量'],
+            'xie': ['谢', '些', '写', '血', '鞋'],
+            'song': ['宋', '送', '松', '颂'],
+            'tang': ['唐', '糖', '汤', '堂', '烫'],
+            'han': ['韩', '汉', '寒', '含'],
+            'feng': ['冯', '风', '封', '峰', '丰'],
+            'yu': ['于', '余', '鱼', '雨', '语', '与', '玉', '域', '育', '喻', '俞', '渝', '禹'],
+            'dong': ['董', '东', '动', '冬', '懂'],
+            'xiao': ['萧', '小', '笑', '校', '效'],
+            'cheng': ['程', '成', '城', '诚', '承'],
+            'cao': ['曹', '草', '操'],
+            'yuan': ['袁', '元', '圆', '园', '源', '远', '院'],
+            'deng': ['邓', '等', '登', '灯'],
+            'fu': ['傅', '付', '富', '福', '复', '父', '副'],
+            'shen': ['沈', '申', '深', '身', '神'],
+            'zeng': ['曾', '增', '层'],
+            'peng': ['彭', '鹏', '朋', '蓬'],
+            'lu': ['吕', '路', '鹿', '陆', '鲁', '露', '卢'],
+            'su': ['苏', '素', '速', '俗'],
+            'ding': ['丁', '定', '订', '顶'],
+            'ren': ['任', '人', '认', '仁'],
+            'yao': ['姚', '要', '药', '摇', '遥'],
+            'fan': ['范', '饭', '反', '犯', '凡'],
+            'fang': ['方', '房', '放', '防', '访'],
+            'shi': ['石', '时', '史', '是', '事', '十', '师', '市', '试'],
+            'tan': ['谭', '谈', '弹', '潭'],
+            'liao': ['廖', '聊', '料', '了'],
+            'jin': ['金', '今', '进', '近', '紧', '尽'],
+            'wei': ['魏', '为', '伟', '位', '维', '围', '韦', '威'],
+            'tao': ['陶', '桃', '逃', '淘'],
+            'jiang': ['江', '将', '蒋', '降', '姜'],
+            'qi': ['戚', '齐', '七', '起', '气', '期', '其'],
+            'zou': ['邹', '走', '奏'],
+            'bai': ['柏', '白', '百', '拜'],
+            'shui': ['水', '谁'],
+            'dou': ['窦', '豆', '都', '斗'],
+            'yun': ['云', '运', '韵'],
+            'pan': ['潘', '盘', '判'],
+            'ge': ['葛', '哥', '歌', '格', '个'],
+            'xi': ['奚', '西', '习', '系', '细', '喜'],
+            'lang': ['郎', '狼', '浪', '朗'],
+            'chang': ['昌', '长', '常', '场', '唱', '畅'],
+            'miao': ['苗', '妙', '描', '秒'],
+            'hua': ['花', '华', '话', '化', '画'],
+            'rong': ['容', '荣', '融'],
+            'jia': ['家', '加', '佳', '假', '价'],
+            'xin': ['新', '心', '信', '辛'],
+            'cai': ['蔡', '菜', '财', '才'],
+            'tian': ['田', '天', '甜', '填'],
+            'bao': ['鲍', '包', '保', '抱', '报'],
+            'fei': ['费', '飞', '非', '肥'],
+            'lian': ['廉', '连', '练', '恋', '脸'],
+            'cen': ['岑', '层'],
+            'xue': ['薛', '学', '雪', '血'],
+            'lei': ['雷', '类', '累', '泪'],
+            'ni': ['倪', '你', '泥'],
+            'teng': ['滕', '疼', '腾'],
+            'yin': ['殷', '银', '音', '因', '阴'],
+            'bi': ['毕', '比', '必', '笔', '闭'],
+            'hao': ['郝', '好', '号', '毫'],
+            'an': ['安', '岸', '案'],
+            'le': ['乐', '了'],
+            'pi': ['皮', '批', '疲'],
+            'bian': ['卞', '边', '便', '变'],
+            'kang': ['康', '抗'],
+            'wu2': ['伍', '五', '午'],
+            'bu': ['卜', '不', '步', '部'],
+            'gu': ['顾', '古', '故', '谷'],
+            'meng': ['孟', '梦', '猛'],
+            'ping': ['平', '评', '苹'],
+            'mu': ['穆', '木', '目', '母'],
+            'yin2': ['尹', '引'],
+            'shao': ['邵', '少', '绍'],
+            'zhan': ['湛', '战', '站', '占'],
+            'wang2': ['汪', '王'],
+            'qi2': ['祁', '其'],
+            'mao': ['毛', '茅', '冒'],
+            'di': ['狄', '地', '第', '弟'],
+            'mi': ['米', '迷', '密'],
+            'bei': ['贝', '北', '被', '背'],
+            'ming': ['明', '名', '命'],
+            'zang': ['臧', '藏'],
+            'ji': ['计', '几', '机', '记', '际', '纪'],
+            'fu2': ['伏', '服'],
+            'dai': ['戴', '带', '代', '待'],
+            'mao2': ['茅', '冒'],
+            'pang': ['庞', '胖'],
+            'xiong': ['熊', '雄', '胸'],
+            'shu': ['舒', '书', '树', '数'],
+            'qu': ['屈', '去', '区', '取'],
+            'xiang': ['项', '想', '向', '象', '相'],
+            'zu': ['祖', '族', '足'],
+            'ai': ['爱', '艾', '哀'],
+            'long': ['龙', '隆', '笼'],
+            'duan': ['段', '短', '断'],
+            'qian': ['钱', '前', '千', '签'],
+            'sun2': ['孙', '损'],
+            'xiong2': ['雄', '熊'],
+            'nong': ['农', '浓'],
+            'yan': ['严', '言', '颜', '眼'],
+            'feng2': ['峰', '风'],
+            'huo': ['火', '活', '货'],
+            'jun': ['军', '君', '俊'],
+            'min': ['民', '敏', '闵'],
+            'qiu': ['邱', '秋', '求', '球'],
+            'jiang2': ['姜', '江'],
+            'shen2': ['申', '神'],
+            'si': ['司', '思', '死', '四'],
+            'ou': ['欧', '偶'],
+            'geng': ['耿', '更', '庚'],
+            'kang2': ['康', '抗'],
+            'wen': ['温', '文', '问', '闻'],
+            'shuang': ['双', '爽'],
+            'zuo': ['左', '做', '作', '坐'],
+            'qin': ['秦', '琴', '勤', '亲'],
+            'yi': ['易', '义', '意', '一', '已'],
+            'xu2': ['续', '徐'],
+            'meng2': ['孟', '梦'],
+            'qiao': ['乔', '桥', '巧'],
+            'gao2': ['高', '搞'],
+            'lai': ['来', '赖'],
+            'ji2': ['季', '继'],
+            'zha': ['查', '扎'],
+            'hong': ['红', '洪', '宏'],
+            'pu': ['普', '朴'],
+            'jian': ['简', '建', '见', '间'],
+            'rao': ['饶', '绕'],
+            'yu2': ['余', '于'],
+            'yi2': ['伊', '依'],
+            'yue': ['月', '越', '岳'],
+            'gong': ['宫', '公', '工', '功'],
+            'ning': ['宁', '凝'],
+            'qiu2': ['裘', '求'],
+            'le2': ['乐', '了'],
+            'wei2': ['卫', '为'],
+            'chi': ['池', '迟', '吃'],
+            'lu2': ['路', '鹿'],
+            'qing': ['青', '清', '情', '请'],
+            'lao': ['老', '劳'],
+            'zang2': ['臧', '藏'],
+            'an2': ['安', '岸'],
+            'chang2': ['常', '长'],
+            'le3': ['乐', '了'],
+            'yu3': ['于', '余'],
+            'shi2': ['时', '史'],
+            'fu3': ['傅', '付'],
+            'pi2': ['皮', '批'],
+            'bian2': ['卞', '边'],
+            'qi3': ['齐', '其'],
+            'kang3': ['康', '抗'],
+            'wu3': ['伍', '五'],
+            'yuan2': ['元', '圆'],
+            'bu2': ['卜', '不'],
+            'gu2': ['顾', '古'],
+            'meng3': ['孟', '梦'],
+            'ping2': ['平', '评'],
+            'huang2': ['黄', '皇'],
+            'he2': ['和', '何'],
+            'mu2': ['穆', '木'],
+            'xiao2': ['萧', '小'],
+            'yin3': ['尹', '引'],
+            'yao2': ['姚', '要'],
+            'shao2': ['邵', '少']
+        };
+        
+        function showKeyboard() {
+            const keyboard = document.getElementById('virtual-keyboard');
+            const input = document.getElementById('nickname-input');
+            const screenContainer = document.getElementById('screen-container');
+            
+            keyboard.classList.add('show');
+            input.classList.add('keyboard-active');
+            screenContainer.classList.add('keyboard-open');
+            
+            currentInput = input.value;
+            updatePinyinDisplay();
+            
+            // 初始化显示状态
+            updateKeyboardDisplay();
+        }
+        
+        function hideKeyboard() {
+            // 延迟隐藏，避免点击键盘时立即隐藏
+            setTimeout(() => {
+                const keyboard = document.getElementById('virtual-keyboard');
+                const input = document.getElementById('nickname-input');
+                const screenContainer = document.getElementById('screen-container');
+                
+                keyboard.classList.remove('show');
+                input.classList.remove('keyboard-active');
+                screenContainer.classList.remove('keyboard-open');
+            }, 200);
+        }
+        
+        function toggleInputMode() {
+            // 切换输入模式
+            currentInputMode = currentInputMode === 'chinese' ? 'english' : 'chinese';
+            
+            // 清空当前拼音
+            if (currentInputMode === 'english') {
+                currentPinyin = '';
+                updatePinyinDisplay();
+                // 重置为小写
+                isShiftActive = false;
+            }
+            
+            // 更新键盘显示
+            updateKeyboardDisplay();
+            
+            // 重新绑定键盘事件
+            initializeKeyboard();
+        }
+        
+        function toggleShift() {
+            if (currentInputMode !== 'english') return;
+            
+            isShiftActive = !isShiftActive;
+            const shiftButton = document.querySelector('.key.shift');
+            if (shiftButton) {
+                shiftButton.classList.toggle('active', isShiftActive);
+            }
+            
+            updateKeyboardCase();
+        }
+        
+        function updateKeyboardCase() {
+            // 更新所有字母按键的显示
+            const letterKeys = document.querySelectorAll('#unified-keyboard .key[data-key]');
+            letterKeys.forEach(key => {
+                const keyValue = key.getAttribute('data-key');
+                if (keyValue && keyValue.match(/[a-zA-Z]/)) {
+                    if (currentInputMode === 'english' && isShiftActive) {
+                        key.textContent = keyValue.toUpperCase();
+                    } else {
+                        key.textContent = keyValue.toLowerCase();
+                    }
+                }
+            });
+        }
+        
+        function updateKeyboardDisplay() {
+            // 更新输入模式切换按钮
+            const modeSwitchKey = document.getElementById('mode-switch-key');
+            if (currentInputMode === 'chinese') {
+                modeSwitchKey.textContent = 'En'; // 中文模式时显示En，表示点击后切换到英文
+            } else {
+                modeSwitchKey.textContent = '中'; // 英文模式时显示中，表示点击后切换到中文
+            }
+            
+            // 候选区域始终显示，但根据模式更新标题
+            const pinyinInput = document.getElementById('pinyin-input');
+            if (currentInputMode === 'chinese') {
+                pinyinInput.placeholder = '拼音输入';
+            } else {
+                pinyinInput.placeholder = '英文输入';
+            }
+            
+            // 显示/隐藏Shift按钮
+            const shiftButton = document.querySelector('.key.shift');
+            if (shiftButton) {
+                shiftButton.style.display = currentInputMode === 'english' ? 'flex' : 'none';
+            }
+            
+            // 更新空格键和确认键的文本
+            const spaceKey = document.getElementById('space-key');
+            const confirmKey = document.getElementById('confirm-key');
+            
+            if (currentInputMode === 'chinese') {
+                spaceKey.textContent = '空格';
+                confirmKey.textContent = '确定';
+            } else {
+                spaceKey.textContent = 'Space';
+                confirmKey.textContent = 'Done';
+            }
+            
+            // 更新字母大小写显示
+            updateKeyboardCase();
+        }
+        
+        function confirmInput() {
+            const input = document.getElementById('nickname-input');
+            input.value = currentInput;
+            hideKeyboard();
+            checkFormValidity();
+        }
+        
+        function updatePinyinDisplay() {
+            const pinyinInputDiv = document.getElementById('pinyin-input');
+            if (currentInputMode === 'chinese') {
+                pinyinInputDiv.textContent = currentPinyin;
+            } else {
+                // 英文模式下显示当前正在输入的内容
+                pinyinInputDiv.textContent = '';
+            }
+            updateSuggestions();
+        }
+        
+        function updateSuggestions() {
+            const suggestionsDiv = document.getElementById('pinyin-suggestions');
+            suggestionsDiv.innerHTML = '';
+            
+            if (currentInputMode === 'chinese') {
+                // 中文模式：智能显示拼音对应的汉字
+                if (currentPinyin) {
+                    let allSuggestions = [];
+                    
+                    // 1. 首先查找完全匹配的拼音
+                    if (pinyinDict[currentPinyin]) {
+                        allSuggestions = [...pinyinDict[currentPinyin]];
+                    }
+                    
+                    // 2. 如果没有完全匹配或需要更多候选，查找前缀匹配
+                    if (allSuggestions.length < 10) {
+                        // 查找所有以当前输入开头的拼音
+                        for (let pinyin in pinyinDict) {
+                            if (pinyin.startsWith(currentPinyin) && pinyin !== currentPinyin) {
+                                // 添加这些拼音对应的字，但限制数量
+                                const extraChars = pinyinDict[pinyin].slice(0, 3); // 每个拼音最多取3个字
+                                allSuggestions = allSuggestions.concat(extraChars);
+                            }
+                        }
+                    }
+                    
+                    // 3. 如果输入长度为1，额外显示该字母对应的单字母快捷字
+                    if (currentPinyin.length === 1) {
+                        const singleLetterChars = pinyinDict[currentPinyin] || [];
+                        // 将单字母的字放在前面，优先显示
+                        allSuggestions = [...singleLetterChars, ...allSuggestions.filter(char => !singleLetterChars.includes(char))];
+                    }
+                    
+                    // 4. 去重并限制总数量
+                    allSuggestions = [...new Set(allSuggestions)].slice(0, 20); // 最多显示20个候选
+                    
+                    // 5. 生成候选按钮
+                    allSuggestions.forEach(char => {
+                        const suggestion = document.createElement('button');
+                        suggestion.className = 'suggestion-item';
+                        suggestion.textContent = char;
+                        // 修改点击事件，检查是否在滑动
+                        suggestion.onclick = (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            // 如果正在滑动，不执行选择
+                            if (window.isSuggestionsMoving && window.isSuggestionsMoving()) {
+                                return;
+                            }
+                            selectSuggestion(char);
+                        };
+                        suggestionsDiv.appendChild(suggestion);
+                    });
+                }
+            } else {
+                // 英文模式：根据当前输入显示匹配的英文人名
+                let englishSuggestions = [];
+                
+                if (currentInput) {
+                    // 获取当前输入的最后一个单词（以空格分割）
+                    const words = currentInput.split(' ');
+                    const lastWord = words[words.length - 1].toLowerCase();
+                    
+                    if (lastWord) {
+                        // 查找所有以最后一个单词开头的人名
+                        for (let letter in englishNamesDict) {
+                            const names = englishNamesDict[letter];
+                            const matchingNames = names.filter(name => 
+                                name.toLowerCase().startsWith(lastWord)
+                            );
+                            englishSuggestions = englishSuggestions.concat(matchingNames);
+                        }
+                        
+                        // 限制候选数量
+                        englishSuggestions = englishSuggestions.slice(0, 8);
+                    }
+                }
+                
+                // 如果没有匹配的人名或输入为空，显示默认的常用人名
+                if (englishSuggestions.length === 0) {
+                    englishSuggestions = ['John', 'Mary', 'David', 'Lisa', 'Mike'];
+                }
+                
+                englishSuggestions.forEach(text => {
+                    const suggestion = document.createElement('button');
+                    suggestion.className = 'suggestion-item';
+                    suggestion.textContent = text;
+                    // 修改点击事件，检查是否在滑动
+                    suggestion.onclick = (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        // 如果正在滑动，不执行选择
+                        if (window.isSuggestionsMoving && window.isSuggestionsMoving()) {
+                            return;
+                        }
+                        selectEnglishSuggestion(text);
+                    };
+                    suggestionsDiv.appendChild(suggestion);
+                });
+            }
+        }
+        
+        function selectSuggestion(text) {
+            currentInput += text;
+            if (currentInputMode === 'chinese') {
+                currentPinyin = '';
+            }
+            updatePinyinDisplay();
+            
+            // 更新输入框显示
+            document.getElementById('nickname-input').value = currentInput;
+            // 检查表单有效性
+            checkFormValidity();
+        }
+        
+        function selectEnglishSuggestion(name) {
+            // 英文人名选择的特殊处理
+            const words = currentInput.split(' ');
+            const lastWord = words[words.length - 1];
+            
+            if (lastWord && name.toLowerCase().startsWith(lastWord.toLowerCase())) {
+                // 如果当前有部分输入且人名匹配，替换最后一个单词
+                words[words.length - 1] = name;
+                currentInput = words.join(' ');
+            } else {
+                // 否则直接添加人名
+                if (currentInput && !currentInput.endsWith(' ')) {
+                    currentInput += ' ';
+                }
+                currentInput += name;
+            }
+            
+            updatePinyinDisplay();
+            
+            // 更新输入框显示
+            document.getElementById('nickname-input').value = currentInput;
+            // 检查表单有效性
+            checkFormValidity();
+        }
+        
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+        
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+        function saveUser() {
+            // 获取表单数据
+            const nickname = document.getElementById('nickname-input').value;
+            const selectedAvatar = document.querySelector('.avatar-option.selected');
+            const selectedGender = document.querySelector('.gender-option.selected');
+            const age = parseInt(document.getElementById('age-input').value);
+            const height = parseFloat(document.getElementById('height-input').value);
+            const weight = parseFloat(document.getElementById('weight-input').value);
+            
+            if (nickname && selectedAvatar && selectedGender && age && height && weight) {
+                // 获取现有用户数据
+                let users = JSON.parse(localStorage.getItem('users') || '[]');
+                
+                // 创建新用户对象
+                const newUser = {
+                    id: Date.now().toString(),
+                    nickname: nickname,
+                    avatar: {
+                        icon: selectedAvatar.textContent,
+                        color: selectedAvatar.style.backgroundColor
+                    },
+                    gender: selectedGender.getAttribute('data-gender'),
+                    age: age,
+                    height: height,
+                    weight: weight,
+                    createdAt: new Date().toISOString()
+                };
+                
+                // 添加到用户列表
+                users.push(newUser);
+                
+                // 保存到localStorage
+                localStorage.setItem('users', JSON.stringify(users));
+                
+                alert(`用户 "${nickname}" 已保存！`);
+                window.location.href = 'main.html';
+            } else {
+                alert('请填写所有必填信息！');
+            }
+        }
+
+        // 页面加载时初始化头像选择器
+        window.onload = function() {
+            initializeAvatarPicker();
+            initializeKeyboard();
+        };
+        
+        function initializeKeyboard() {
+            // 移除所有现有的事件监听器并重新绑定
+            document.querySelectorAll('.key[data-key]').forEach(key => {
+                // 移除旧的事件监听器（如果存在）
+                key.removeEventListener('click', keyClickHandler);
+            });
+            
+            // 重新绑定事件
+            document.querySelectorAll('.key[data-key]').forEach(key => {
+                key.addEventListener('click', keyClickHandler);
+            });
+            
+            // 阻止键盘区域的事件冒泡
+            document.getElementById('virtual-keyboard').addEventListener('click', function(e) {
+                e.stopPropagation();
+            });
+            
+            // 初始化候选词区域的触摸滑动
+            initializeSuggestionsSwipe();
+        }
+        
+        function initializeSuggestionsSwipe() {
+            const suggestionsDiv = document.getElementById('pinyin-suggestions');
+            let startX = 0;
+            let startScrollLeft = 0;
+            let isDragging = false;
+            let hasMoved = false; // 标记是否发生了滑动
+            
+            // 阻止候选词区域触发全面屏手势
+            suggestionsDiv.addEventListener('touchstart', function(e) {
+                // 阻止事件冒泡，防止触发全面屏手势
+                e.stopPropagation();
+                startX = e.touches[0].clientX;
+                startScrollLeft = suggestionsDiv.scrollLeft;
+                isDragging = true;
+                hasMoved = false; // 重置移动标记
+            }, { passive: true });
+            
+            // 触摸移动
+            suggestionsDiv.addEventListener('touchmove', function(e) {
+                if (!isDragging) return;
+                // 阻止事件冒泡和默认行为
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const touchX = e.touches[0].clientX;
+                const deltaX = startX - touchX;
+                
+                // 如果移动距离超过阈值，标记为滑动
+                if (Math.abs(deltaX) > 5) {
+                    hasMoved = true;
+                }
+                
+                suggestionsDiv.scrollLeft = startScrollLeft + deltaX;
+            });
+            
+            // 触摸结束
+            suggestionsDiv.addEventListener('touchend', function(e) {
+                // 阻止事件冒泡
+                e.stopPropagation();
+                isDragging = false;
+                
+                // 延迟一点时间重置hasMoved，避免立即点击
+                setTimeout(() => {
+                    hasMoved = false;
+                }, 100);
+            });
+            
+            // 鼠标支持（用于桌面测试）
+            suggestionsDiv.addEventListener('mousedown', function(e) {
+                // 阻止事件冒泡
+                e.stopPropagation();
+                startX = e.clientX;
+                startScrollLeft = suggestionsDiv.scrollLeft;
+                isDragging = true;
+                hasMoved = false; // 重置移动标记
+                e.preventDefault();
+            });
+            
+            suggestionsDiv.addEventListener('mousemove', function(e) {
+                if (!isDragging) return;
+                e.preventDefault();
+                e.stopPropagation();
+                
+                const deltaX = startX - e.clientX;
+                
+                // 如果移动距离超过阈值，标记为滑动
+                if (Math.abs(deltaX) > 5) {
+                    hasMoved = true;
+                }
+                
+                suggestionsDiv.scrollLeft = startScrollLeft + deltaX;
+            });
+            
+            suggestionsDiv.addEventListener('mouseup', function(e) {
+                e.stopPropagation();
+                isDragging = false;
+                
+                // 延迟一点时间重置hasMoved，避免立即点击
+                setTimeout(() => {
+                    hasMoved = false;
+                }, 100);
+            });
+            
+            suggestionsDiv.addEventListener('mouseleave', function(e) {
+                isDragging = false;
+                // 立即重置hasMoved，因为鼠标已经离开
+                hasMoved = false;
+            });
+            
+            // 额外的事件阻止，确保不会触发全面屏手势
+            suggestionsDiv.addEventListener('gesturestart', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            
+            suggestionsDiv.addEventListener('gesturechange', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            
+            suggestionsDiv.addEventListener('gestureend', function(e) {
+                e.stopPropagation();
+                e.preventDefault();
+            });
+            
+            // 返回hasMoved状态供其他函数使用
+            window.isSuggestionsMoving = function() {
+                return hasMoved;
+            };
+        }
+        
+        // 定义键盘点击处理函数
+        function keyClickHandler(e) {
+            e.preventDefault();
+            e.stopPropagation();
+            
+            const keyValue = this.getAttribute('data-key');
+            
+            if (keyValue === 'backspace') {
+                handleBackspace();
+            } else if (keyValue === 'space') {
+                handleSpace();
+            } else if (keyValue === 'shift') {
+                // Shift键已经有单独的处理函数
+                return;
+            } else if (keyValue) {
+                handleKeyInput(keyValue);
+            }
+            
+            updateDisplay();
+        }
+        
+        function handleBackspace() {
+            if (currentInputMode === 'chinese') {
+                if (currentPinyin) {
+                    currentPinyin = currentPinyin.slice(0, -1);
+                } else if (currentInput) {
+                    currentInput = currentInput.slice(0, -1);
+                }
+            } else {
+                // 英文模式直接删除字符
+                if (currentInput) {
+                    currentInput = currentInput.slice(0, -1);
+                }
+            }
+        }
+        
+        function handleSpace() {
+            if (currentInputMode === 'chinese') {
+                if (currentPinyin) {
+                    // 如果有拼音，添加第一个建议字符
+                    if (pinyinDict[currentPinyin] && pinyinDict[currentPinyin].length > 0) {
+                        selectSuggestion(pinyinDict[currentPinyin][0]);
+                    } else {
+                        currentPinyin = '';
+                    }
+                } else {
+                    currentInput += ' ';
+                }
+            } else {
+                // 英文模式添加空格
+                currentInput += ' ';
+            }
+        }
+        
+        function handleKeyInput(keyValue) {
+            if (currentInputMode === 'chinese') {
+                // 中文模式：添加字母到拼音
+                currentPinyin += keyValue.toLowerCase();
+            } else {
+                // 英文模式：根据Shift状态决定大小写
+                if (isShiftActive) {
+                    currentInput += keyValue.toUpperCase();
+                    // 输入后自动关闭Shift
+                    toggleShift();
+                } else {
+                    currentInput += keyValue.toLowerCase();
+                }
+            }
+        }
+        
+        function updateDisplay() {
+            if (currentInputMode === 'chinese') {
+                updatePinyinDisplay();
+            } else {
+                // 英文模式下也需要更新候选词
+                updateSuggestions();
+            }
+            // 实时更新输入框显示
+            document.getElementById('nickname-input').value = currentInput;
+            // 检查表单有效性
+            checkFormValidity();
+        }
+
+        function initializeAvatarPicker() {
+            const avatarPicker = document.getElementById('avatar-picker');
+            const avatarOptions = [
+                { icon: '👤', color: '#2563EB' }, // 人物
+                { icon: '👧', color: '#DC2626' }, // 女孩
+                { icon: '👦', color: '#059669' }, // 男孩
+                { icon: '👩', color: '#7C3AED' }, // 女人
+                { icon: '👨', color: '#EA580C' }, // 男人
+                { icon: '🐱', color: '#0891B2' }, // 猫
+                { icon: '🐶', color: '#BE185D' }, // 狗
+                { icon: '🐼', color: '#65A30D' }, // 熊猫
+                { icon: '🦊', color: '#F59E0B' }, // 狐狸
+                { icon: '🐻', color: '#8B5CF6' }, // 熊
+                { icon: '🐸', color: '#10B981' }, // 青蛙
+                { icon: '🦄', color: '#EC4899' }  // 独角兽
+            ];
+
+            avatarOptions.forEach(option => {
+                const avatarDiv = document.createElement('div');
+                avatarDiv.className = 'avatar-option';
+                avatarDiv.style.backgroundColor = option.color;
+                avatarDiv.textContent = option.icon;
+                avatarDiv.onclick = () => selectAvatar(avatarDiv);
+                avatarPicker.appendChild(avatarDiv);
+            });
+        }
+
+        function selectAvatar(element) {
+            // 移除所有选中状态
+            document.querySelectorAll('.avatar-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            element.classList.add('selected');
+            
+            // 检查是否可以保存
+            checkFormValidity();
+        }
+        
+        function selectGender(gender) {
+            // 移除所有选中状态
+            document.querySelectorAll('.gender-option').forEach(opt => {
+                opt.classList.remove('selected');
+            });
+            
+            // 添加选中状态
+            document.querySelector(`[data-gender="${gender}"]`).classList.add('selected');
+            
+            // 检查是否可以保存
+            checkFormValidity();
+        }
+
+        function checkFormValidity() {
+            const nickname = document.getElementById('nickname-input').value;
+            const selectedAvatar = document.querySelector('.avatar-option.selected');
+            const selectedGender = document.querySelector('.gender-option.selected');
+            const age = document.getElementById('age-input').value;
+            const height = document.getElementById('height-input').value;
+            const weight = document.getElementById('weight-input').value;
+            const saveButton = document.getElementById('save-user-button');
+            
+            // 检查所有必填字段
+            if (nickname && selectedAvatar && selectedGender && age && height && weight) {
+                saveButton.disabled = false;
+            } else {
+                saveButton.disabled = true;
+            }
+        }
+
+        // 监听输入字段变化
+        document.addEventListener('DOMContentLoaded', function() {
+            const nicknameInput = document.getElementById('nickname-input');
+            const ageInput = document.getElementById('age-input');
+            const heightInput = document.getElementById('height-input');
+            const weightInput = document.getElementById('weight-input');
+            
+            if (nicknameInput) {
+                nicknameInput.addEventListener('input', checkFormValidity);
+            }
+            if (ageInput) {
+                ageInput.addEventListener('input', checkFormValidity);
+            }
+            if (heightInput) {
+                heightInput.addEventListener('input', checkFormValidity);
+            }
+            if (weightInput) {
+                weightInput.addEventListener('input', checkFormValidity);
+            }
+        });
+    </script>
+    <script src="js/gestures.js"></script>
+</body>
+</html>

@@ -1,0 +1,213 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 测量结果</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/gestures.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 手势边缘区域 -->
+        <div class="gesture-edge top" data-gesture="top"></div>
+        <div class="gesture-edge bottom" data-gesture="bottom"></div>
+        <div class="gesture-edge left" data-gesture="left"></div>
+        <div class="gesture-edge right" data-gesture="right"></div>
+        
+        <!-- 滑动指示器 -->
+        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
+        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
+        
+        <!-- 测量结果页面 -->
+        <div id="page-result" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">测量完成</h1>
+                <div class="current-user-info" id="current-user-info">
+                    <span>用户: </span><span id="current-user-name">--</span>
+                </div>
+            </div>
+
+            <div class="result-header">
+                <div class="result-score-value" id="health-score">85</div>
+                <div class="result-score-label">健康评分</div>
+            </div>
+
+            <div class="result-grid">
+                <div class="result-item" onclick="showDetail('weight')">
+                    <div class="result-item-value" id="result-weight">65.2kg</div>
+                    <div class="result-item-label">体重</div>
+                </div>
+                <div class="result-item" onclick="showDetail('bmi')">
+                    <div class="result-item-value" id="result-bmi">22.1</div>
+                    <div class="result-item-label">BMI</div>
+                </div>
+                <div class="result-item" onclick="showDetail('fat')">
+                    <div class="result-item-value" id="result-fat">15.8%</div>
+                    <div class="result-item-label">体脂率</div>
+                </div>
+                <div class="result-item" onclick="showDetail('muscle')">
+                    <div class="result-item-value" id="result-muscle">48.2kg</div>
+                    <div class="result-item-label">肌肉量</div>
+                </div>
+                <div class="result-item" onclick="showDetail('water')">
+                    <div class="result-item-value" id="result-water">58.5%</div>
+                    <div class="result-item-label">水分率</div>
+                </div>
+                <div class="result-item" onclick="showDetail('bone')">
+                    <div class="result-item-value" id="result-bone">2.8kg</div>
+                    <div class="result-item-label">骨量</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area" id="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn save" onclick="saveResult()">保存</button>
+            <button class="control-btn delete" onclick="deleteResult()">删除</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+        
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+        function saveResult() {
+            // 模拟保存结果
+            alert('测量结果已保存！');
+            window.location.href = 'main.html';
+        }
+        
+        function deleteResult() {
+            if (confirm('确定要删除这次测量结果吗？')) {
+                // 模拟删除结果
+                alert('测量结果已删除！');
+                window.location.href = 'main.html';
+            }
+        }
+        
+        function showDetail(type) {
+            // 显示详细信息
+            alert('显示 ' + type + ' 的详细信息');
+        }
+
+        // 页面加载时生成测量结果
+        window.onload = function() {
+            const measurementData = localStorage.getItem('currentMeasurement');
+            if (measurementData) {
+                const data = JSON.parse(measurementData);
+                generateMeasurementResults(data);
+            } else {
+                generateMeasurementResults();
+            }
+        };
+
+        function generateMeasurementResults(userData = null) {
+            let results;
+            
+            if (userData && userData.user && userData.weight) {
+                // 使用实际用户数据
+                document.getElementById('current-user-name').textContent = userData.user;
+                
+                // 预设用户的完整数据
+                const presetUsers = {
+                    '华仔': {
+                        healthScore: 87,
+                        weight: 75.5,
+                        bmi: 22.3,
+                        fatPercentage: 16.2,
+                        muscleWeight: 48.6,
+                        waterPercentage: 58.8,
+                        boneWeight: 2.9
+                    },
+                    '亦菲': {
+                        healthScore: 92,
+                        weight: 50.0,
+                        bmi: 19.8,
+                        fatPercentage: 22.5,
+                        muscleWeight: 36.1,
+                        waterPercentage: 55.2,
+                        boneWeight: 2.1
+                    },
+                    '志玲': {
+                        healthScore: 89,
+                        weight: 45.0,
+                        bmi: 18.5,
+                        fatPercentage: 20.8,
+                        muscleWeight: 32.4,
+                        waterPercentage: 56.8,
+                        boneWeight: 1.9
+                    }
+                };
+                
+                if (presetUsers[userData.user]) {
+                    // 使用预设数据，添加小幅随机变化
+                    const preset = presetUsers[userData.user];
+                    results = {
+                        healthScore: preset.healthScore + Math.floor(Math.random() * 6 - 3), // ±3分变化
+                        weight: (preset.weight + (Math.random() - 0.5) * 0.4).toFixed(1), // ±0.2kg变化
+                        bmi: preset.bmi,
+                        fatPercentage: preset.fatPercentage,
+                        muscleWeight: preset.muscleWeight,
+                        waterPercentage: preset.waterPercentage,
+                        boneWeight: preset.boneWeight
+                    };
+                } else {
+                    // 非预设用户，根据体重生成数据
+                    const weight = userData.weight;
+                    const baseHeight = 170; // 假设身高170cm
+                    
+                    results = {
+                        healthScore: Math.floor(Math.random() * 15) + 80, // 80-95
+                        weight: weight,
+                        bmi: (weight / ((baseHeight / 100) ** 2)).toFixed(1),
+                        fatPercentage: (Math.random() * 10 + 12).toFixed(1), // 12-22%
+                        muscleWeight: (weight * (0.65 + Math.random() * 0.1)).toFixed(1), // 体重的65-75%
+                        waterPercentage: (Math.random() * 10 + 55).toFixed(1), // 55-65%
+                        boneWeight: (weight * (0.04 + Math.random() * 0.01)).toFixed(1) // 体重的4-5%
+                    };
+                }
+            } else {
+                // 生成随机数据
+                document.getElementById('current-user-name').textContent = '访客';
+                
+                results = {
+                    healthScore: Math.floor(Math.random() * 20) + 75, // 75-95
+                    weight: (Math.random() * 30 + 50).toFixed(1), // 50-80kg
+                    bmi: (Math.random() * 8 + 18).toFixed(1), // 18-26
+                    fatPercentage: (Math.random() * 15 + 10).toFixed(1), // 10-25%
+                    muscleWeight: (Math.random() * 20 + 35).toFixed(1), // 35-55kg
+                    waterPercentage: (Math.random() * 15 + 50).toFixed(1), // 50-65%
+                    boneWeight: (Math.random() * 2 + 2).toFixed(1) // 2-4kg
+                };
+            }
+
+            // 更新显示
+            document.getElementById('health-score').textContent = results.healthScore;
+            document.getElementById('result-weight').textContent = results.weight + 'kg';
+            document.getElementById('result-bmi').textContent = results.bmi;
+            document.getElementById('result-fat').textContent = results.fatPercentage + '%';
+            document.getElementById('result-muscle').textContent = results.muscleWeight + 'kg';
+            document.getElementById('result-water').textContent = results.waterPercentage + '%';
+            document.getElementById('result-bone').textContent = results.boneWeight + 'kg';
+        }
+    </script>
+    <script src="js/gestures.js"></script>
+</body>
+</html>

@@ -1,0 +1,1046 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>人体成分分析仪 - 交互原型 V6 (智能关机)</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+SC:wght@400;700&family=Roboto:wght@400;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    
+    <style>
+    /* ======================================== */
+    /* CSS STYLES (style.css)         */
+    /* ======================================== */
+
+    /* --- 基础和通用样式 --- */
+    body {
+        font-family: 'Roboto', 'Noto Sans SC', sans-serif;
+        background-color: #374151; /* 深灰色背景，突出原型 */
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        padding: 20px;
+        box-sizing: border-box;
+    }
+
+    .screen-container {
+        width: 480px;
+        height: 800px;
+        background-color: #000000; /* 遵循文档规范：暗色模式背景 */
+        position: relative;
+        overflow: hidden;
+        border-radius: 24px;
+        box-shadow: 0 10px 25px rgba(0,0,0,0.5);
+        transition: background-color 2s;
+    }
+
+    .page {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        color: #FFFFFF; /* 遵循文档规范：主要文本色 */
+        display: flex;
+        flex-direction: column;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.4s ease-in-out, visibility 0.4s;
+        padding: 24px; /* 遵循文档规范：24px 安全边距 */
+        box-sizing: border-box;
+    }
+
+    .page.active {
+        opacity: 1;
+        visibility: visible;
+    }
+
+    .page-header {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        height: 56px;
+        margin-top: 24px;
+        flex-shrink: 0;
+    }
+    .page-header .back-button {
+        position: absolute;
+        left: 0;
+        top: 50%;
+        transform: translateY(-50%);
+        cursor: pointer;
+        padding: 8px;
+    }
+
+    .page-title {
+        font-size: 22px; /* H2 */
+        font-weight: 700;
+        text-align: center;
+    }
+
+    .primary-button {
+        background-color: #0D47A1; /* 主色调 */
+        color: white;
+        border: none;
+        padding: 16px;
+        border-radius: 12px;
+        font-size: 18px; /* 按钮文字 */
+        font-weight: 700;
+        cursor: pointer;
+        transition: background-color 0.2s;
+        width: 100%;
+        margin-top: auto;
+        margin-bottom: 48px;
+        min-height: 56px;
+    }
+    .primary-button:disabled { background-color: #E0E0E0; color: #9E9E9E; cursor: not-allowed; }
+    .primary-button:hover:not(:disabled) { background-color: #1565C0; }
+
+    /* --- Modal 弹窗 --- */
+    .modal-overlay {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        opacity: 0;
+        visibility: hidden;
+        transition: opacity 0.3s, visibility 0.3s;
+        z-index: 100;
+    }
+    .modal-overlay.active { opacity: 1; visibility: visible; }
+    .modal-box {
+        background-color: #2d3748;
+        padding: 24px;
+        border-radius: 16px;
+        width: 80%;
+        max-width: 380px;
+        text-align: center;
+        transform: scale(0.9);
+        transition: transform 0.3s;
+    }
+    .modal-overlay.active .modal-box { transform: scale(1); }
+    .modal-title { font-size: 20px; font-weight: 700; margin-bottom: 16px; }
+    .modal-content { font-size: 16px; color: #BDBDBD; margin-bottom: 24px; }
+    .modal-actions { display: flex; gap: 16px; }
+    .modal-button { flex: 1; padding: 12px; border-radius: 8px; border: none; font-size: 16px; font-weight: 700; cursor: pointer; }
+    .modal-button.cancel { background-color: #4A5568; color: #FFFFFF; }
+    .modal-button.confirm { background-color: #B71C1C; color: #FFFFFF; }
+
+    /* --- 开机/关机动画 --- */
+    #page-boot, #page-shutdown { justify-content: center; align-items: center; }
+    .logo { font-size: 48px; font-weight: 700; color: #FFFFFF; }
+    #page-boot .logo { animation: boot-animation 3s ease-in-out forwards; }
+    #page-shutdown .logo { animation: shutdown-animation 2.5s ease-in forwards; }
+    @keyframes boot-animation { 0% { opacity: 0; transform: scale(0.8); } 25% { opacity: 1; transform: scale(1.1); } 75% { opacity: 1; transform: scale(1.1); } 100% { opacity: 0; transform: scale(0.8); } }
+    @keyframes shutdown-animation { 0% { opacity: 1; } 100% { opacity: 0; transform: scale(0.8); } }
+
+    /* --- 主界面 --- */
+    #page-home { padding: 0; }
+    .status-bar { height: 48px; display: flex; justify-content: space-between; align-items: center; font-size: 16px; color: #BDBDBD; flex-shrink: 0; padding: 16px 24px 0 24px; }
+    .home-content { padding: 0 24px; flex-grow: 1; display: flex; flex-direction: column; }
+    .user-switcher { margin-top: 16px; flex-shrink: 0; }
+    .user-list { display: flex; gap: 20px; align-items: center; overflow-x: auto; padding-bottom: 20px; scrollbar-width: none; }
+    .user-list::-webkit-scrollbar { display: none; }
+    .user-avatar { display: flex; flex-direction: column; align-items: center; gap: 8px; cursor: pointer; position: relative; }
+    .avatar-circle { width: 64px; height: 64px; border-radius: 50%; display: flex; justify-content: center; align-items: center; font-size: 24px; font-weight: 700; border: 3px solid transparent; transition: all 0.3s; }
+    .user-avatar.active .avatar-circle { border-color: #0D47A1; }
+    .user-avatar.editing .avatar-circle { transform: scale(0.9); border-color: #B71C1C; }
+    .user-name { font-size: 16px; color: #BDBDBD; }
+    .user-avatar.active .user-name { color: #FFFFFF; font-weight: 700; }
+    .add-user-btn .avatar-circle { border: 3px dashed #616161; color: #616161; }
+    .add-user-btn:hover .avatar-circle { border-color: #FFFFFF; color: #FFFFFF; }
+    .main-card { flex-grow: 1; display: flex; flex-direction: column; justify-content: center; align-items: center; margin-top: 24px; }
+    .main-card-title { font-size: 20px; color: #BDBDBD; }
+    .main-card-value { font-size: 96px; font-weight: 700; line-height: 1; margin-top: 16px; }
+    .main-card-unit { font-size: 22px; font-weight: 700; margin-left: 8px; }
+    .sub-data-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 24px; margin-top: 48px; width: 100%; }
+    .sub-data-item { text-align: center; }
+    .sub-data-value { font-size: 30px; font-weight: 700; }
+    .sub-data-label { font-size: 16px; color: #BDBDBD; margin-top: 4px; }
+    .bottom-nav { height: 80px; display: flex; justify-content: space-around; align-items: center; background-color: #1C1C1E; flex-shrink: 0; border-top: 1px solid #616161; }
+    .nav-item { display: flex; flex-direction: column; align-items: center; gap: 4px; color: #BDBDBD; font-size: 16px; cursor: pointer; padding: 8px; border-radius: 8px; min-width: 80px; }
+    .nav-item:hover { background-color: #333; }
+    .nav-item.active { color: #0D47A1; }
+    .nav-icon { width: 32px; height: 32px; }
+
+    /* --- 测量流程页面 --- */
+    #page-measure-guide { justify-content: center; align-items: center; gap: 48px; }
+    .guide-animation { flex-grow: 1; display: flex; justify-content: center; align-items: center; }
+    .footprints { position: relative; width: 200px; height: 200px; }
+    .footprint { position: absolute; width: 80px; height: 160px; background-color: #616161; border-radius: 40px 40px 30px 30px / 80px 80px 60px 60px; animation: pulse 2s infinite ease-in-out; }
+    .footprint.left { left: 10px; transform: rotate(-15deg); animation-name: pulse-left; }
+    .footprint.right { right: 10px; transform: rotate(15deg); animation-delay: -1s; }
+    @keyframes pulse { 0%, 100% { background-color: #424242; transform: scale(1) rotate(15deg); } 50% { background-color: #9E9E9E; transform: scale(1.05) rotate(15deg); } }
+    @keyframes pulse-left { 0%, 100% { background-color: #424242; transform: scale(1) rotate(-15deg); } 50% { background-color: #9E9E9E; transform: scale(1.05) rotate(-15deg); } }
+    .guide-text { font-size: 22px; color: #BDBDBD; text-align: center; }
+    .progress-circle { position: relative; width: 250px; height: 250px; }
+    .progress-circle svg { position: absolute; top: 0; left: 0; transform: rotate(-90deg); }
+    .progress-bg { fill: none; stroke: #424242; stroke-width: 15; }
+    .progress-bar { fill: none; stroke: #0D47A1; stroke-width: 15; stroke-linecap: round; stroke-dasharray: 691; stroke-dashoffset: 691; animation: measure-progress 6s linear forwards; }
+    @keyframes measure-progress { to { stroke-dashoffset: 0; } }
+    .progress-text { position: absolute; width: 100%; height: 100%; display: flex; justify-content: center; align-items: center; font-size: 22px; font-weight: 700; color: #BDBDBD; }
+    .result-header { text-align: center; margin-top: 32px; }
+    .result-score-value { font-size: 80px; font-weight: 700; color: #1B5E20; line-height: 1; }
+    .result-score-label { font-size: 20px; color: #BDBDBD; }
+    .result-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 32px; width: 100%; }
+    .result-item { background-color: #1C1C1E; padding: 20px; border-radius: 12px; text-align: center; cursor: pointer; transition: background-color 0.2s; }
+    .result-item:hover { background-color: #333; }
+    .result-item-value { font-size: 30px; font-weight: 700; }
+    .result-item-label { font-size: 16px; color: #BDBDBD; margin-top: 8px; }
+
+    /* --- 历史数据页 --- */
+    .history-list { margin-top: 24px; flex-grow: 1; overflow-y: auto; padding-right: 10px; scrollbar-width: thin; scrollbar-color: #616161 #1C1C1E; }
+    .history-list::-webkit-scrollbar { width: 5px; }
+    .history-list::-webkit-scrollbar-track { background: #1C1C1E; }
+    .history-list::-webkit-scrollbar-thumb { background-color: #616161; border-radius: 10px; }
+    .history-item { display: flex; justify-content: space-between; align-items: center; padding: 16px 0; border-bottom: 1px solid #616161; }
+    .history-item:last-child { border-bottom: none; }
+    .history-date { font-size: 18px; color: #FFFFFF; }
+    .history-time { font-size: 16px; color: #BDBDBD; }
+    .history-value { font-size: 20px; font-weight: 700; text-align: right; }
+    .history-unit { font-size: 16px; color: #BDBDBD; margin-left: 4px; }
+    .no-history { margin: auto; color: #BDBDBD; font-size: 20px; }
+
+    /* --- 设置页 --- */
+    .settings-list { margin-top: 24px; width: 100%; }
+    .settings-group-title { font-size: 16px; color: #BDBDBD; margin-bottom: 8px; padding-left: 16px; }
+    .settings-group { background-color: #1C1C1E; border-radius: 12px; margin-bottom: 24px; }
+    .setting-item { display: flex; justify-content: space-between; align-items: center; min-height: 56px; padding: 0 16px; border-bottom: 1px solid #424242; }
+    .setting-item:last-child { border-bottom: none; }
+    .setting-label { font-size: 18px; }
+    .setting-control-container { display: flex; align-items: center; gap: 16px; }
+    .setting-value { font-size: 18px; color: #BDBDBD; }
+    .segmented-control button { background: transparent; border: 1px solid #616161; color: #BDBDBD; padding: 6px 16px; font-size: 16px; cursor: pointer; }
+    .segmented-control button:first-child { border-radius: 8px 0 0 8px; border-right: none; }
+    .segmented-control button:last-child { border-radius: 0 8px 8px 0; }
+    .segmented-control button.active { background-color: #0D47A1; color: #FFFFFF; border-color: #0D47A1; }
+    .slider { -webkit-appearance: none; appearance: none; width: 120px; height: 8px; background: #424242; border-radius: 4px; outline: none; }
+    .slider::-webkit-slider-thumb { -webkit-appearance: none; appearance: none; width: 24px; height: 24px; background: #FFFFFF; border-radius: 50%; cursor: pointer; }
+    .toggle-switch { position: relative; display: inline-block; width: 50px; height: 28px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider { position: absolute; cursor: pointer; top: 0; left: 0; right: 0; bottom: 0; background-color: #424242; transition: .4s; border-radius: 28px; }
+    .toggle-slider:before { position: absolute; content: ""; height: 20px; width: 20px; left: 4px; bottom: 4px; background-color: white; transition: .4s; border-radius: 50%; }
+    input:checked + .toggle-slider { background-color: #1B5E20; }
+    input:checked + .toggle-slider:before { transform: translateX(22px); }
+
+    /* --- 添加用户页 --- */
+    .form-group { width: 100%; margin-top: 40px; }
+    .form-label { font-size: 18px; color: #BDBDBD; margin-bottom: 12px; display: block; }
+    .form-input { width: 100%; background-color: #1C1C1E; border: 1px solid #616161; color: #FFFFFF; font-size: 20px; padding: 16px; border-radius: 8px; }
+    .avatar-picker { display: grid; grid-template-columns: repeat(auto-fill, minmax(80px, 1fr)); gap: 20px; }
+    .avatar-option { width: 80px; height: 80px; border-radius: 50%; cursor: pointer; border: 4px solid transparent; transition: border-color 0.3s; display: flex; justify-content: center; align-items: center; font-size: 32px; font-weight: 700; }
+    .avatar-option.selected { border-color: #0D47A1; }
+
+    /* --- 结果详情页 --- */
+    .detail-value-container { text-align: center; margin-top: 24px; }
+    .detail-value { font-size: 64px; font-weight: 700; line-height: 1; }
+    .detail-unit { font-size: 20px; margin-left: 8px; }
+    .range-bar-container { margin-top: 24px; }
+    .range-bar { display: flex; height: 10px; border-radius: 5px; overflow: hidden; }
+    .range-segment { flex: 1; }
+    .range-labels { display: flex; justify-content: space-between; font-size: 14px; color: #BDBDBD; margin-top: 8px; }
+    .range-indicator { position: relative; height: 20px; }
+    .indicator-arrow {
+        position: absolute;
+        top: 0;
+        width: 0;
+        height: 0;
+        border-left: 8px solid transparent;
+        border-right: 8px solid transparent;
+        border-top: 12px solid #FFFFFF;
+        transform: translateX(-50%);
+    }
+    .chart-container { margin-top: 32px; height: 250px; }
+    .interpretation-box { margin-top: 32px; background-color: #1C1C1E; padding: 16px; border-radius: 12px; font-size: 16px; color: #BDBDBD; line-height: 1.6; }
+
+    /* --- 外部模拟控制器 --- */
+    .controls-bar {
+        width: 100%;
+        max-width: 1200px;
+        background-color: #1F2937;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 12px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        gap: 12px;
+    }
+    .control-btn {
+        color: white;
+        border: none;
+        padding: 12px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: bold;
+        cursor: pointer;
+        transition: all 0.2s;
+        flex: 1;
+        min-width: 120px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+    }
+    
+    /* 不同功能按钮的颜色 */
+    #btn-back {
+        background-color: #DC2626; /* 红色 - 返回操作 */
+    }
+    #btn-back:hover {
+        background-color: #EF4444;
+    }
+    
+    #btn-home {
+        background-color: #7C3AED; /* 紫色 - 主页操作 */
+    }
+    #btn-home:hover {
+        background-color: #8B5CF6;
+    }
+    
+    #weigh-in-hua {
+        background-color: #2563EB; /* 蓝色 - 华仔 */
+    }
+    #weigh-in-hua:hover {
+        background-color: #3B82F6;
+    }
+    
+    #weigh-in-yifei {
+        background-color: #DB2777; /* 粉色 - 刘亦菲 */
+    }
+    #weigh-in-yifei:hover {
+        background-color: #EC4899;
+    }
+    
+    #weigh-in-chiling {
+        background-color: #059669; /* 绿色 - 林志玲 */
+    }
+    #weigh-in-chiling:hover {
+        background-color: #10B981;
+    }
+    
+    #weigh-in-custom {
+        background-color: #EA580C; /* 橙色 - 自定义 */
+    }
+    #weigh-in-custom:hover {
+        background-color: #F97316;
+    }
+    
+    .control-group {
+        display: flex;
+        gap: 12px;
+        align-items: center;
+    }
+    #custom-weight-input {
+        width: 80px;
+        text-align: center;
+        border-radius: 6px;
+        border: none;
+        padding: 8px 6px;
+        background-color: #e2e8f0;
+        color: #1a202c;
+        font-size: 14px;
+    }
+
+    </style>
+</head>
+<body>
+
+    <!-- ======================================== -->
+    <!--      HTML CONTENT (index.html)         -->
+    <!-- ======================================== -->
+    <div class="screen-container">
+        <!-- Page 1: 开机动画页面 -->
+        <div id="page-boot" class="page active">
+            <div class="logo">HEALTH OS</div>
+        </div>
+
+        <!-- Page 2: 主界面页面 -->
+        <div id="page-home" class="page">
+            <div class="status-bar">
+                <span id="current-time">10:24</span>
+                <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 12.55a8 8 0 0 1 14.08 0"></path><path d="M1.42 9a16 16 0 0 1 21.16 0"></path><path d="M8.53 16.11a4 4 0 0 1 6.95 0"></path><line x1="12" x2="12.01" y1="20" y2="20"></line></svg>
+            </div>
+            <div class="home-content">
+                <div class="user-switcher">
+                    <div id="user-list" class="user-list"></div>
+                </div>
+                <div class="main-card">
+                    <p class="main-card-title">上次测量体重</p>
+                    <div>
+                        <span id="main-value" class="main-card-value">72.50</span>
+                        <span id="main-unit" class="main-card-unit">kg</span>
+                    </div>
+                    <div class="sub-data-grid">
+                        <div class="sub-data-item">
+                            <p id="sub-value-1" class="sub-data-value">21.3<span class="text-xl">%</span></p>
+                            <p class="sub-data-label">体脂率</p>
+                        </div>
+                        <div class="sub-data-item">
+                            <p id="sub-value-2" class="sub-data-value">54.2<span class="text-xl">kg</span></p>
+                            <p class="sub-data-label">肌肉量</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="bottom-nav">
+                <div class="nav-item active" data-target="page-home">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+                    <span>主页</span>
+                </div>
+                 <div class="nav-item" data-action="start-measurement">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"></path></svg>
+                    <span>开始测量</span>
+                </div>
+                <div class="nav-item" data-target="page-history">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"></path></svg>
+                    <span>历史数据</span>
+                </div>
+                <div class="nav-item" data-target="page-settings">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19-.15-.24.42-.12-.64l2 3.46c.12-.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg>
+                    <span>设置</span>
+                </div>
+            </div>
+        </div>
+        
+        <!-- 测量流程页面 -->
+        <div id="page-measure-guide" class="page">
+            <div class="page-header"><h1 class="page-title">测量准备</h1></div>
+            <div class="guide-animation"><div class="footprints"><div class="footprint left"></div><div class="footprint right"></div></div></div>
+            <p class="guide-text">请赤脚站上分析仪<br>或使用下方按钮模拟称重</p>
+        </div>
+        <div id="page-measuring" class="page">
+            <div class="progress-circle"><div class="progress-text">正在测量...</div><svg width="250" height="250" viewBox="0 0 250 250"><circle class="progress-bg" cx="125" cy="125" r="110"></circle><circle class="progress-bar" cx="125" cy="125" r="110"></circle></svg></div>
+            <p class="guide-text">请保持静止，勿随意移动</p>
+        </div>
+        <div id="page-results" class="page">
+            <div class="page-header"><h1 class="page-title">本次测量结果</h1></div>
+            <div class="result-header"><p class="result-score-value" id="result-score">92</p><p class="result-score-label">健康综合得分</p></div>
+            <div id="result-grid" class="result-grid"></div>
+            <button id="done-button" class="primary-button">完成</button>
+        </div>
+
+        <!-- 历史数据页 -->
+        <div id="page-history" class="page">
+            <div class="page-header"><h1 class="page-title">历史数据</h1></div>
+            <div id="history-list-container" class="history-list"></div>
+        </div>
+
+        <!-- 设置页 -->
+        <div id="page-settings" class="page">
+            <div class="page-header"><h1 class="page-title">设置</h1></div>
+            <div class="settings-list">
+                <div class="settings-group-title">通用</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">体重单位</span>
+                        <div class="setting-control-container segmented-control" id="unit-toggle">
+                            <button data-unit="kg" class="active">kg</button>
+                            <button data-unit="lb">lb</button>
+                        </div>
+                    </div>
+                </div>
+                <div class="settings-group-title">声音与显示</div>
+                <div class="settings-group">
+                    <div class="setting-item"><span class="setting-label">音量大小</span><div class="setting-control-container"><input type="range" min="0" max="100" value="80" class="slider" id="volume-slider"></div></div>
+                    <div class="setting-item"><span class="setting-label">屏幕亮度</span><div class="setting-control-container"><input type="range" min="10" max="100" value="70" class="slider" id="brightness-slider"></div></div>
+                </div>
+                <div class="settings-group-title">智能功能</div>
+                 <div class="settings-group">
+                    <div class="setting-item"><span class="setting-label">语音助手</span><div class="setting-control-container"><label class="toggle-switch"><input type="checkbox" id="voice-toggle" checked><span class="toggle-slider"></span></label></div></div>
+                </div>
+                 <div class="settings-group-title">系统</div>
+                 <div class="settings-group">
+                    <div class="setting-item"><span class="setting-label">固件版本</span><span class="setting-value">v1.3.0 (Proto)</span></div>
+                 </div>
+            </div>
+        </div>
+
+        <!-- 添加用户页 -->
+        <div id="page-add-user" class="page">
+            <div class="page-header"><h1 class="page-title">添加新用户</h1></div>
+            <div class="form-group">
+                <label for="nickname-input" class="form-label">昵称</label>
+                <input type="text" id="nickname-input" class="form-input" placeholder="请输入昵称" maxlength="10">
+            </div>
+            <div class="form-group">
+                <label class="form-label">选择头像和颜色</label>
+                <div id="avatar-picker" class="avatar-picker"></div>
+            </div>
+            <button id="save-user-button" class="primary-button" disabled>保存</button>
+        </div>
+
+        <!-- 结果详情页 -->
+        <div id="page-details" class="page">
+            <div class="page-header">
+                <div class="back-button" id="details-back-btn">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
+                </div>
+                <h1 id="detail-title" class="page-title">数据详情</h1>
+            </div>
+            <div id="detail-content">
+                <div class="detail-value-container">
+                    <span id="detail-value" class="detail-value"></span><span id="detail-unit" class="detail-unit"></span>
+                </div>
+                <div class="range-bar-container">
+                    <div class="range-indicator" id="range-indicator">
+                        <div class="indicator-arrow"></div>
+                    </div>
+                    <div class="range-bar" id="range-bar"></div>
+                    <div class="range-labels" id="range-labels"></div>
+                </div>
+                <div class="chart-container">
+                    <canvas id="history-chart"></canvas>
+                </div>
+                <div class="interpretation-box">
+                    <h3 class="font-bold mb-2">健康解读</h3>
+                    <p id="detail-interpretation"></p>
+                </div>
+            </div>
+        </div>
+
+        <!-- 关机页 -->
+        <div id="page-shutdown" class="page">
+            <div class="logo">GOODBYE</div>
+        </div>
+
+        <!-- Modal 弹窗 -->
+        <div id="confirm-modal" class="modal-overlay">
+            <div class="modal-box">
+                <h2 class="modal-title" id="modal-title">确认操作</h2>
+                <p class="modal-content" id="modal-content">确定要执行此操作吗？</p>
+                <div class="modal-actions">
+                    <button id="modal-cancel-btn" class="modal-button cancel">取消</button>
+                    <button id="modal-confirm-btn" class="modal-button confirm">确认</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="controls-bar">
+        <button id="btn-back" class="control-btn">返回</button>
+        <button id="btn-home" class="control-btn">主页</button>
+        <button id="weigh-in-hua" data-weight="75" class="control-btn">华仔(75kg)</button>
+        <button id="weigh-in-yifei" data-weight="50" class="control-btn">刘亦菲(50kg)</button>
+        <button id="weigh-in-chiling" data-weight="45" class="control-btn">林志玲(45kg)</button>
+        <div class="control-group">
+            <input type="number" id="custom-weight-input" placeholder="kg">
+            <button id="weigh-in-custom" class="control-btn">自定义</button>
+        </div>
+    </div>
+
+    <script>
+    /* ======================================== */
+    /* JAVASCRIPT LOGIC (script.js)       */
+    /* ======================================== */
+    document.addEventListener('DOMContentLoaded', () => {
+        // --- 状态管理和数据 ---
+        const KG_TO_LB_FACTOR = 2.20462;
+        const INACTIVITY_TIMEOUT = 30000; // 30秒
+        let historyChartInstance = null;
+        let inactivityTimer = null;
+
+        const state = {
+            currentPage: 'page-boot',
+            pageHistory: ['page-boot'],
+            activeUserId: 1,
+            nextUserId: 5,
+            longPressTimer: null,
+            modalConfirmCallback: null,
+            settings: {
+                weightUnit: 'kg', // 'kg' or 'lb'
+                volume: 80,
+                brightness: 70,
+                voiceAssistant: true,
+            },
+            availableAvatars: [
+                { avatar: '爸', color: '#004D40' }, { avatar: '妈', color: '#4A148C' },
+                { avatar: '哥', color: '#01579B' }, { avatar: '姐', color: '#880E4F' },
+                { avatar: '爷', color: '#3E2723' }, { avatar: '奶', color: '#F57F17' },
+                { avatar: 'A', color: '#1A237E' }, { avatar: 'B', color: '#BF360C' },
+            ],
+            users: [
+                { id: 1, name: '我', avatar: 'M', color: '#0D47A1', history: [
+                    { date: '2025-07-15', weight: 73.10, fat: 21.8, muscle: 54.0, bmi: 22.6, bmr: 1690, age: 29 },
+                    { date: '2025-07-17', weight: 72.80, fat: 21.5, muscle: 54.1, bmi: 22.5, bmr: 1685, age: 28 },
+                    { date: '2025-07-19', weight: 72.65, fat: 21.4, muscle: 54.1, bmi: 22.4, bmr: 1682, age: 28 },
+                    { date: '2025-07-21', weight: 72.50, fat: 21.3, muscle: 54.2, bmi: 22.4, bmr: 1680, age: 28 },
+                ]},
+                { id: 2, name: '妻子', avatar: 'W', color: '#B71C1C', history: [
+                    { date: '2025-07-18', weight: 55.40, fat: 24.7, muscle: 39.0, bmi: 21.6, bmr: 1350, age: 30 },
+                    { date: '2025-07-21', weight: 55.20, fat: 24.8, muscle: 38.9, bmi: 21.5, bmr: 1345, age: 30 },
+                ]},
+                { id: 3, name: '小明', avatar: 'XM', color: '#1B5E20', history: [] },
+                { id: 4, name: '访客', avatar: 'G', color: '#616161', history: [] },
+            ],
+            lastMeasurement: null,
+            metricsInfo: {
+                weight: { label: '体重', unit: 'kg', range: [60, 80], interpretation: '您的体重处于理想范围。请继续保持健康的饮食和规律的运动，以维持当前状态。' },
+                fat: { label: '体脂率', unit: '%', range: [15, 25], interpretation: '体脂率是衡量肥胖的重要指标。您当前的体脂率在健康范围内，这有助于降低心血管疾病风险。' },
+                muscle: { label: '肌肉量', unit: 'kg', range: [50, 60], interpretation: '肌肉是身体的“引擎”。较高的肌肉量能提升基础代谢，帮助消耗更多热量。您的肌肉量非常不错！' },
+                bmi: { label: 'BMI', unit: '', range: [18.5, 24], interpretation: 'BMI是国际通用的衡量人体胖瘦程度的标准。您的BMI指数正常，身材匀称。' },
+                bmr: { label: '基础代谢', unit: 'kcal', range: [1500, 1800], interpretation: '基础代谢率是维持生命所需最低热量。了解您的BMR有助于制定更科学的饮食计划。' },
+                age: { label: '身体年龄', unit: '岁', range: [20, 30], interpretation: '身体年龄反映了您身体的综合健康状况。恭喜，您的身体比实际年龄更年轻！' }
+            }
+        };
+
+        // --- DOM 元素 ---
+        const screenContainer = document.querySelector('.screen-container');
+        const timeEl = document.getElementById('current-time');
+        const userListEl = document.getElementById('user-list');
+        const mainValueEl = document.getElementById('main-value');
+        const mainUnitEl = document.getElementById('main-unit');
+        const subValue1El = document.getElementById('sub-value-1');
+        const subValue2El = document.getElementById('sub-value-2');
+        const navItems = document.querySelectorAll('.nav-item');
+        const doneButton = document.getElementById('done-button');
+        const historyListContainer = document.getElementById('history-list-container');
+        const unitToggle = document.getElementById('unit-toggle');
+        const addUserPage = { page: document.getElementById('page-add-user'), nicknameInput: document.getElementById('nickname-input'), avatarPicker: document.getElementById('avatar-picker'), saveButton: document.getElementById('save-user-button'), selectedAvatar: null };
+        const modal = { overlay: document.getElementById('confirm-modal'), title: document.getElementById('modal-title'), content: document.getElementById('modal-content'), confirmBtn: document.getElementById('modal-confirm-btn'), cancelBtn: document.getElementById('modal-cancel-btn') };
+        const detailsPage = { backBtn: document.getElementById('details-back-btn'), title: document.getElementById('detail-title'), value: document.getElementById('detail-value'), unit: document.getElementById('detail-unit'), rangeBar: document.getElementById('range-bar'), rangeLabels: document.getElementById('range-labels'), rangeIndicator: document.getElementById('range-indicator'), interpretation: document.getElementById('detail-interpretation') };
+        const resultGrid = document.getElementById('result-grid');
+        const weighInButtons = document.querySelectorAll('[id^="weigh-in-"]');
+        const customWeightInput = document.getElementById('custom-weight-input');
+
+        // --- 转换和工具函数 ---
+        function formatWeight(weightInKg, unit) {
+            if (unit === 'lb') {
+                const lbWeight = weightInKg * KG_TO_LB_FACTOR;
+                return { value: lbWeight.toFixed(1), unit: 'lb' };
+            }
+            const decimalPlaces = weightInKg < 100 ? 2 : 1;
+            return { value: weightInKg.toFixed(decimalPlaces), unit: 'kg' };
+        }
+
+        function showModal({ title, content, onConfirm }) {
+            modal.title.textContent = title;
+            modal.content.textContent = content;
+            state.modalConfirmCallback = onConfirm;
+            modal.overlay.classList.add('active');
+        }
+
+        function hideModal() {
+            state.modalConfirmCallback = null;
+            modal.overlay.classList.remove('active');
+        }
+
+        // --- 导航函数 ---
+        function navigateTo(pageId, record = true) {
+            if (state.currentPage === pageId) return;
+            const currentPageEl = document.getElementById(state.currentPage);
+            const nextPageEl = document.getElementById(pageId);
+            if (currentPageEl) currentPageEl.classList.remove('active');
+            if (nextPageEl) {
+                if(pageId === 'page-measuring') {
+                    const progressBar = nextPageEl.querySelector('.progress-bar');
+                    progressBar.style.animation = 'none';
+                    progressBar.offsetHeight;
+                    progressBar.style.animation = null; 
+                }
+                nextPageEl.classList.add('active');
+            }
+            state.currentPage = pageId;
+            if (record) {
+                if (state.pageHistory[state.pageHistory.length - 1] !== pageId) {
+                    state.pageHistory.push(pageId);
+                }
+            }
+            navItems.forEach(item => {
+                const target = item.dataset.target;
+                const action = item.dataset.action;
+                let isActive = (target === pageId);
+                if (action === 'start-measurement' && ['page-measure-guide', 'page-measuring', 'page-results'].includes(pageId)) {
+                    isActive = true;
+                }
+                item.classList.toggle('active', isActive);
+            });
+        }
+
+        function goBack() {
+            if (state.pageHistory.length > 1) {
+                state.pageHistory.pop();
+                const previousPageId = state.pageHistory[state.pageHistory.length - 1];
+                navigateTo(previousPageId, false);
+            }
+        }
+        
+        function goToHome() {
+            state.pageHistory = ['page-boot', 'page-home'];
+            navigateTo('page-home', false);
+        }
+
+        // --- UI 更新和逻辑处理 ---
+        function updateTime() {
+            const now = new Date();
+            const hours = String(now.getHours()).padStart(2, '0');
+            const minutes = String(now.getMinutes()).padStart(2, '0');
+            if (timeEl) timeEl.textContent = `${hours}:${minutes}`;
+        }
+
+        function renderUserList() {
+            userListEl.innerHTML = '';
+            const usersToRender = state.users.filter(u => u.id !== 4);
+            const guestUser = state.users.find(u => u.id === 4);
+
+            [...usersToRender, guestUser].forEach(user => {
+                if (!user) return;
+                const userEl = document.createElement('div');
+                userEl.className = 'user-avatar';
+                userEl.dataset.userId = user.id;
+                if (user.id === state.activeUserId) userEl.classList.add('active');
+                
+                userEl.innerHTML = `<div class="avatar-circle" style="background-color: ${user.color};">${user.avatar}</div><span class="user-name">${user.name}</span>`;
+                
+                userEl.addEventListener('click', () => {
+                    state.activeUserId = user.id;
+                    renderUserList();
+                    updateDashboard();
+                });
+
+                if (user.id !== 4) {
+                    userEl.addEventListener('mousedown', (e) => {
+                        e.preventDefault();
+                        state.longPressTimer = setTimeout(() => {
+                            showModal({
+                                title: '确认删除',
+                                content: `确定要删除用户 "${user.name}" 吗？所有相关历史数据都将被清除。`,
+                                onConfirm: () => confirmDeleteUser(user.id)
+                            });
+                        }, 1000);
+                    });
+                    userEl.addEventListener('mouseup', () => clearTimeout(state.longPressTimer));
+                    userEl.addEventListener('mouseleave', () => clearTimeout(state.longPressTimer));
+                }
+                userListEl.appendChild(userEl);
+            });
+
+            const addUserEl = document.createElement('div');
+            addUserEl.className = 'user-avatar add-user-btn';
+            addUserEl.innerHTML = `<div class="avatar-circle">+</div><span class="user-name">添加</span>`;
+            addUserEl.addEventListener('click', () => {
+                prepareAddUserPage();
+                navigateTo('page-add-user');
+            });
+            userListEl.appendChild(addUserEl);
+        }
+
+        function updateDashboard() {
+            const activeUser = state.users.find(u => u.id === state.activeUserId);
+            if (!activeUser) {
+                state.activeUserId = state.users[0]?.id || 4;
+                renderUserList();
+                updateDashboard();
+                return;
+            }
+            
+            const lastHistory = activeUser.history[activeUser.history.length - 1] || { weight: 0, fat: 0, muscle: 0 };
+            const { weight, fat, muscle } = lastHistory;
+            const formattedWeight = formatWeight(weight, state.settings.weightUnit);
+            const formattedMuscle = formatWeight(muscle, state.settings.weightUnit);
+
+            mainValueEl.textContent = formattedWeight.value;
+            mainUnitEl.textContent = formattedWeight.unit;
+            subValue1El.innerHTML = `${fat.toFixed(1)}<span class="text-xl">%</span>`;
+            subValue2El.innerHTML = `${formattedMuscle.value}<span class="text-xl">${formattedMuscle.unit}</span>`;
+        }
+        
+        function startMeasurementGuide() { navigateTo('page-measure-guide'); }
+
+        function runMeasurement(baseWeight) {
+            if (typeof baseWeight !== 'number' || baseWeight <= 0) return;
+            
+            navigateTo('page-measuring');
+            setTimeout(() => {
+                simulateMeasurementData(baseWeight);
+                displayResults();
+                navigateTo('page-results');
+            }, 6000);
+        }
+
+        function simulateMeasurementData(baseWeight) {
+            const newWeight = parseFloat((baseWeight - 0.2 + Math.random() * 0.4).toFixed(2));
+            // Simulate other metrics based on the new weight
+            const fatRatio = 0.2 + (Math.random() - 0.5) * 0.1; // fat percentage around 15-25%
+            const muscleRatio = 0.4 + (Math.random() - 0.5) * 0.1; // muscle percentage around 35-45% of lean mass
+            
+            state.lastMeasurement = {
+                date: new Date().toISOString().split('T')[0],
+                time: new Date().toTimeString().substring(0,5),
+                score: Math.floor(85 + Math.random() * 10),
+                weight: newWeight,
+                fat: parseFloat((fatRatio * 100).toFixed(1)),
+                muscle: parseFloat((newWeight * (1 - fatRatio) * muscleRatio * 2).toFixed(1)), // Simplified calculation
+                bmi: parseFloat((newWeight / (1.75 * 1.75)).toFixed(1)), // Assume avg height 1.75m
+                bmr: Math.floor(1400 + newWeight * 5),
+                age: Math.floor(25 + newWeight / 5)
+            };
+        }
+
+        function displayResults() {
+            const data = state.lastMeasurement;
+            if (!data) return;
+            document.getElementById('result-score').textContent = data.score;
+            resultGrid.innerHTML = '';
+            
+            Object.keys(state.metricsInfo).forEach(key => {
+                const metric = state.metricsInfo[key];
+                const value = data[key];
+                let displayValue, displayUnit;
+
+                if (metric.unit === 'kg') {
+                    const formatted = formatWeight(value, state.settings.weightUnit);
+                    displayValue = formatted.value;
+                    displayUnit = formatted.unit;
+                } else {
+                    displayValue = value.toFixed(key === 'bmi' || key === 'fat' ? 1 : 0);
+                    displayUnit = metric.unit;
+                }
+
+                const itemEl = document.createElement('div');
+                itemEl.className = 'result-item';
+                itemEl.dataset.metricKey = key;
+                itemEl.innerHTML = `<p class="result-item-value">${displayValue} <span class="text-base">${displayUnit}</span></p><p class="result-item-label">${metric.label}</p>`;
+                itemEl.addEventListener('click', () => navigateToDetails(key));
+                resultGrid.appendChild(itemEl);
+            });
+        }
+
+        function finishMeasurement() {
+            if (state.lastMeasurement) {
+                const userIndex = state.users.findIndex(u => u.id === state.activeUserId);
+                if (userIndex !== -1 && state.activeUserId !== 4) {
+                    state.users[userIndex].history.push(state.lastMeasurement);
+                }
+            }
+            goToHome();
+            updateDashboard();
+        }
+
+        function renderHistory() {
+            const activeUser = state.users.find(u => u.id === state.activeUserId);
+            historyListContainer.innerHTML = '';
+            if (!activeUser || activeUser.history.length === 0) {
+                historyListContainer.innerHTML = `<div class="no-history">暂无历史记录</div>`;
+                return;
+            }
+
+            [...activeUser.history].reverse().forEach(record => {
+                const formattedWeight = formatWeight(record.weight, state.settings.weightUnit);
+                const itemEl = document.createElement('div');
+                itemEl.className = 'history-item';
+                itemEl.innerHTML = `<div><div class="history-date">${record.date}</div><div class="history-time">${record.time}</div></div><div><div class="history-value">${formattedWeight.value}<span class="history-unit">${formattedWeight.unit}</span></div><div class="history-value text-lg text-gray-400">${record.fat.toFixed(1)}<span class="history-unit">%</span></div></div>`;
+                historyListContainer.appendChild(itemEl);
+            });
+        }
+
+        function handleSettingsChange() {
+            updateDashboard();
+            renderHistory();
+            const { weightUnit, volume, brightness, voiceAssistant } = state.settings;
+            unitToggle.querySelector(`[data-unit="kg"]`).classList.toggle('active', weightUnit === 'kg');
+            unitToggle.querySelector(`[data-unit="lb"]`).classList.toggle('active', weightUnit === 'lb');
+            document.getElementById('volume-slider').value = volume;
+            document.getElementById('brightness-slider').value = brightness;
+            document.getElementById('voice-toggle').checked = voiceAssistant;
+        }
+
+        // --- User Management Functions ---
+        function prepareAddUserPage() {
+            addUserPage.nicknameInput.value = '';
+            addUserPage.selectedAvatar = null;
+            addUserPage.saveButton.disabled = true;
+            addUserPage.avatarPicker.innerHTML = '';
+            state.availableAvatars.forEach(avatarInfo => {
+                const optionEl = document.createElement('div');
+                optionEl.className = 'avatar-option';
+                optionEl.textContent = avatarInfo.avatar;
+                optionEl.style.backgroundColor = avatarInfo.color;
+                optionEl.addEventListener('click', () => {
+                    addUserPage.selectedAvatar = avatarInfo;
+                    document.querySelectorAll('.avatar-option').forEach(el => el.classList.remove('selected'));
+                    optionEl.classList.add('selected');
+                    validateAddUserForm();
+                });
+                addUserPage.avatarPicker.appendChild(optionEl);
+            });
+        }
+
+        function validateAddUserForm() {
+            const isNameValid = addUserPage.nicknameInput.value.trim().length > 0;
+            const isAvatarValid = !!addUserPage.selectedAvatar;
+            addUserPage.saveButton.disabled = !(isNameValid && isAvatarValid);
+        }
+
+        function saveNewUser() {
+            const newUser = { id: state.nextUserId++, name: addUserPage.nicknameInput.value.trim(), avatar: addUserPage.selectedAvatar.avatar, color: addUserPage.selectedAvatar.color, history: [] };
+            state.users.splice(state.users.length - 1, 0, newUser);
+            state.activeUserId = newUser.id;
+            renderUserList();
+            updateDashboard();
+            goBack();
+        }
+
+        function confirmDeleteUser(userId) {
+            state.users = state.users.filter(u => u.id !== userId);
+            if (state.activeUserId === userId) {
+                state.activeUserId = state.users[0]?.id || 4;
+            }
+            hideModal();
+            renderUserList();
+            updateDashboard();
+        }
+
+        // --- Details Page Functions ---
+        function navigateToDetails(metricKey) {
+            const metricInfo = state.metricsInfo[metricKey];
+            const activeUser = state.users.find(u => u.id === state.activeUserId);
+            const lastRecord = activeUser.history[activeUser.history.length - 1];
+
+            if (!metricInfo || !lastRecord) return;
+
+            detailsPage.title.textContent = metricInfo.label;
+            
+            const currentValue = lastRecord[metricKey];
+            let displayValue, displayUnit;
+            if (metricInfo.unit === 'kg') {
+                const formatted = formatWeight(currentValue, state.settings.weightUnit);
+                displayValue = formatted.value;
+                displayUnit = formatted.unit;
+            } else {
+                displayValue = currentValue.toFixed(metricKey === 'bmi' || metricKey === 'fat' ? 1 : 0);
+                displayUnit = metricInfo.unit;
+            }
+            detailsPage.value.textContent = displayValue;
+            detailsPage.unit.textContent = displayUnit;
+
+            const [min, max] = metricInfo.range;
+            const percent = Math.max(0, Math.min(100, (currentValue - min) / (max - min) * 100));
+            detailsPage.rangeIndicator.style.left = `${percent}%`;
+            detailsPage.rangeBar.innerHTML = `<div class="range-segment bg-yellow-500"></div><div class="range-segment bg-green-500"></div><div class="range-segment bg-yellow-500"></div>`;
+            detailsPage.rangeLabels.innerHTML = `<span>${min}</span><span>${(min+max)/2}</span><span>${max}</span>`;
+            
+            detailsPage.interpretation.textContent = metricInfo.interpretation;
+
+            const chartData = activeUser.history.slice(-10).map(rec => rec[metricKey]);
+            const chartLabels = activeUser.history.slice(-10).map(rec => rec.date.substring(5));
+            renderHistoryChart(chartLabels, chartData, metricInfo.label);
+
+            navigateTo('page-details');
+        }
+
+        function renderHistoryChart(labels, data, label) {
+            const ctx = document.getElementById('history-chart').getContext('2d');
+            if (historyChartInstance) {
+                historyChartInstance.destroy();
+            }
+            historyChartInstance = new Chart(ctx, {
+                type: 'line',
+                data: { labels: labels, datasets: [{ label: label, data: data, borderColor: '#0D47A1', backgroundColor: 'rgba(13, 71, 161, 0.2)', fill: true, tension: 0.3, pointBackgroundColor: '#FFFFFF', pointBorderColor: '#0D47A1', pointRadius: 4, pointHoverRadius: 6 }] },
+                options: { responsive: true, maintainAspectRatio: false, plugins: { legend: { display: false } }, scales: { y: { ticks: { color: '#BDBDBD' }, grid: { color: '#424242' } }, x: { ticks: { color: '#BDBDBD' }, grid: { color: 'transparent' } } } }
+            });
+        }
+        
+        // --- System Functions ---
+        function autoShutdown() {
+            if (state.currentPage === 'page-boot' || state.currentPage === 'page-shutdown') return;
+            console.log("Inactivity detected, shutting down.");
+            navigateTo('page-shutdown', false);
+            setTimeout(() => {
+                screenContainer.style.backgroundColor = '#111'; // Fade to black
+                // To restart, we can just reload the page for this prototype
+                setTimeout(() => window.location.reload(), 1500);
+            }, 2500);
+        }
+
+        function resetInactivityTimer() {
+            clearTimeout(inactivityTimer);
+            if (state.currentPage !== 'page-boot' && state.currentPage !== 'page-shutdown') {
+                inactivityTimer = setTimeout(autoShutdown, INACTIVITY_TIMEOUT);
+            }
+        }
+
+        // --- 初始化和事件绑定 ---
+        function init() {
+            setTimeout(() => { 
+                navigateTo('page-home'); 
+                resetInactivityTimer();
+            }, 3000);
+            updateTime();
+            setInterval(updateTime, 30000);
+            renderUserList();
+            updateDashboard();
+
+            // Event listeners that reset the inactivity timer
+            ['click', 'mousedown', 'mousemove', 'keydown'].forEach(evt => {
+                document.addEventListener(evt, resetInactivityTimer);
+            });
+
+            navItems.forEach(item => {
+                item.addEventListener('click', () => {
+                    const targetPage = item.dataset.target;
+                    const action = item.dataset.action;
+                    if (targetPage) {
+                        navigateTo(targetPage);
+                        if (targetPage === 'page-history') renderHistory();
+                        if (targetPage === 'page-settings') handleSettingsChange();
+                    }
+                    if (action === 'start-measurement') startMeasurementGuide();
+                });
+            });
+            
+            doneButton.addEventListener('click', finishMeasurement);
+            detailsPage.backBtn.addEventListener('click', goBack);
+            
+            document.getElementById('btn-back').addEventListener('click', goBack);
+            document.getElementById('btn-home').addEventListener('click', goToHome);
+
+            unitToggle.addEventListener('click', (e) => { if (e.target.tagName === 'BUTTON') { state.settings.weightUnit = e.target.dataset.unit; handleSettingsChange(); } });
+            document.getElementById('volume-slider').addEventListener('input', (e) => state.settings.volume = e.target.value);
+            document.getElementById('brightness-slider').addEventListener('input', (e) => state.settings.brightness = e.target.value);
+            document.getElementById('voice-toggle').addEventListener('change', (e) => state.settings.voiceAssistant = e.target.checked);
+
+            addUserPage.nicknameInput.addEventListener('input', validateAddUserForm);
+            addUserPage.saveButton.addEventListener('click', saveNewUser);
+
+            modal.cancelBtn.addEventListener('click', hideModal);
+            modal.confirmBtn.addEventListener('click', () => {
+                if (typeof state.modalConfirmCallback === 'function') {
+                    state.modalConfirmCallback();
+                }
+            });
+
+            // Weigh-in simulation buttons
+            weighInButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    let weight;
+                    if (button.id === 'weigh-in-custom') {
+                        weight = parseFloat(customWeightInput.value);
+                    } else {
+                        weight = parseFloat(button.dataset.weight);
+                    }
+                    if (!isNaN(weight) && weight > 0) {
+                        runMeasurement(weight);
+                    } else {
+                        alert('请输入有效的体重值！');
+                    }
+                });
+            });
+        }
+
+        init();
+    });
+    </script>
+</body>
+</html>

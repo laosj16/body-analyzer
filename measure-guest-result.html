@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 测量结果</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/gestures.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 手势边缘区域 -->
+        <div class="gesture-edge top" data-gesture="top"></div>
+        <div class="gesture-edge bottom" data-gesture="bottom"></div>
+        <div class="gesture-edge left" data-gesture="left"></div>
+        <div class="gesture-edge right" data-gesture="right"></div>
+        
+        <!-- 滑动指示器 -->
+        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
+        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
+        
+        <!-- 访客测量结果页面 -->
+        <div id="page-guest-result" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">测量完成</h1>
+                <div class="current-user-info" id="current-user-info">
+                    <span>访客模式</span>
+                </div>
+            </div>
+
+            <!-- 体重显示区域 -->
+            <div class="guest-weight-display">
+                <div class="guest-weight-value" id="guest-weight">65.2kg</div>
+                <div class="guest-weight-label">体重</div>
+            </div>
+
+            <!-- 提示信息 -->
+            <div class="guest-info">
+                <div class="guest-info-title">访客模式说明</div>
+                <div class="guest-info-content">
+                    <p>• 访客模式仅显示体重信息</p>
+                    <p>• 如需查看完整身体数据，请创建用户账户</p>
+                    <p>• 访客模式下的测量结果不会被保存</p>
+                </div>
+            </div>
+
+            <!-- 创建账户按钮 -->
+            <div class="guest-action">
+                <button class="create-account-btn" onclick="createAccount()">
+                    <span>创建用户账户</span>
+                    <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M12 2C13.1 2 14 2.9 14 4C14 5.1 13.1 6 12 6C10.9 6 10 5.1 10 4C10 2.9 10.9 2 12 2ZM21 9V7L12 2L3 7V9H21ZM3 11V21H6V19H8V21H11V11H3ZM13 11V21H16V19H18V21H21V11H13Z"/>
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area" id="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn measure" onclick="remeasure()">重新测量</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+        
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+        function remeasure() {
+            window.location.href = 'measure-guide.html';
+        }
+        
+        function createAccount() {
+            // 跳转到添加用户页面
+            window.location.href = 'main.html#add-user';
+        }
+
+        // 页面加载时显示访客体重
+        window.onload = function() {
+            const measurementData = localStorage.getItem('currentMeasurement');
+            if (measurementData) {
+                const data = JSON.parse(measurementData);
+                // 添加小幅随机变化
+                const weight = parseFloat(data.weight) + (Math.random() - 0.5) * 0.4;
+                document.getElementById('guest-weight').textContent = weight.toFixed(1) + 'kg';
+            } else {
+                // 生成随机体重
+                const randomWeight = (Math.random() * 40 + 45).toFixed(1);
+                document.getElementById('guest-weight').textContent = randomWeight + 'kg';
+            }
+        };
+    </script>
+    <script src="js/gestures.js"></script>
+</body>
+</html>

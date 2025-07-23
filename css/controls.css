@@ -1,0 +1,317 @@
+/* ======================================== */
+/* 控制按钮样式 */
+/* ======================================== */
+
+/* --- 底部控制区域 --- */
+.control-area { 
+    position: fixed;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    padding: 20px; 
+    background-color: #2C2C2E; 
+    border-radius: 20px 20px 0 0; 
+    display: flex; 
+    justify-content: center;
+    align-items: center; 
+    gap: 12px; 
+    flex-shrink: 0; 
+    z-index: 1000;
+}
+
+.control-area .control-btn-container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 12px;
+    width: 100%;
+    max-width: 600px; /* 限制最大宽度 */
+    text-align: center;
+}
+
+/* 响应式设计 */
+@media (max-width: 768px) {
+    .control-area .control-btn-container {
+        gap: 8px;
+        padding: 0 10px;
+    }
+    
+    .control-btn {
+        min-width: 60px;
+        height: 40px;
+        font-size: 12px;
+        max-width: 100px;
+    }
+}
+
+.control-btn { 
+    min-width: 70px; 
+    height: 48px; 
+    border-radius: 12px; 
+    font-size: 16px; 
+    font-weight: 600; 
+    border: none; 
+    cursor: pointer; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center; 
+    text-align: center;
+    transition: all 0.2s; 
+    color: #FFFFFF; 
+    flex: 1; 
+    max-width: 120px; /* 限制按钮最大宽度 */
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 用户特定颜色按钮 */
+.control-btn.user-华仔 { 
+    background-color: #2563EB; /* 蓝色 - 华仔 */
+}
+
+.control-btn.user-华仔:hover { 
+    background-color: #1D4ED8; 
+}
+
+.control-btn.user-亦菲 { 
+    background-color: #DB2777; /* 粉色 - 亦菲 */
+}
+
+.control-btn.user-亦菲:hover { 
+    background-color: #BE185D; 
+}
+
+.control-btn.user-志玲 { 
+    background-color: #059669; /* 绿色 - 志玲 */
+}
+
+.control-btn.user-志玲:hover { 
+    background-color: #047857; 
+}
+
+/* 功能按钮 */
+.control-btn.measure { 
+    background-color: #0D47A1; 
+}
+
+.control-btn.measure:hover { 
+    background-color: #1565C0; 
+}
+
+.control-btn.back { 
+    background-color: #424242; 
+}
+
+.control-btn.back:hover { 
+    background-color: #616161; 
+}
+
+.control-btn.nav { 
+    background-color: #7C3AED; 
+    color: #FFFFFF;
+}
+
+.control-btn.nav:hover { 
+    background-color: #6D28D9; 
+}
+
+.control-btn.cancel { 
+    background-color: #D32F2F; 
+}
+
+.control-btn.cancel:hover { 
+    background-color: #C62828; 
+}
+
+.control-btn.save { 
+    background-color: #388E3C; 
+}
+
+.control-btn.save:hover { 
+    background-color: #2E7D32; 
+}
+
+.control-btn.delete { 
+    background-color: #D32F2F; 
+}
+
+.control-btn.delete:hover { 
+    background-color: #C62828; 
+}
+
+.control-btn.settings { 
+    background-color: #757575; 
+}
+
+.control-btn.settings:hover { 
+    background-color: #616161; 
+}
+
+/* 按钮禁用状态 */
+.control-btn:disabled { 
+    opacity: 0.5; 
+    cursor: not-allowed; 
+}
+
+.control-btn:disabled:hover { 
+    background-color: inherit; 
+}
+
+/* 按钮动画效果 */
+.control-btn:active { 
+    transform: scale(0.95); 
+}
+
+/* 紧急按钮 */
+.emergency-btn { 
+    background-color: #B71C1C !important; 
+    animation: emergency-pulse 1.5s infinite; 
+}
+
+@keyframes emergency-pulse { 
+    0%, 100% { 
+        background-color: #B71C1C; 
+        box-shadow: 0 0 0 0 rgba(183, 28, 28, 0.7); 
+    } 
+    50% { 
+        background-color: #D32F2F; 
+        box-shadow: 0 0 0 8px rgba(183, 28, 28, 0); 
+    } 
+}
+
+/* 单个控制按钮 (用于开机/关机等场景) */
+.single-control { 
+    position: absolute; 
+    bottom: 40px; 
+    left: 50%; 
+    transform: translateX(-50%); 
+    width: 200px; 
+    height: 56px; 
+    border-radius: 28px; 
+    background-color: #0D47A1; 
+    color: #FFFFFF; 
+    border: none; 
+    font-size: 18px; 
+    font-weight: 600; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+}
+
+.single-control:hover { 
+    background-color: #1565C0; 
+    transform: translateX(-50%) scale(1.05); 
+}
+
+.single-control:active { 
+    transform: translateX(-50%) scale(0.95); 
+}
+
+/* 页面切换控制 */
+.page-controls { 
+    display: flex; 
+    gap: 12px; 
+    margin-top: 24px; 
+}
+
+.page-control-btn { 
+    flex: 1; 
+    height: 48px; 
+    border-radius: 12px; 
+    font-size: 16px; 
+    font-weight: 600; 
+    border: 2px solid #424242; 
+    background-color: transparent; 
+    color: #BDBDBD; 
+    cursor: pointer; 
+    transition: all 0.2s; 
+}
+
+.page-control-btn:hover { 
+    border-color: #0D47A1; 
+    color: #0D47A1; 
+}
+
+.page-control-btn.active { 
+    border-color: #0D47A1; 
+    background-color: #0D47A1; 
+    color: #FFFFFF; 
+}
+
+/* 开关控制 */
+.switch { 
+    position: relative; 
+    width: 60px; 
+    height: 32px; 
+    border-radius: 16px; 
+    background-color: #424242; 
+    cursor: pointer; 
+    transition: background-color 0.2s; 
+}
+
+.switch.active { 
+    background-color: #0D47A1; 
+}
+
+.switch-handle { 
+    position: absolute; 
+    top: 4px; 
+    left: 4px; 
+    width: 24px; 
+    height: 24px; 
+    border-radius: 12px; 
+    background-color: #FFFFFF; 
+    transition: transform 0.2s; 
+}
+
+.switch.active .switch-handle { 
+    transform: translateX(28px); 
+}
+
+/* 外部模拟控制器样式 */
+.controls-bar {
+    width: 100%;
+    max-width: 1200px;
+    background-color: #1F2937;
+    padding: 20px;
+    margin-top: 20px;
+    border-radius: 12px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 12px;
+}
+
+.control-btn {
+    color: white;
+    border: none;
+    padding: 12px 20px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.2s;
+    flex: 1;
+    min-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* 外部控制按钮颜色 (用于原版1.html的外部控制栏) */
+.controls-bar .control-btn:nth-child(1) { background-color: #DC2626; } /* 返回 */
+.controls-bar .control-btn:nth-child(1):hover { background-color: #EF4444; }
+
+.controls-bar .control-btn:nth-child(2) { background-color: #7C3AED; } /* 主页 */
+.controls-bar .control-btn:nth-child(2):hover { background-color: #8B5CF6; }
+
+.controls-bar .control-btn:nth-child(3) { background-color: #2563EB; } /* 华仔 */
+.controls-bar .control-btn:nth-child(3):hover { background-color: #3B82F6; }
+
+.controls-bar .control-btn:nth-child(4) { background-color: #DB2777; } /* 小美 */
+.controls-bar .control-btn:nth-child(4):hover { background-color: #EC4899; }
+
+.controls-bar .control-btn:nth-child(5) { background-color: #059669; } /* 老爸 */
+.controls-bar .control-btn:nth-child(5):hover { background-color: #10B981; }
+
+.controls-bar .control-btn:nth-child(6) { background-color: #EA580C; } /* 老妈 */
+.controls-bar .control-btn:nth-child(6):hover { background-color: #F97316; }

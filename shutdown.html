@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 关机</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container">
+        <div id="page-shutdown" class="page active">
+            <div class="logo">正在关机...</div>
+        </div>
+    </div>
+
+    <script>
+        // 3秒后跳转到开机页面（模拟关机完成）
+        setTimeout(() => {
+            window.location.href = 'boot.html';
+        }, 3000);
+    </script>
+</body>
+</html>

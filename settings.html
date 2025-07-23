@@ -1,0 +1,199 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 设置</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container">
+        <div id="page-settings" class="page active">
+            <!-- 页面头部 -->
+            <div class="page-header">
+                <div class="back-button" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <h1 class="page-title">设置</h1>
+            </div>
+
+            <!-- 设置列表 -->
+            <div class="settings-list">
+                <!-- 通用设置 -->
+                <div class="settings-group-title">通用</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">体重单位</span>
+                        <div class="setting-control-container">
+                            <div class="page-controls" id="unit-toggle">
+                                <button class="page-control-btn active" data-unit="kg">kg</button>
+                                <button class="page-control-btn" data-unit="lb">lb</button>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">身高设置</span>
+                        <div class="setting-control-container">
+                            <div class="value-control">
+                                <button class="value-btn" onclick="adjustHeight(-1)">-</button>
+                                <div class="value-display" id="height-display">175cm</div>
+                                <button class="value-btn" onclick="adjustHeight(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 声音与显示 -->
+                <div class="settings-group-title">声音与显示</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">音量大小</span>
+                        <div class="setting-control-container">
+                            <input type="range" min="0" max="100" value="80" class="slider" id="volume-slider">
+                            <span class="setting-value" id="volume-value">80%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">屏幕亮度</span>
+                        <div class="setting-control-container">
+                            <input type="range" min="10" max="100" value="70" class="slider" id="brightness-slider">
+                            <span class="setting-value" id="brightness-value">70%</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">自动关机</span>
+                        <div class="setting-control-container">
+                            <div class="value-control">
+                                <button class="value-btn" onclick="adjustShutdown(-1)">-</button>
+                                <div class="value-display" id="shutdown-display">5分钟</div>
+                                <button class="value-btn" onclick="adjustShutdown(1)">+</button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 智能功能 -->
+                <div class="settings-group-title">智能功能</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">语音助手</span>
+                        <div class="setting-control-container">
+                            <div class="switch" id="voice-switch">
+                                <div class="switch-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">自动识别用户</span>
+                        <div class="setting-control-container">
+                            <div class="switch active" id="auto-user-switch">
+                                <div class="switch-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">健康提醒</span>
+                        <div class="setting-control-container">
+                            <div class="switch active" id="health-reminder-switch">
+                                <div class="switch-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 数据管理 -->
+                <div class="settings-group-title">数据管理</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">数据同步</span>
+                        <div class="setting-control-container">
+                            <div class="switch" id="sync-switch">
+                                <div class="switch-handle"></div>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">导出数据</span>
+                        <div class="setting-control-container">
+                            <span class="setting-value">CSV格式</span>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">清空所有数据</span>
+                        <div class="setting-control-container">
+                            <button class="control-btn delete" onclick="clearAllData()">清空</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 系统信息 -->
+                <div class="settings-group-title">系统</div>
+                <div class="settings-group">
+                    <div class="setting-item">
+                        <span class="setting-label">固件版本</span>
+                        <span class="setting-value">v1.3.0 (Proto)</span>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">设备ID</span>
+                        <span class="setting-value">CF663-001</span>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">检查更新</span>
+                        <div class="setting-control-container">
+                            <button class="control-btn settings" onclick="checkUpdate()">检查</button>
+                        </div>
+                    </div>
+                    <div class="setting-item">
+                        <span class="setting-label">恢复出厂设置</span>
+                        <div class="setting-control-container">
+                            <button class="control-btn delete" onclick="factoryReset()">恢复</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部导航 -->
+            <div class="bottom-nav">
+                <div class="nav-item" onclick="navigateToPage('home')">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M10 20v-6h4v6h5v-8h3L12 3 2 12h3v8z"></path></svg>
+                    <span>主页</span>
+                </div>
+                <div class="nav-item" onclick="navigateToPage('measure')">
+                    <svg class="nav-icon" xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 24 24"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"></path></svg>
+                    <span>开始测量</span>
+                </div>
+                <div class="nav-item" onclick="navigateToPage('history')">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M13 3a9 9 0 0 0-9 9H1l3.89 3.89.07.14L9 12H6c0-3.87 3.13-7 7-7s7 3.13 7 7-3.13 7-7 7c-1.93 0-3.68-.79-4.94-2.06l-1.42 1.42A8.954 8.954 0 0 0 13 21a9 9 0 0 0 9-9c0-4.97-4.03-9-9-9zm-1 5v5l4.25 2.52.77-1.28-3.52-2.09V8z"></path></svg>
+                    <span>历史数据</span>
+                </div>
+                <div class="nav-item active">
+                    <svg class="nav-icon" viewBox="0 0 24 24" fill="currentColor"><path d="M19.43 12.98c.04-.32.07-.64.07-.98s-.03-.66-.07-.98l2.11-1.65c.19-.15.24-.42.12-.64l-2-3.46c-.12-.22-.39-.3-.61-.22l-2.49 1c-.52-.4-1.08-.73-1.69-.98l-.38-2.65C14.46 2.18 14.25 2 14 2h-4c-.25 0-.46.18-.49.42l-.38 2.65c-.61.25-1.17.59-1.69-.98l-2.49-1c-.23-.09-.49 0-.61.22l-2 3.46c-.13.22-.07.49.12.64l2.11 1.65c-.04.32-.07.65-.07.98s.03.66.07.98l-2.11 1.65c-.19-.15-.24.42-.12-.64l2 3.46c.12-.22.39.3.61.22l2.49-1c.52.4 1.08.73 1.69.98l.38 2.65c.03.24.24.42.49.42h4c.25 0 .46-.18.49-.42l.38-2.65c.61-.25 1.17-.59 1.69-.98l2.49 1c.23.09.49 0 .61-.22l2-3.46c.12-.22.07-.49-.12-.64l-2.11-1.65zM12 15.5c-1.93 0-3.5-1.57-3.5-3.5s1.57-3.5 3.5-3.5 3.5 1.57 3.5 3.5-1.57 3.5-3.5 3.5z"></path></svg>
+                    <span>设置</span>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn save" onclick="saveSettings()">保存设置</button>
+            <button class="control-btn settings" onclick="exportSettings()">导出设置</button>
+            <button class="control-btn delete" onclick="resetSettings()">重置设置</button>
+        </div>
+    </div>
+
+    <script src="js/settings.js"></script>
+</body>
+</html>

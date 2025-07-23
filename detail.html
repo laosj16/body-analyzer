@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html                <div class="back-button" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 详细结果</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container">
+        <div id="page-detail" class="page active">
+            <!-- 页面头部 -->
+            <div class="page-header">
+                <div class="back-button" onclick="goBack()">
+                    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+                        <polyline points="15 18 9 12 15 6"></polyline>
+                    </svg>
+                </div>
+                <h1 class="page-title" id="detail-title">详细结果</h1>
+            </div>
+
+            <!-- 详细数值显示 -->
+            <div class="detail-value-container">
+                <span id="detail-value" class="detail-value">65.2</span>
+                <span id="detail-unit" class="detail-unit">kg</span>
+            </div>
+
+            <!-- 范围指示器 -->
+            <div class="range-bar-container">
+                <div class="range-indicator" id="range-indicator">
+                    <div class="indicator-arrow"></div>
+                </div>
+                <div class="range-bar" id="range-bar">
+                    <div class="range-segment" style="background-color: #FFA726;"></div>
+                    <div class="range-segment" style="background-color: #4CAF50;"></div>
+                    <div class="range-segment" style="background-color: #FFA726;"></div>
+                </div>
+                <div class="range-labels" id="range-labels">
+                    <span>偏低</span>
+                    <span>正常</span>
+                    <span>偏高</span>
+                </div>
+            </div>
+
+            <!-- 历史趋势图表 -->
+            <div class="chart-container">
+                <canvas id="history-chart"></canvas>
+            </div>
+
+            <!-- 健康解读 -->
+            <div class="interpretation-box">
+                <h3 style="font-weight: bold; margin-bottom: 8px;">健康解读</h3>
+                <p id="detail-interpretation">
+                    您的体重处于理想范围。请继续保持健康的饮食和规律的运动，以维持当前状态。
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn save" onclick="saveToHistory()">保存记录</button>
+            <button class="control-btn settings" onclick="shareResult()">分享结果</button>
+        </div>
+    </div>
+
+    <script src="js/detail.js"></script>
+</body>
+</html>

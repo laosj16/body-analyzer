@@ -1,0 +1,86 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>体成分分析仪 - 测量准备</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/gestures.css">
+</head>
+<body class="bg-gray-900 text-white font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 手势边缘区域 -->
+        <div class="gesture-edge top" data-gesture="top"></div>
+        <div class="gesture-edge bottom" data-gesture="bottom"></div>
+        <div class="gesture-edge left" data-gesture="left"></div>
+        <div class="gesture-edge right" data-gesture="right"></div>
+        
+        <!-- 滑动指示器 -->
+        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
+        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
+        
+        <!-- 测量引导页 -->
+        <div id="page-measure-guide" class="page active">
+            <div class="page-header">
+                <h1 class="page-title">测量准备</h1>
+                <div class="current-user-info" id="current-user-info">
+                    <span>当前用户: </span><span id="current-user-name">--</span>
+                </div>
+            </div>
+            
+            <div class="guide-animation">
+                <div class="footprints">
+                    <div class="footprint left"></div>
+                    <div class="footprint right"></div>
+                </div>
+            </div>
+            
+            <div class="guide-text">
+                <div class="guide-instruction">请双脚站在秤上</div>
+                <div class="guide-instruction">双手握住手柄</div>
+                <div class="guide-instruction">保持身体平衡</div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 底部控制区域 -->
+    <div class="control-area" id="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
+            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn measure" onclick="startMeasuring()">开始测量</button>
+        </div>
+    </div>
+
+    <script>
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+        
+        function goToIndex() {
+            window.location.href = 'index.html';
+        }
+        
+        function startMeasuring() {
+            window.location.href = 'measure-progress.html';
+        }
+        
+        // 页面加载时显示当前用户信息
+        window.onload = function() {
+            const measurementData = localStorage.getItem('currentMeasurement');
+            if (measurementData) {
+                const data = JSON.parse(measurementData);
+                document.getElementById('current-user-name').textContent = data.user;
+            }
+        };
+    </script>
+    <script src="js/gestures.js"></script>
+</body>
+</html>
