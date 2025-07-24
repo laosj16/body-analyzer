@@ -56,6 +56,34 @@ body {
     transition: opacity 0.4s ease-in-out, visibility 0.4s;
     padding: 24px; /* 恢复正常的内边距 */
     box-sizing: border-box;
+    /* 支持滚动 */
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+/* 隐藏滚动条 */
+.page::-webkit-scrollbar {
+    display: none;
+}
+
+/* 可滚动内容区域样式 */
+.page-content,
+.home-content,
+.result-content,
+.history-content {
+    overflow-y: auto;
+    scroll-behavior: smooth;
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none; /* IE/Edge */
+}
+
+.page-content::-webkit-scrollbar,
+.home-content::-webkit-scrollbar,
+.result-content::-webkit-scrollbar,
+.history-content::-webkit-scrollbar {
+    display: none;
 }
 
 .page.active {

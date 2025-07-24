@@ -1,0 +1,450 @@
+/* 科技感关机动画样式 - 适配屏幕容器 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+:root {
+    --shutdown-primary: #ff6b6b; /* 关机主题色 - 暖红色 */
+    --shutdown-bg: #1a0808;      /* 深色红色背景 */
+    --shutdown-glow: 0 0 10px var(--shutdown-primary), 0 0 20px var(--shutdown-primary), 0 0 40px var(--shutdown-primary);
+}
+
+/* 关机画面容器 - 适配480x800屏幕，强化淡出效果 */
+.shutdown-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #1a0808 0%, #180606 50%, #100404 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* 关机淡出动画 - 从完全显示到完全消失 */
+    opacity: 1;
+    animation: shutdownFadeOut 3s ease-in forwards, shutdownComplete 1s ease-in-out forwards;
+    animation-delay: 3s, 6s; /* 3秒后开始淡出，6秒后完全关机 */
+}
+
+/* 背景科技网格效果 - 逐渐消失 */
+.shutdown-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(255, 107, 107, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 107, 107, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    animation: gridSlow 8s ease-out, gridFadeOut 3s ease-in-out forwards;
+    animation-delay: 0s, 3s;
+}
+
+@keyframes gridSlow {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(-15px, -15px); }
+}
+
+@keyframes gridFadeOut {
+    to { opacity: 0; }
+}
+
+/* 主关机器容器 */
+.shutdown-loader {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* 旋转圆环 - 逐渐减速停止 */
+.shutdown-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(255, 107, 107, 0.2);
+    animation: circleSlowdown 4s ease-out forwards, circleFadeOut 2s ease-in forwards;
+    animation-delay: 0s, 3s;
+}
+
+.shutdown-circle:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    border-left-color: var(--shutdown-primary);
+    animation-duration: 4s, 2s;
+}
+
+.shutdown-circle:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    border-right-color: var(--shutdown-primary);
+    animation-duration: 3s, 2s;
+}
+
+.shutdown-circle:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    border-top-color: var(--shutdown-primary);
+    animation-duration: 2s, 2s;
+}
+
+/* 扫描线效果 - 逐渐停止 */
+.shutdown-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 40%, var(--shutdown-primary) 50%, transparent 60%);
+    animation: scanStop 3s ease-out forwards, scannerFadeOut 2s ease-in forwards;
+    animation-delay: 0s, 2s;
+    opacity: 0.6;
+    border-radius: 50%;
+}
+
+@keyframes circleSlowdown {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(220deg); }
+}
+
+@keyframes circleFadeOut {
+    to { 
+        opacity: 0;
+        transform: scale(0.7);
+    }
+}
+
+@keyframes scanStop {
+    0% { transform: translateY(-30%) scaleY(1); }
+    50% { transform: translateY(0%) scaleY(0.8); }
+    100% { transform: translateY(10%) scaleY(0.3); }
+}
+
+@keyframes scannerFadeOut {
+    to { opacity: 0; }
+}
+
+/* 内容区域 */
+.shutdown-content {
+    z-index: 10;
+    opacity: 1;
+    animation: contentFadeOut 3s ease-out forwards;
+    animation-delay: 2.5s;
+}
+
+/* 产品型号 "CF663" - 逐渐熄灭，适配屏幕分辨率 */
+.product-id-shutdown {
+    font-family: 'Orbitron', 'Microsoft YaHei', sans-serif;
+    font-size: 56px; /* 增大字体 */
+    font-weight: 700;
+    letter-spacing: 4px; /* 增加字间距 */
+    color: #ffffff;
+    text-shadow: var(--shutdown-glow);
+    animation: logoFlickerOut 2.5s ease-out forwards;
+    animation-delay: 1.5s;
+    margin-bottom: 12px; /* 增加间距 */
+}
+
+@keyframes logoFlickerOut {
+    0% {
+        text-shadow: var(--shutdown-glow);
+        opacity: 1;
+    }
+    30%, 70% {
+        text-shadow: 0 0 5px var(--shutdown-primary);
+        opacity: 0.6;
+    }
+    50% {
+        text-shadow: var(--shutdown-glow);
+        opacity: 0.9;
+    }
+    100% {
+        text-shadow: none;
+        opacity: 0;
+    }
+}
+
+/* 产品全称 - 反向消失效果，确保居中 */
+.product-name-shutdown {
+    font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
+    font-size: 18px; /* 增大副标题字体 */
+    font-weight: 500;
+    color: var(--shutdown-primary);
+    letter-spacing: 2px; /* 增加字间距 */
+    overflow: hidden;
+    white-space: nowrap;
+    width: 180px; /* 调整宽度适配更大字体 */
+    border-right: 2px solid var(--shutdown-primary);
+    animation: untypingReverse 2s steps(11, end) forwards, cursorFadeOut 1s ease-out forwards;
+    animation-delay: 0.8s, 2.5s;
+    margin: 0 auto 20px auto; /* 水平居中 */
+    text-align: center; /* 文字居中 */
+}
+
+@keyframes untypingReverse {
+    from { width: 180px; } /* 调整起始宽度 */
+    to { width: 0; }
+}
+
+@keyframes cursorFadeOut {
+    to { border-color: transparent; }
+}
+
+/* 隐藏系统状态提示 */
+.shutdown-status-text {
+    display: none;
+}
+
+@keyframes contentFadeOut {
+    to { opacity: 0; }
+}
+
+@keyframes statusFadeOut {
+    to { opacity: 0; }
+}
+
+/* 关机渐进淡出动画 */
+@keyframes shutdownFadeOut {
+    0% {
+        opacity: 1;
+        transform: scale(1);
+        filter: brightness(1);
+    }
+    50% {
+        opacity: 0.7;
+        transform: scale(0.98);
+        filter: brightness(0.8);
+    }
+    100% {
+        opacity: 0.3;
+        transform: scale(0.95);
+        filter: brightness(0.5);
+    }
+}
+
+/* 最终关机效果 */
+@keyframes shutdownComplete {
+    to {
+        background: #000000;
+        opacity: 0;
+        visibility: hidden;
+        transform: scale(0.9);
+    }
+}
+
+/* 移除旧样式的兼容性处理 */
+.particles, .particle, .logo-container, .main-logo, .sub-logo, 
+.scan-circle, .circle, .scan-line, .progress-container, .progress-bar,
+.loading-text, .system-info, .grid-bg {
+    display: none;
+}
+
+/* 背景网格效果 - 逐渐消失 */
+.shutdown-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(26,2,2,0) 98%, var(--primary-color) 99%),
+        linear-gradient(90deg, rgba(26,2,2,0) 98%, var(--primary-color) 99%);
+    background-size: 50px 50px;
+    opacity: 0.1;
+    animation: panGridShutdown 5s linear, fadeOutGrid 2s ease-in-out forwards;
+    animation-delay: 0s, 4s;
+}
+
+@keyframes panGridShutdown {
+    0% { background-position: 0 0; }
+    100% { background-position: -50px -50px; }
+}
+
+@keyframes fadeOutGrid {
+    to { opacity: 0; }
+}
+
+/* 主关机动画容器 */
+.shutdown-loader {
+    position: relative;
+    width: 300px;
+    height: 300px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* 旋转圆环 - 逐渐停止和缩小 */
+.shutdown-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 2px solid rgba(255, 107, 107, 0.2);
+    animation: rotateSlowdown 4s ease-out forwards, shrinkCircle 2s ease-in forwards;
+    animation-delay: 0s, 3s;
+}
+
+.shutdown-circle:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    border-left-color: var(--primary-color);
+    animation-duration: 4s, 2s;
+}
+
+.shutdown-circle:nth-child(2) {
+    width: 85%;
+    height: 85%;
+    border-right-color: var(--primary-color);
+    animation-duration: 4s, 2s;
+    animation-direction: normal, normal;
+}
+
+.shutdown-circle:nth-child(3) {
+    width: 70%;
+    height: 70%;
+    border-top-color: var(--primary-color);
+    animation-duration: 4s, 2s;
+}
+
+/* 扫描线 - 逐渐消失 */
+.shutdown-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to top, transparent, var(--primary-color), transparent);
+    animation: scanSlowdown 3s ease-out forwards, fadeOutScanner 2s ease-in forwards;
+    animation-delay: 0s, 2s;
+    opacity: 0.7;
+}
+
+@keyframes rotateSlowdown {
+    0% { transform: rotate(0deg); }
+    50% { transform: rotate(180deg); }
+    100% { transform: rotate(270deg); }
+}
+
+@keyframes shrinkCircle {
+    to { 
+        transform: scale(0);
+        opacity: 0;
+    }
+}
+
+@keyframes scanSlowdown {
+    0% { transform: translateY(-100%); }
+    30% { transform: translateY(0%); }
+    60% { transform: translateY(50%); }
+    100% { transform: translateY(100%); }
+}
+
+@keyframes fadeOutScanner {
+    to { opacity: 0; }
+}
+
+/* 内容区域 */
+.shutdown-content {
+    z-index: 1;
+    opacity: 1;
+    animation: fadeOutContent 3s ease-out forwards;
+    animation-delay: 3s;
+}
+
+/* 产品型号 "CF663" - 逐渐暗淡 */
+.product-id-shutdown {
+    font-family: 'Orbitron', sans-serif;
+    font-size: 48px;
+    font-weight: 700;
+    letter-spacing: 4px;
+    text-shadow: var(--glow-shadow);
+    animation: flickerOut 2s ease-out forwards;
+    animation-delay: 2s;
+}
+
+@keyframes flickerOut {
+    0% {
+        text-shadow: var(--glow-shadow);
+        opacity: 1;
+    }
+    25%, 75% {
+        text-shadow: none;
+        opacity: 0.3;
+    }
+    50% {
+        text-shadow: var(--glow-shadow);
+        opacity: 0.7;
+    }
+    100% {
+        text-shadow: none;
+        opacity: 0;
+    }
+}
+
+/* 产品全称 - 反向打字效果 */
+.product-name-shutdown {
+    margin-top: 10px;
+    font-size: 16px;
+    letter-spacing: 2px;
+    overflow: hidden;
+    white-space: nowrap;
+    width: 200px;
+    border-right: 2px solid var(--primary-color);
+    animation: untypingReverse 2s steps(12, end) forwards, fadeOutCaret 1s ease-out forwards;
+    animation-delay: 1s, 2.5s;
+}
+
+@keyframes untypingReverse {
+    from { width: 200px; }
+    to { width: 0; }
+}
+
+@keyframes fadeOutCaret {
+    to { border-color: transparent; }
+}
+
+/* 系统状态提示 */
+.shutdown-status-text {
+    position: absolute;
+    bottom: -60px;
+    width: 100%;
+    font-size: 14px;
+    opacity: 1;
+    animation: fadeOutStatus 1s forwards;
+    animation-delay: 4s;
+}
+
+.shutdown-status-text .shutdown-msg {
+    color: #ff6b6b;
+    animation: fadeOutStatus 1s forwards;
+    animation-delay: 4.5s;
+}
+
+@keyframes fadeOutContent {
+    to { opacity: 0; }
+}
+
+@keyframes fadeOutStatus {
+    to { opacity: 0; }
+}
+
+/* 最终全黑效果 */
+@keyframes fadeToBlack {
+    to {
+        background-color: #000000;
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* 兼容性样式 - 移除旧的样式类名 */
+.particles, .particle, .logo-container, .main-logo, .sub-logo, 
+.scan-circle, .circle, .scan-line, .progress-container, .progress-bar,
+.loading-text, .system-info, .grid-bg {
+    display: none;
+}

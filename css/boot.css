@@ -1,0 +1,210 @@
+/* 科技感开机动画样式 - 适配屏幕容器 */
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+
+:root {
+    --boot-primary: #00d4ff; /* 开机主题色 - 科技蓝 */
+    --boot-bg: #0a0f1c;       /* 深色背景 */
+    --boot-glow: 0 0 10px var(--boot-primary), 0 0 20px var(--boot-primary), 0 0 40px var(--boot-primary);
+}
+
+/* 开机画面容器 - 适配480x800屏幕，添加淡入效果 */
+.boot-container {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    background: radial-gradient(circle at center, #0a0f1c 0%, #061018 50%, #020510 100%);
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    /* 开机淡入动画 */
+    opacity: 0;
+    animation: bootFadeIn 1.5s ease-out forwards, bootFadeOut 1s ease-in-out forwards;
+    animation-delay: 0s, 7s; /* 立即淡入，7秒后开始淡出 */
+}
+
+/* 背景科技网格效果 */
+.boot-container::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background-image:
+        linear-gradient(rgba(0, 212, 255, 0.1) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(0, 212, 255, 0.1) 1px, transparent 1px);
+    background-size: 30px 30px;
+    opacity: 0.3;
+    animation: gridFloat 15s linear infinite;
+}
+
+@keyframes gridFloat {
+    0% { transform: translate(0, 0); }
+    100% { transform: translate(30px, 30px); }
+}
+
+/* 主加载器容器 */
+.boot-loader {
+    position: relative;
+    width: 240px;
+    height: 240px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+}
+
+/* 科技旋转圆环 */
+.boot-circle {
+    position: absolute;
+    border-radius: 50%;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    animation: rotateCircle 12s linear infinite;
+}
+
+.boot-circle:nth-child(1) {
+    width: 100%;
+    height: 100%;
+    border-left-color: var(--boot-primary);
+    animation-duration: 8s;
+}
+
+.boot-circle:nth-child(2) {
+    width: 80%;
+    height: 80%;
+    border-right-color: var(--boot-primary);
+    animation-duration: 6s;
+    animation-direction: reverse;
+}
+
+.boot-circle:nth-child(3) {
+    width: 60%;
+    height: 60%;
+    border-top-color: var(--boot-primary);
+    animation-duration: 4s;
+}
+
+/* 扫描线效果 */
+.boot-scanner {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(to bottom, transparent 40%, var(--boot-primary) 50%, transparent 60%);
+    animation: scanLine 3s ease-in-out infinite;
+    animation-delay: 1s;
+    opacity: 0.6;
+    border-radius: 50%;
+}
+
+@keyframes rotateCircle {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+@keyframes scanLine {
+    0%, 100% { transform: translateY(-50%) scaleY(0); }
+    50% { transform: translateY(0%) scaleY(1); }
+}
+
+/* 内容区域 */
+.boot-content {
+    z-index: 10;
+    opacity: 0;
+    animation: fadeInContent 1s ease-out forwards;
+    animation-delay: 0.5s;
+}
+
+/* 产品型号 "CF663" - 适配屏幕分辨率 */
+.product-id {
+    font-family: 'Orbitron', 'Microsoft YaHei', sans-serif;
+    font-size: 56px; /* 增大字体 */
+    font-weight: 700;
+    letter-spacing: 4px; /* 增加字间距 */
+    color: #ffffff;
+    text-shadow: var(--boot-glow);
+    animation: logoGlow 2s ease-in-out infinite alternate;
+    animation-delay: 1s;
+    margin-bottom: 12px; /* 增加间距 */
+}
+
+@keyframes logoGlow {
+    0% {
+        text-shadow: var(--boot-glow);
+        opacity: 0.9;
+    }
+    100% {
+        text-shadow: 0 0 15px var(--boot-primary), 0 0 30px var(--boot-primary), 0 0 60px var(--boot-primary);
+        opacity: 1;
+    }
+}
+
+/* 产品全称 - 打字机效果，确保居中 */
+.product-name {
+    font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
+    font-size: 18px; /* 增大副标题字体 */
+    font-weight: 500;
+    color: var(--boot-primary);
+    letter-spacing: 2px; /* 增加字间距 */
+    overflow: hidden;
+    white-space: nowrap;
+    width: 0;
+    border-right: 2px solid var(--boot-primary);
+    animation: typing 2s steps(11, end) forwards, blinkCursor 0.8s step-end infinite;
+    animation-delay: 2s, 2s;
+    margin: 0 auto 20px auto; /* 水平居中 */
+    text-align: center; /* 文字居中 */
+}
+
+@keyframes typing {
+    from { width: 0; }
+    to { width: 180px; } /* 调整宽度适配更大字体 */
+}
+
+@keyframes blinkCursor {
+    from, to { border-color: transparent; }
+    50% { border-color: var(--boot-primary); }
+}
+
+/* 隐藏系统状态提示 */
+.boot-status-text {
+    display: none;
+}
+
+@keyframes fadeInContent {
+    to { opacity: 1; }
+}
+
+@keyframes fadeInStatus {
+    to { opacity: 1; }
+}
+
+/* 开机淡入动画 */
+@keyframes bootFadeIn {
+    from {
+        opacity: 0;
+        transform: scale(0.95);
+    }
+    to {
+        opacity: 1;
+        transform: scale(1);
+    }
+}
+
+/* 整体淡出动画 */
+@keyframes bootFadeOut {
+    to {
+        opacity: 0;
+        visibility: hidden;
+    }
+}
+
+/* 移除旧样式的兼容性处理 */
+.particles, .particle, .logo-container, .main-logo, .sub-logo, 
+.scan-circle, .circle, .scan-line, .progress-container, .progress-bar,
+.loading-text, .system-info, .grid-bg {
+    display: none;
+}

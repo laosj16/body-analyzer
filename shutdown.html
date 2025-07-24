@@ -12,19 +12,32 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/shutdown.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container">
         <div id="page-shutdown" class="page active">
-            <div class="logo">正在关机...</div>
+            <div class="shutdown-container">
+                <div class="shutdown-loader">
+                    <div class="shutdown-circle"></div>
+                    <div class="shutdown-circle"></div>
+                    <div class="shutdown-circle"></div>
+                    <div class="shutdown-scanner"></div>
+
+                    <div class="shutdown-content">
+                        <div class="product-id-shutdown">CF663</div>
+                        <div class="product-name-shutdown">智能人体成分分析仪</div>
+                    </div>
+                </div>
+            </div>
+        </div>
+                
+                <!-- 屏幕逐渐变黑 -->
+                <div class="screen-fade"></div>
+            </div>
         </div>
     </div>
 
-    <script>
-        // 3秒后跳转到开机页面（模拟关机完成）
-        setTimeout(() => {
-            window.location.href = 'boot.html';
-        }, 3000);
-    </script>
+    <script src="js/shutdown.js"></script>
 </body>
 </html>

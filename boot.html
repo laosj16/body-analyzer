@@ -12,19 +12,27 @@
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/boot.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container">
         <div id="page-boot" class="page active">
-            <div class="logo">CF663BLE+WiFi<br>智能人体成分分析</div>
+            <div class="boot-container">
+                <div class="boot-loader">
+                    <div class="boot-circle"></div>
+                    <div class="boot-circle"></div>
+                    <div class="boot-circle"></div>
+                    <div class="boot-scanner"></div>
+
+                    <div class="boot-content">
+                        <div class="product-id">CF663</div>
+                        <div class="product-name">智能人体成分分析仪</div>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 
-    <script>
-        // 自动跳转到主界面（模拟开机完成）
-        setTimeout(() => {
-            window.location.href = 'main.html';
-        }, 3000);
-    </script>
+    <script src="js/boot.js"></script>
 </body>
 </html>

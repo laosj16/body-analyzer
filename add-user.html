@@ -392,32 +392,93 @@
             -moz-appearance: textfield;
             appearance: textfield;
         }
+        
+        /* 让页面具有定位上下文 */
+        #page-add-user {
+            position: relative;
+        }
+        
+        /* 固定状态栏和页面头部 */
+        #page-add-user .status-bar {
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            z-index: 60;
+        }
+        
+        #page-add-user .page-header {
+            position: absolute;
+            top: 60px; /* 状态栏高度 */
+            left: 0;
+            right: 0;
+            z-index: 50;
+        }
+        
+        /* 可滚动的页面内容区域 */
+        .page-content {
+            position: absolute;
+            top: 148px; /* 状态栏60px + 页面头部88px */
+            left: 0;
+            right: 0;
+            bottom: 0;
+            overflow-y: auto;
+            padding: 20px;
+            -webkit-overflow-scrolling: touch; /* iOS滚动优化 */
+        }
+        
+        /* 隐藏滚动条但保持滚动功能 */
+        .page-content::-webkit-scrollbar {
+            display: none;
+        }
+        
+        .page-content {
+            -ms-overflow-style: none;  /* IE and Edge */
+            scrollbar-width: none;  /* Firefox */
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container" id="screen-container">
         <!-- 手势边缘区域 -->
         <div class="gesture-edge top" data-gesture="top"></div>
-        <div class="gesture-edge bottom" data-gesture="bottom"></div>
         <div class="gesture-edge left" data-gesture="left"></div>
         <div class="gesture-edge right" data-gesture="right"></div>
         
         <!-- 滑动指示器 -->
-        <div class="swipe-indicator vertical" id="swipe-indicator-vertical"></div>
         <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
         
         <!-- 添加用户页 -->
         <div id="page-add-user" class="page active">
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <span id="current-time">14:35</span>
+                <div class="status-icons">
+                    <!-- 蓝牙图标 -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                        <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                    </svg>
+                    <!-- WiFi图标 -->
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                        <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 页面头部 -->
             <div class="page-header">
                 <div class="back-button" onclick="goBack()">
                     <svg xmlns="http://www.w3.org/2000/svg" width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><polyline points="15 18 9 12 15 6"></polyline></svg>
                 </div>
                 <h1 class="page-title">添加新用户</h1>
             </div>
-            <div class="form-group">
-                <label for="nickname-input" class="form-label">昵称</label>
-                <input type="text" id="nickname-input" class="form-input" placeholder="请输入昵称" maxlength="10" readonly onclick="showKeyboard()">
-            </div>
+            
+            <!-- 可滚动的表单内容区域 -->
+            <div class="page-content">
+                <div class="form-group">
+                    <label for="nickname-input" class="form-label">昵称</label>
+                    <input type="text" id="nickname-input" class="form-input" placeholder="请输入昵称" maxlength="10" readonly onclick="showKeyboard()">
+                </div>
             
             <div class="form-group">
                 <label class="form-label">性别</label>
@@ -462,6 +523,7 @@
                 <div id="avatar-picker" class="avatar-picker"></div>
             </div>
             <button id="save-user-button" class="primary-button" disabled>保存</button>
+            </div> <!-- 关闭 page-content -->
         </div>
 
         <!-- 虚拟键盘 -->
@@ -1510,7 +1572,22 @@
             if (weightInput) {
                 weightInput.addEventListener('input', checkFormValidity);
             }
+            
+            // 更新时间显示
+            updateTime();
+            setInterval(updateTime, 1000);
         });
+        
+        // 更新时间函数
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+            const timeElement = document.getElementById('current-time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
+            }
+        }
     </script>
     <script src="js/gestures.js"></script>
 </body>
