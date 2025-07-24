@@ -14,43 +14,47 @@
         html, body {
             overflow: auto !important;
             height: auto !important;
+            background: #f8fafc !important;
         }
         
         .project-nav {
-            max-width: 800px;
+            max-width: 1000px;
             margin: 0 auto;
             padding: 40px 20px;
         }
         .nav-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-            gap: 20px;
+            grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+            gap: 24px;
             margin-top: 40px;
         }
         .nav-card {
-            background: #1C1C1E;
+            background: #ffffff;
             border-radius: 16px;
-            padding: 24px;
+            padding: 28px;
             text-align: center;
             transition: all 0.3s;
-            border: 2px solid transparent;
+            border: 2px solid #e2e8f0;
+            box-shadow: 0 2px 8px rgba(0, 0, 0, 0.08);
         }
         .nav-card:hover {
-            border-color: #0D47A1;
+            border-color: #3b82f6;
             transform: translateY(-4px);
+            box-shadow: 0 8px 25px rgba(59, 130, 246, 0.15);
         }
         .nav-card h3 {
             font-size: 20px;
             font-weight: 700;
             margin-bottom: 12px;
-            color: #FFFFFF;
+            color: #1e293b;
         }
         .nav-card p {
-            color: #BDBDBD;
+            color: #64748b;
             margin-bottom: 20px;
+            line-height: 1.6;
         }
         .nav-btn {
-            background: #0D47A1;
+            background: #3b82f6;
             color: white;
             border: none;
             padding: 12px 24px;
@@ -61,91 +65,147 @@
             width: 100%;
         }
         .nav-btn:hover {
-            background: #1565C0;
+            background: #2563eb;
         }
         .project-title {
             text-align: center;
-            font-size: 32px;
+            font-size: 36px;
             font-weight: 700;
-            color: #FFFFFF;
+            color: #1e293b;
             margin-bottom: 16px;
         }
         .project-desc {
             text-align: center;
-            color: #BDBDBD;
+            color: #64748b;
             font-size: 18px;
+            margin-bottom: 8px;
+        }
+        .section-title {
+            font-size: 24px;
+            font-weight: 600;
+            color: #374151;
+            margin: 40px 0 20px 0;
+            padding-bottom: 8px;
+            border-bottom: 2px solid #e5e7eb;
+        }
+        .warning-text {
+            margin-top: 60px;
+            text-align: center;
+            color: #dc2626;
+            font-weight: 600;
+            background: #fef2f2;
+            padding: 16px;
+            border-radius: 8px;
+            border: 1px solid #fecaca;
         }
     </style>
 </head>
-<body class="bg-gray-900 text-white font-inter">
+<body class="bg-slate-50 text-slate-900 font-inter">
     <div class="project-nav">
-        <h1 class="project-title">CF663BLE+WiFi人体成分分析仪-交互导航页</h1>
+        <h1 class="project-title">CF663BLE+WiFi人体成分分析仪</h1>
+        <p class="project-desc">交互导航页</p>
         <p class="project-desc">产品中心 - 胡中华</p>
         
+        <!-- 核心应用流程 -->
+        <h2 class="section-title">🔄 核心应用流程</h2>
         <div class="nav-grid">
             <div class="nav-card">
-                <h3>🏠 主应用入口</h3>
-                <p>从开机页面开始，体验完整的应用流程</p>
+                <h3>🏠 应用启动</h3>
+                <p>从开机页面开始，体验完整的应用启动流程</p>
                 <button class="nav-btn" onclick="window.location.href='boot.html'">启动应用</button>
             </div>
             
             <div class="nav-card">
                 <h3>🏡 主界面</h3>
-                <p>直接访问主界面，查看用户数据和导航</p>
-                <button class="nav-btn" onclick="window.location.href='main.html'">主界面</button>
+                <p>用户中心，查看个人数据和功能导航</p>
+                <button class="nav-btn" onclick="window.location.href='main.html'">进入主界面</button>
             </div>
             
             <div class="nav-card">
-                <h3>⚖️ 测量流程</h3>
-                <p>体验测量引导、进度和结果展示</p>
-                <button class="nav-btn" onclick="window.location.href='measure-guide.html'">开始测量</button>
+                <h3>👤 添加用户</h3>
+                <p>新用户注册，包含智能虚拟键盘和完整信息录入</p>
+                <button class="nav-btn" onclick="window.location.href='add-user.html'">添加用户</button>
+            </div>
+        </div>
+        
+        <!-- 测量功能模块 -->
+        <h2 class="section-title">⚖️ 测量功能模块</h2>
+        <div class="nav-grid">
+            <div class="nav-card">
+                <h3>📋 测量引导</h3>
+                <p>测量前的准备说明和操作指导</p>
+                <button class="nav-btn" onclick="window.location.href='measure-guide.html'">测量引导</button>
             </div>
             
             <div class="nav-card">
-                <h3>⚖️ 测量流程 (单页版)</h3>
-                <p>原始单页面测量版本（对比用）</p>
-                <button class="nav-btn" onclick="window.location.href='measure.html'">单页测量</button>
+                <h3>⏳ 测量进度</h3>
+                <p>实时显示测量进度和状态反馈</p>
+                <button class="nav-btn" onclick="window.location.href='measure-progress.html'">测量进度</button>
             </div>
             
             <div class="nav-card">
-                <h3>👤 访客测量结果</h3>
-                <p>查看访客模式的测量结果页面</p>
+                <h3>� 测量结果</h3>
+                <p>完整的体成分分析结果展示</p>
+                <button class="nav-btn" onclick="window.location.href='measure-result.html'">查看结果</button>
+            </div>
+            
+            <div class="nav-card">
+                <h3>� 访客测量</h3>
+                <p>访客模式的测量结果页面</p>
                 <button class="nav-btn" onclick="window.location.href='measure-guest-result.html'">访客结果</button>
             </div>
-            
+        </div>
+        
+        <!-- 数据管理 -->
+        <h2 class="section-title">📈 数据管理</h2>
+        <div class="nav-grid">
             <div class="nav-card">
-                <h3>📊 历史数据</h3>
-                <p>查看用户的历史测量记录</p>
+                <h3>📋 历史记录</h3>
+                <p>查看用户的历史测量数据和趋势分析</p>
                 <button class="nav-btn" onclick="window.location.href='history.html'">历史记录</button>
             </div>
             
             <div class="nav-card">
-                <h3>⚙️ 系统设置</h3>
-                <p>调整应用设置和系统配置</p>
+                <h3>� 结果详情</h3>
+                <p>深度解析单次测量结果的详细数据</p>
+                <button class="nav-btn" onclick="window.location.href='detail.html?type=weight&value=65.2&user=华仔'">详细分析</button>
+            </div>
+        </div>
+        
+        <!-- 系统功能 -->
+        <h2 class="section-title">⚙️ 系统功能</h2>
+        <div class="nav-grid">
+            <div class="nav-card">
+                <h3>� 系统设置</h3>
+                <p>调整应用设置和系统配置选项</p>
                 <button class="nav-btn" onclick="window.location.href='settings.html'">系统设置</button>
             </div>
             
             <div class="nav-card">
-                <h3>📋 结果详情</h3>
-                <p>查看测量结果的详细分析</p>
-                <button class="nav-btn" onclick="window.location.href='detail.html?type=weight&value=65.2&user=华仔'">详细结果</button>
-            </div>
-            
-            <div class="nav-card">
-                <h3>📁 原始版本</h3>
-                <p>查看重构前的单文件版本（对比用）</p>
-                <button class="nav-btn" onclick="window.location.href='1.html'">原始版本</button>
-            </div>
-            
-            <div class="nav-card">
                 <h3>🔌 关机页面</h3>
-                <p>查看关机动画效果</p>
+                <p>优雅的关机动画和系统退出</p>
                 <button class="nav-btn" onclick="window.location.href='shutdown.html'">关机页面</button>
             </div>
         </div>
         
-        <div style="margin-top: 60px; text-align: center; color: #616161;">
-            <p>🚫仅限内部交流使用‼️请勿对外传播，谢谢配合‼️</p>
+        <!-- 开发参考 -->
+        <h2 class="section-title">🛠️ 开发参考</h2>
+        <div class="nav-grid">
+            <div class="nav-card">
+                <h3>📄 单页测量</h3>
+                <p>原始单页面测量版本（开发对比参考）</p>
+                <button class="nav-btn" onclick="window.location.href='measure.html'">单页测量</button>
+            </div>
+            
+            <div class="nav-card">
+                <h3>📁 原始版本</h3>
+                <p>重构前的单文件版本（历史版本对比）</p>
+                <button class="nav-btn" onclick="window.location.href='1.html'">原始版本</button>
+            </div>
+        </div>
+        
+        <div class="warning-text">
+            <p>🚫 仅限内部交流使用 ‼️ 请勿对外传播，谢谢配合 ‼️</p>
         </div>
     </div>
 </body>
