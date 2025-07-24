@@ -24,7 +24,7 @@
     animation-delay: 3s, 6s; /* 3秒后开始淡出，6秒后完全关机 */
 }
 
-/* 背景科技网格效果 - 逐渐消失 */
+/* 背景科技网格效果 - 逐渐消失，调整网格大小 */
 .shutdown-container::before {
     content: '';
     position: absolute;
@@ -35,7 +35,7 @@
     background-image:
         linear-gradient(rgba(255, 107, 107, 0.1) 1px, transparent 1px),
         linear-gradient(90deg, rgba(255, 107, 107, 0.1) 1px, transparent 1px);
-    background-size: 30px 30px;
+    background-size: 40px 40px; /* 增大网格尺寸 */
     opacity: 0.3;
     animation: gridSlow 8s ease-out, gridFadeOut 3s ease-in-out forwards;
     animation-delay: 0s, 3s;
@@ -43,18 +43,18 @@
 
 @keyframes gridSlow {
     0% { transform: translate(0, 0); }
-    100% { transform: translate(-15px, -15px); }
+    100% { transform: translate(-20px, -20px); } /* 调整移动距离 */
 }
 
 @keyframes gridFadeOut {
     to { opacity: 0; }
 }
 
-/* 主关机器容器 */
+/* 主关机器容器 - 放大到适配480px屏幕宽度 */
 .shutdown-loader {
     position: relative;
-    width: 240px;
-    height: 240px;
+    width: 380px; /* 增大到380px */
+    height: 380px; /* 增大到380px */
     display: flex;
     justify-content: center;
     align-items: center;
@@ -136,17 +136,17 @@
     animation-delay: 2.5s;
 }
 
-/* 产品型号 "CF663" - 逐渐熄灭，适配屏幕分辨率 */
+/* 产品型号 "CF663" - 逐渐熄灭，适配更大的动画区域 */
 .product-id-shutdown {
     font-family: 'Orbitron', 'Microsoft YaHei', sans-serif;
-    font-size: 56px; /* 增大字体 */
+    font-size: 72px; /* 进一步增大字体 */
     font-weight: 700;
-    letter-spacing: 4px; /* 增加字间距 */
+    letter-spacing: 6px; /* 增加字间距 */
     color: #ffffff;
     text-shadow: var(--shutdown-glow);
     animation: logoFlickerOut 2.5s ease-out forwards;
     animation-delay: 1.5s;
-    margin-bottom: 12px; /* 增加间距 */
+    margin-bottom: 16px; /* 增加间距 */
 }
 
 @keyframes logoFlickerOut {
@@ -155,7 +155,7 @@
         opacity: 1;
     }
     30%, 70% {
-        text-shadow: 0 0 5px var(--shutdown-primary);
+        text-shadow: 0 0 10px var(--shutdown-primary);
         opacity: 0.6;
     }
     50% {
@@ -171,14 +171,14 @@
 /* 产品全称 - 反向消失效果，确保居中 */
 .product-name-shutdown {
     font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
-    font-size: 18px; /* 增大副标题字体 */
+    font-size: 24px; /* 增大副标题字体 */
     font-weight: 500;
     color: var(--shutdown-primary);
-    letter-spacing: 2px; /* 增加字间距 */
+    letter-spacing: 3px; /* 增加字间距 */
     overflow: hidden;
     white-space: nowrap;
-    width: 180px; /* 调整宽度适配更大字体 */
-    border-right: 2px solid var(--shutdown-primary);
+    width: 240px; /* 调整宽度适配更大字体 */
+    border-right: 3px solid var(--shutdown-primary); /* 增粗光标 */
     animation: untypingReverse 2s steps(11, end) forwards, cursorFadeOut 1s ease-out forwards;
     animation-delay: 0.8s, 2.5s;
     margin: 0 auto 20px auto; /* 水平居中 */
@@ -186,7 +186,7 @@
 }
 
 @keyframes untypingReverse {
-    from { width: 180px; } /* 调整起始宽度 */
+    from { width: 240px; } /* 调整起始宽度 */
     to { width: 0; }
 }
 
