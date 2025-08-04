@@ -1,13 +1,7 @@
-/* 科技感关机动画样式 - 适配屏幕容器 */
-@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&family=Rajdhani:wght@400;600&display=swap');
+/* 简洁关机动画样式 - 只保留网络背景 */
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap');
 
-:root {
-    --shutdown-primary: #ff6b6b; /* 关机主题色 - 暖红色 */
-    --shutdown-bg: #1a0808;      /* 深色红色背景 */
-    --shutdown-glow: 0 0 10px var(--shutdown-primary), 0 0 20px var(--shutdown-primary), 0 0 40px var(--shutdown-primary);
-}
-
-/* 关机画面容器 - 适配480x800屏幕，强化淡出效果 */
+/* 关机画面容器 - 简洁设计 */
 .shutdown-container {
     position: relative;
     width: 100%;
@@ -18,10 +12,85 @@
     flex-direction: column;
     align-items: center;
     justify-content: center;
-    /* 关机淡出动画 - 从完全显示到完全消失 */
+    /* 关机淡出动画 */
     opacity: 1;
-    animation: shutdownFadeOut 3s ease-in forwards, shutdownComplete 1s ease-in-out forwards;
-    animation-delay: 3s, 6s; /* 3秒后开始淡出，6秒后完全关机 */
+    animation: shutdownFadeOut 2s ease-in forwards;
+    animation-delay: 3s; /* 3秒后开始淡出 */
+}
+
+/* 关机扫描光束效果 - 模拟身体扫描状态，稍慢频率 */
+.shutdown-container::after {
+    content: '';
+    position: absolute;
+    top: -100%;
+    left: 0;
+    width: 100%;
+    height: 80%;
+    background: linear-gradient(to bottom, 
+        transparent 0%, 
+        rgba(255,107,107,0.15) 40%,
+        rgba(255,107,107,0.3) 50%, 
+        rgba(255,107,107,0.15) 60%,
+        transparent 100%);
+    animation: shutdownBodyScan 1.8s ease-in-out infinite;
+    animation-delay: 0.5s;
+    pointer-events: none;
+    z-index: 1;
+}
+
+@keyframes shutdownBodyScan {
+    0%   { top: -80%; }
+    50%  { top: 100%; }
+    100% { top: -80%; }
+}
+
+@keyframes shutdownFadeOut {
+    to { opacity: 0; }
+}
+
+/* 关机动态网络背景 */
+.shutdown-network {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+    pointer-events: none;
+    opacity: 0.8;
+    animation: networkFadeOut 2s ease-in-out forwards;
+    animation-delay: 3s;
+}
+
+@keyframes networkFadeOut {
+    to { opacity: 0; }
+}
+
+/* 关机内容 */
+.shutdown-content {
+    position: relative;
+    z-index: 15;
+    text-align: center;
+}
+
+/* 关机产品名称样式 */
+.product-name-shutdown {
+    font-family: 'Inter', sans-serif;
+    font-size: 28px;
+    font-weight: 600;
+    color: #ff6b6b;
+    text-shadow: 0 0 20px rgba(255, 107, 107, 0.5);
+    letter-spacing: 2px;
+    animation: shutdownTextGlow 2s ease-in-out infinite alternate;
+}
+
+@keyframes shutdownTextGlow {
+    from { 
+        text-shadow: 0 0 20px rgba(255, 107, 107, 0.5); 
+    }
+    to { 
+        text-shadow: 0 0 30px rgba(255, 107, 107, 0.8), 0 0 40px rgba(255, 107, 107, 0.3); 
+    }
 }
 
 /* 背景科技网格效果 - 逐渐消失，调整网格大小 */
@@ -168,25 +237,45 @@
     }
 }
 
-/* 产品全称 - 反向消失效果，确保居中 */
+/* 产品全称 - 作为主标题，反向消失效果 */
 .product-name-shutdown {
-    font-family: 'Rajdhani', 'Microsoft YaHei', sans-serif;
-    font-size: 24px; /* 增大副标题字体 */
-    font-weight: 500;
-    color: var(--shutdown-primary);
-    letter-spacing: 3px; /* 增加字间距 */
+    font-family: 'Orbitron', 'Microsoft YaHei', sans-serif;
+    font-size: 42px; /* 作为主标题，使用更大字体 */
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 4px; /* 增加字间距 */
+    text-shadow: var(--shutdown-glow);
+    animation: logoFlickerOut 2.5s ease-out forwards, untypingReverse 2s steps(13, end) forwards, cursorFadeOut 1s ease-out forwards;
+    animation-delay: 1.5s, 0.8s, 2.5s;
     overflow: hidden;
     white-space: nowrap;
-    width: 240px; /* 调整宽度适配更大字体 */
+    width: 420px; /* 调整宽度适配42px字体的"乐福智能身体成分分析仪" */
     border-right: 3px solid var(--shutdown-primary); /* 增粗光标 */
-    animation: untypingReverse 2s steps(11, end) forwards, cursorFadeOut 1s ease-out forwards;
-    animation-delay: 0.8s, 2.5s;
     margin: 0 auto 20px auto; /* 水平居中 */
     text-align: center; /* 文字居中 */
 }
 
+@keyframes logoFlickerOut {
+    0% {
+        text-shadow: var(--shutdown-glow);
+        opacity: 1;
+    }
+    30%, 70% {
+        text-shadow: 0 0 10px var(--shutdown-primary);
+        opacity: 0.6;
+    }
+    50% {
+        text-shadow: var(--shutdown-glow);
+        opacity: 0.9;
+    }
+    100% {
+        text-shadow: none;
+        opacity: 0;
+    }
+}
+
 @keyframes untypingReverse {
-    from { width: 240px; } /* 调整起始宽度 */
+    from { width: 420px; } /* 调整起始宽度适配新文字和字体大小 */
     to { width: 0; }
 }
 
