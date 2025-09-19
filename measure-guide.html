@@ -13,6 +13,7 @@
     <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/controls.css">
     <link rel="stylesheet" href="css/gestures.css">
+    <link rel="stylesheet" href="css/measure-guide.css">
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container" id="screen-container">
@@ -26,24 +27,91 @@
         
         <!-- 测量引导页 -->
         <div id="page-measure-guide" class="page active">
-            <div class="page-header">
-                <h1 class="page-title">测量准备</h1>
-                <div class="current-user-info" id="current-user-info">
-                    <span>当前用户: </span><span id="current-user-name">--</span>
+            <!-- 顶部状态栏 -->
+            <div class="measure-header">
+                <div class="step-indicator">
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-text">准备测量</div>
+                
+                <div class="user-badge" id="current-user-info">
+                    <div class="user-avatar-mini">
+                        <div class="avatar-circle-mini" id="user-avatar">华</div>
+                    </div>
+                    <span class="user-name-mini" id="current-user-name">华仔</span>
                 </div>
             </div>
             
-            <div class="guide-animation">
-                <div class="footprints">
-                    <div class="footprint left"></div>
-                    <div class="footprint right"></div>
+            <!-- 主要内容区域 -->
+            <div class="measure-content">
+                <!-- 设备示意图 -->
+                <div class="device-illustration">
+                    <div class="scale-platform">
+                        <div class="footprint-area">
+                            <div class="footprint left-foot">
+                                <div class="foot-icon">👣</div>
+                                <div class="foot-label">左脚</div>
+                            </div>
+                            <div class="footprint right-foot">
+                                <div class="foot-icon">👣</div>
+                                <div class="foot-label">右脚</div>
+                            </div>
+                        </div>
+                        <div class="handle-area">
+                            <div class="handle left-handle">
+                                <div class="handle-grip"></div>
+                                <div class="handle-label">左手握持</div>
+                            </div>
+                            <div class="handle right-handle">
+                                <div class="handle-grip"></div>
+                                <div class="handle-label">右手握持</div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            
-            <div class="guide-text">
-                <div class="guide-instruction">请双脚站在秤上</div>
-                <div class="guide-instruction">双手握住手柄</div>
-                <div class="guide-instruction">保持身体平衡</div>
+                
+                <!-- 测量指引 -->
+                <div class="measurement-instructions">
+                    <h2 class="instruction-title">测量准备</h2>
+                    <div class="instruction-list">
+                        <div class="instruction-item">
+                            <div class="instruction-number">1</div>
+                            <div class="instruction-content">
+                                <div class="instruction-text">脱下鞋袜，双脚站在金属电极上</div>
+                                <div class="instruction-subtext">确保脚部完全接触电极片</div>
+                            </div>
+                        </div>
+                        <div class="instruction-item">
+                            <div class="instruction-number">2</div>
+                            <div class="instruction-content">
+                                <div class="instruction-text">双手握住手柄，手心接触电极</div>
+                                <div class="instruction-subtext">保持手部干燥，紧握手柄</div>
+                            </div>
+                        </div>
+                        <div class="instruction-item">
+                            <div class="instruction-number">3</div>
+                            <div class="instruction-content">
+                                <div class="instruction-text">身体保持直立，双臂自然下垂</div>
+                                <div class="instruction-subtext">测量过程中请勿移动</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- 注意事项 -->
+                <div class="safety-notice">
+                    <div class="notice-header">
+                        <div class="notice-icon">⚠️</div>
+                        <span class="notice-title">测量注意事项</span>
+                    </div>
+                    <div class="notice-content">
+                        测量前2小时避免剧烈运动 • 测量前30分钟避免大量饮水
+                    </div>
+                </div>
             </div>
         </div>
     </div>
@@ -53,7 +121,7 @@
         <div class="control-btn-container">
             <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
             <button class="control-btn back" onclick="goBack()">返回</button>
-            <button class="control-btn measure" onclick="startMeasuring()">开始测量</button>
+            <button class="control-btn measure" onclick="startMeasuring()">模拟上秤</button>
         </div>
     </div>
 
@@ -72,11 +140,44 @@
         
         // 页面加载时显示当前用户信息
         window.onload = function() {
+            // 尝试从localStorage获取测量数据
             const measurementData = localStorage.getItem('currentMeasurement');
+            let userName = '华仔';
+            let userAvatar = '华';
+            let userColor = '#3b82f6';
+            
             if (measurementData) {
                 const data = JSON.parse(measurementData);
-                document.getElementById('current-user-name').textContent = data.user;
+                userName = data.user || '华仔';
+                // 设置用户头像和颜色
+                switch(userName) {
+                    case '华仔':
+                        userAvatar = '华';
+                        userColor = '#3b82f6';
+                        break;
+                    case '亦菲':
+                        userAvatar = '亦';
+                        userColor = '#db2777';
+                        break;
+                    case '志玲':
+                        userAvatar = '志';
+                        userColor = '#059669';
+                        break;
+                    case '访客':
+                        userAvatar = 'G';
+                        userColor = '#616161';
+                        break;
+                    default:
+                        userAvatar = userName.substring(0, 1);
+                        userColor = '#3b82f6';
+                }
             }
+            
+            // 更新页面显示
+            document.getElementById('current-user-name').textContent = userName;
+            const avatarElement = document.getElementById('user-avatar');
+            avatarElement.textContent = userAvatar;
+            avatarElement.style.background = userColor;
         };
     </script>
     <script src="js/gestures.js"></script>

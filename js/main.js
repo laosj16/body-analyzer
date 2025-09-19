@@ -20,9 +20,9 @@ const appState = {
             waterPercentage: 58.8,
             boneWeight: 2.9,
             history: [
-                { date: '2025-07-21', time: '14:30', weight: 75.5, fat: 16.2, muscle: 48.6, bmi: 22.3, water: 58.8, bone: 2.9 },
-                { date: '2025-07-19', time: '08:45', weight: 75.3, fat: 16.0, muscle: 48.0, bmi: 22.2, water: 58.3, bone: 2.8 },
-                { date: '2025-07-17', time: '14:15', weight: 74.8, fat: 15.5, muscle: 48.5, bmi: 22.0, water: 58.7, bone: 2.9 }
+                { date: '2025-09-19', time: '14:30', weight: 75.5, fat: 16.2, muscle: 48.6, bmi: 22.3, water: 58.8, bone: 2.9 },
+                { date: '2025-09-17', time: '08:45', weight: 75.3, fat: 16.0, muscle: 48.0, bmi: 22.2, water: 58.3, bone: 2.8 },
+                { date: '2025-09-15', time: '14:15', weight: 74.8, fat: 15.5, muscle: 48.5, bmi: 22.0, water: 58.7, bone: 2.9 }
             ]
         },
         '亦菲': {
@@ -35,8 +35,8 @@ const appState = {
             waterPercentage: 55.2,
             boneWeight: 2.1,
             history: [
-                { date: '2025-07-21', time: '14:32', weight: 50.0, fat: 22.5, muscle: 36.1, bmi: 19.8, water: 55.2, bone: 2.1 },
-                { date: '2025-07-18', time: '08:50', weight: 49.8, fat: 22.3, muscle: 36.2, bmi: 19.7, water: 55.4, bone: 2.1 }
+                { date: '2025-09-19', time: '14:32', weight: 50.0, fat: 22.5, muscle: 36.1, bmi: 19.8, water: 55.2, bone: 2.1 },
+                { date: '2025-09-16', time: '08:50', weight: 49.8, fat: 22.3, muscle: 36.2, bmi: 19.7, water: 55.4, bone: 2.1 }
             ]
         },
         '志玲': {
@@ -49,8 +49,8 @@ const appState = {
             waterPercentage: 56.8,
             boneWeight: 1.9,
             history: [
-                { date: '2025-07-20', time: '09:15', weight: 45.0, fat: 20.8, muscle: 32.4, bmi: 18.5, water: 56.8, bone: 1.9 },
-                { date: '2025-07-17', time: '19:20', weight: 45.2, fat: 21.0, muscle: 32.2, bmi: 18.6, water: 56.6, bone: 1.9 }
+                { date: '2025-09-18', time: '09:15', weight: 45.0, fat: 20.8, muscle: 32.4, bmi: 18.5, water: 56.8, bone: 1.9 },
+                { date: '2025-09-15', time: '19:20', weight: 45.2, fat: 21.0, muscle: 32.2, bmi: 18.6, water: 56.6, bone: 1.9 }
             ]
         },
         '访客': {
@@ -182,10 +182,10 @@ function navigateToPage(pageName) {
             showPage('page-add-user');
             break;
         case 'history':
-            window.location.href = 'history.html';
+            showDevelopmentNotice('历史数据功能');
             break;
         case 'settings':
-            window.location.href = 'settings.html';
+            showDevelopmentNotice('设置功能');
             break;
         case 'measure':
         case 'start-measurement':
@@ -451,3 +451,101 @@ document.addEventListener('DOMContentLoaded', () => {
         saveButton.addEventListener('click', saveNewUser);
     }
 });
+
+// ======================================== 
+// 开发状态提示功能
+// ======================================== 
+
+/**
+ * 显示开发中提示
+ */
+function showDevelopmentNotice(featureName) {
+    // 创建提示元素
+    const notice = document.createElement('div');
+    notice.className = 'development-notice';
+    notice.innerHTML = `
+        <div class="development-notice-content">
+            <div class="development-notice-icon">🚧</div>
+            <div class="development-notice-title">${featureName}正在开发中</div>
+            <div class="development-notice-message">该功能正在紧急开发中，敬请期待！</div>
+        </div>
+    `;
+    
+    // 添加样式
+    notice.style.cssText = `
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background: rgba(0, 0, 0, 0.7);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        z-index: 10000;
+        animation: fadeIn 0.3s ease-out;
+    `;
+    
+    // 内容样式
+    const style = document.createElement('style');
+    style.textContent = `
+        @keyframes fadeIn {
+            from { opacity: 0; transform: scale(0.9); }
+            to { opacity: 1; transform: scale(1); }
+        }
+        .development-notice-content {
+            background: white;
+            padding: 40px;
+            border-radius: 16px;
+            text-align: center;
+            max-width: 320px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.3);
+        }
+        .development-notice-icon {
+            font-size: 48px;
+            margin-bottom: 16px;
+        }
+        .development-notice-title {
+            font-size: 20px;
+            font-weight: 600;
+            color: #1e293b;
+            margin-bottom: 8px;
+        }
+        .development-notice-message {
+            font-size: 14px;
+            color: #64748b;
+            line-height: 1.5;
+        }
+    `;
+    
+    document.head.appendChild(style);
+    document.body.appendChild(notice);
+    
+    // 3秒后自动关闭
+    setTimeout(() => {
+        notice.style.animation = 'fadeIn 0.3s ease-out reverse';
+        setTimeout(() => {
+            if (notice.parentNode) {
+                notice.parentNode.removeChild(notice);
+            }
+            if (style.parentNode) {
+                style.parentNode.removeChild(style);
+            }
+        }, 300);
+    }, 3000);
+    
+    // 点击背景关闭
+    notice.addEventListener('click', (e) => {
+        if (e.target === notice) {
+            notice.style.animation = 'fadeIn 0.3s ease-out reverse';
+            setTimeout(() => {
+                if (notice.parentNode) {
+                    notice.parentNode.removeChild(notice);
+                }
+                if (style.parentNode) {
+                    style.parentNode.removeChild(style);
+                }
+            }, 300);
+        }
+    });
+}
