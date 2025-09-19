@@ -98,6 +98,46 @@
             border-radius: 8px;
             border: 1px solid #fecaca;
         }
+        
+        /* 开发状态样式 */
+        .nav-card.developing {
+            border-color: #10b981;
+            background: #f0fdf4;
+        }
+        
+        .nav-card.pending {
+            border-color: #f59e0b;
+            background: #fffbeb;
+        }
+        
+        .nav-card.pending .nav-btn {
+            background: #d1d5db;
+            color: #6b7280;
+            cursor: not-allowed;
+        }
+        
+        .status-badge {
+            position: absolute;
+            top: -8px;
+            right: -8px;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-size: 12px;
+            font-weight: 600;
+            color: white;
+        }
+        
+        .status-badge.developing {
+            background: #10b981;
+        }
+        
+        .status-badge.pending {
+            background: #f59e0b;
+        }
+        
+        .nav-card {
+            position: relative;
+        }
     </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
@@ -106,85 +146,107 @@
         <p class="project-desc">交互导航页</p>
         <p class="project-desc">产品中心 - 胡中华</p>
         
-        <!-- 核心应用流程 -->
-        <h2 class="section-title">🔄 核心应用流程</h2>
+        <!-- 核心开发页面 -->
+        <h2 class="section-title">� 核心开发页面</h2>
         <div class="nav-grid">
-            <div class="nav-card">
-                <h3>🏠 应用启动</h3>
-                <p>从开机页面开始，体验完整的应用启动流程</p>
-                <button class="nav-btn" onclick="window.location.href='boot.html'">启动应用</button>
-            </div>
-            
-            <div class="nav-card">
-                <h3>🏡 主界面</h3>
+            <div class="nav-card developing">
+                <div class="status-badge developing">开发中</div>
+                <h3>� 主测量界面</h3>
                 <p>用户中心，查看个人数据和功能导航</p>
                 <button class="nav-btn" onclick="window.location.href='main.html'">进入主界面</button>
             </div>
             
-            <div class="nav-card">
-                <h3>👤 添加用户</h3>
+            <div class="nav-card developing">
+                <div class="status-badge developing">开发中</div>
+                <h3>👤 用户信息录入界面</h3>
                 <p>新用户注册，包含智能虚拟键盘和完整信息录入</p>
                 <button class="nav-btn" onclick="window.location.href='add-user.html'">添加用户</button>
             </div>
-        </div>
-        
-        <!-- 测量功能模块 -->
-        <h2 class="section-title">⚖️ 测量功能模块</h2>
-        <div class="nav-grid">
-            <div class="nav-card">
-                <h3>📋 测量引导</h3>
-                <p>测量前的准备说明和操作指导</p>
-                <button class="nav-btn" onclick="window.location.href='measure-guide.html'">测量引导</button>
-            </div>
             
-            <div class="nav-card">
-                <h3>⏳ 测量进度</h3>
-                <p>实时显示测量进度和状态反馈</p>
-                <button class="nav-btn" onclick="window.location.href='measure-progress.html'">测量进度</button>
-            </div>
-            
-            <div class="nav-card">
-                <h3>� 测量结果</h3>
+            <div class="nav-card developing">
+                <div class="status-badge developing">开发中</div>
+                <h3>� 测量结果界面</h3>
                 <p>完整的体成分分析结果展示</p>
                 <button class="nav-btn" onclick="window.location.href='measure-result.html'">查看结果</button>
             </div>
             
-            <div class="nav-card">
-                <h3>� 访客测量</h3>
+            <div class="nav-card developing">
+                <div class="status-badge developing">开发中</div>
+                <h3>📋 详细报告界面</h3>
+                <p>详细报告展示和打印功能</p>
+                <button class="nav-btn" onclick="window.location.href='report.html?user=张三&weight=68.5'">详细报告</button>
+            </div>
+        </div>
+        
+        <!-- 其他功能页面 - 待开发 -->
+        <h2 class="section-title">⏳ 待开发页面</h2>
+        <div class="nav-grid">
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>🏠 应用启动</h3>
+                <p>从开机页面开始，体验完整的应用启动流程</p>
+                <button class="nav-btn" disabled>启动应用</button>
+            </div>
+        </div>
+        
+        <!-- 测量功能模块 -->
+        <h2 class="section-title">⚖️ 测量功能模块 - 待开发</h2>
+        <div class="nav-grid">
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>📋 测量引导</h3>
+                <p>测量前的准备说明和操作指导</p>
+                <button class="nav-btn" disabled>测量引导</button>
+            </div>
+            
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>⏳ 测量进度</h3>
+                <p>实时显示测量进度和状态反馈</p>
+                <button class="nav-btn" disabled>测量进度</button>
+            </div>
+            
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>🎯 访客测量</h3>
                 <p>访客模式的测量结果页面</p>
-                <button class="nav-btn" onclick="window.location.href='measure-guest-result.html'">访客结果</button>
+                <button class="nav-btn" disabled>访客结果</button>
             </div>
         </div>
         
         <!-- 数据管理 -->
-        <h2 class="section-title">📈 数据管理</h2>
+        <h2 class="section-title">📈 数据管理 - 待开发</h2>
         <div class="nav-grid">
-            <div class="nav-card">
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
                 <h3>📋 历史记录</h3>
                 <p>查看用户的历史测量数据和趋势分析</p>
-                <button class="nav-btn" onclick="window.location.href='history.html'">历史记录</button>
+                <button class="nav-btn" disabled>历史记录</button>
             </div>
             
-            <div class="nav-card">
-                <h3>� 结果详情</h3>
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>🔍 结果详情</h3>
                 <p>深度解析单次测量结果的详细数据</p>
-                <button class="nav-btn" onclick="window.location.href='detail.html?type=weight&value=65.2&user=华仔'">详细分析</button>
+                <button class="nav-btn" disabled>详细分析</button>
             </div>
         </div>
         
         <!-- 系统功能 -->
-        <h2 class="section-title">⚙️ 系统功能</h2>
+        <h2 class="section-title">⚙️ 系统功能 - 待开发</h2>
         <div class="nav-grid">
-            <div class="nav-card">
-                <h3>� 系统设置</h3>
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
+                <h3>⚙️ 系统设置</h3>
                 <p>调整应用设置和系统配置选项</p>
-                <button class="nav-btn" onclick="window.location.href='settings.html'">系统设置</button>
+                <button class="nav-btn" disabled>系统设置</button>
             </div>
             
-            <div class="nav-card">
+            <div class="nav-card pending">
+                <div class="status-badge pending">待开发</div>
                 <h3>🔌 关机页面</h3>
                 <p>优雅的关机动画和系统退出</p>
-                <button class="nav-btn" onclick="window.location.href='shutdown.html'">关机页面</button>
+                <button class="nav-btn" disabled>关机页面</button>
             </div>
         </div>
         
@@ -202,7 +264,12 @@
                 <p>重构前的单文件版本（历史版本对比）</p>
                 <button class="nav-btn" onclick="window.location.href='1.html'">原始版本</button>
             </div>
-        </div>
+            
+            <div class="nav-card">
+                <h3>🎨 开机动画参考</h3>
+                <p>科技感开机动画效果参考版本</p>
+                <button class="nav-btn" onclick="window.location.href='2.html'">动画参考</button>
+            </div>
         
         <div class="warning-text">
             <p>🚫 仅限内部交流使用 ‼️ 请勿对外传播，谢谢配合 ‼️</p>

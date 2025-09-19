@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>详细报告 - 乐福智能身体成分分析仪</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-inter">
+    <div class="screen-container">
+        <div id="page-report" class="page active">
+            <!-- 顶部标题栏 -->
+            <div class="page-header">
+                <button class="nav-btn back-btn" onclick="history.back()">
+                    <span class="icon">←</span>
+                    <span>返回</span>
+                </button>
+                <h1 class="page-title">详细报告</h1>
+                <button class="nav-btn print-btn" onclick="printReport()">
+                    <span class="icon">🖨️</span>
+                    <span>打印</span>
+                </button>
+            </div>
+
+            <!-- 报告内容 -->
+            <div class="report-container">
+                <!-- 用户基本信息 -->
+                <div class="report-section">
+                    <h2 class="section-title">用户信息</h2>
+                    <div class="info-grid">
+                        <div class="info-item">
+                            <span class="info-label">姓名</span>
+                            <span class="info-value" id="userName">张三</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">性别</span>
+                            <span class="info-value" id="userGender">男</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">年龄</span>
+                            <span class="info-value" id="userAge">28岁</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">身高</span>
+                            <span class="info-value" id="userHeight">175cm</span>
+                        </div>
+                        <div class="info-item">
+                            <span class="info-label">测量时间</span>
+                            <span class="info-value" id="measureTime">2024-03-15 14:30</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 测量结果概览 -->
+                <div class="report-section">
+                    <h2 class="section-title">测量结果概览</h2>
+                    <div class="result-grid">
+                        <div class="result-card primary">
+                            <div class="result-icon">⚖️</div>
+                            <div class="result-content">
+                                <h3>体重</h3>
+                                <div class="result-value">68.5 kg</div>
+                                <div class="result-status normal">正常</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">📊</div>
+                            <div class="result-content">
+                                <h3>BMI指数</h3>
+                                <div class="result-value">22.4</div>
+                                <div class="result-status normal">正常</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">💧</div>
+                            <div class="result-content">
+                                <h3>体水分</h3>
+                                <div class="result-value">58.2%</div>
+                                <div class="result-status normal">正常</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">💪</div>
+                            <div class="result-content">
+                                <h3>肌肉量</h3>
+                                <div class="result-value">52.4 kg</div>
+                                <div class="result-status good">良好</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🔥</div>
+                            <div class="result-content">
+                                <h3>脂肪率</h3>
+                                <div class="result-value">15.8%</div>
+                                <div class="result-status normal">正常</div>
+                            </div>
+                        </div>
+                        <div class="result-card">
+                            <div class="result-icon">🦴</div>
+                            <div class="result-content">
+                                <h3>骨骼肌率</h3>
+                                <div class="result-value">42.1%</div>
+                                <div class="result-status good">良好</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 详细分析图表 -->
+                <div class="report-section">
+                    <h2 class="section-title">身体成分分析</h2>
+                    <div class="chart-container">
+                        <canvas id="bodyCompositionChart" width="400" height="300"></canvas>
+                    </div>
+                    
+                    <!-- 数值详情 -->
+                    <div class="detail-grid">
+                        <div class="detail-item">
+                            <h4>蛋白质</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 78%"></div>
+                            </div>
+                            <span class="detail-value">11.2 kg (78%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <h4>无机盐</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 85%"></div>
+                            </div>
+                            <span class="detail-value">3.8 kg (85%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <h4>体脂肪</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 65%"></div>
+                            </div>
+                            <span class="detail-value">10.8 kg (65%)</span>
+                        </div>
+                        <div class="detail-item">
+                            <h4>骨量</h4>
+                            <div class="progress-bar">
+                                <div class="progress-fill" style="width: 92%"></div>
+                            </div>
+                            <span class="detail-value">3.2 kg (92%)</span>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 健康建议 -->
+                <div class="report-section">
+                    <h2 class="section-title">健康建议</h2>
+                    <div class="advice-container">
+                        <div class="advice-item">
+                            <div class="advice-icon">🏃‍♂️</div>
+                            <div class="advice-content">
+                                <h4>运动建议</h4>
+                                <p>您的肌肉量处于良好水平，建议保持每周3-4次有氧运动，每次30-45分钟，配合适量力量训练。</p>
+                            </div>
+                        </div>
+                        <div class="advice-item">
+                            <div class="advice-icon">🥗</div>
+                            <div class="advice-content">
+                                <h4>饮食建议</h4>
+                                <p>体脂率正常，建议均衡饮食，增加蛋白质摄入，减少精制糖类，多吃新鲜蔬菜和水果。</p>
+                            </div>
+                        </div>
+                        <div class="advice-item">
+                            <div class="advice-icon">💧</div>
+                            <div class="advice-content">
+                                <h4>水分补充</h4>
+                                <p>体水分比例良好，建议每天饮水1.5-2升，运动后及时补充水分和电解质。</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- 历史对比 -->
+                <div class="report-section">
+                    <h2 class="section-title">历史对比</h2>
+                    <div class="history-chart-container">
+                        <canvas id="historyChart" width="400" height="200"></canvas>
+                    </div>
+                    <div class="history-summary">
+                        <div class="trend-item">
+                            <span class="trend-label">体重变化</span>
+                            <span class="trend-value positive">+0.3kg</span>
+                            <span class="trend-period">较上次</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="trend-label">肌肉量</span>
+                            <span class="trend-value positive">+0.8kg</span>
+                            <span class="trend-period">较上次</span>
+                        </div>
+                        <div class="trend-item">
+                            <span class="trend-label">体脂率</span>
+                            <span class="trend-value negative">-1.2%</span>
+                            <span class="trend-period">较上次</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- 底部操作栏 -->
+            <div class="page-footer">
+                <button class="footer-btn secondary" onclick="history.back()">返回结果</button>
+                <button class="footer-btn primary" onclick="printReport()">打印报告</button>
+                <button class="footer-btn" onclick="saveReport()">保存PDF</button>
+            </div>
+        </div>
+    </div>
+
+    <script src="js/report.js"></script>
+</body>
+</html>
