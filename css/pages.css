@@ -59,17 +59,6 @@
     display: none; /* Chrome/Safari/WebKit */
 }
 
-.user-switcher { 
-    position: absolute; /* 改为absolute，相对于screen-container定位 */
-    top: 60px; /* 状态栏高度 */
-    left: 0;
-    right: 0;
-    /* 使用与底部导航栏一致的纯色背景，以解决滚动内容透出问题 */
-    background-color: #000000; 
-    z-index: 90; /* 确保在内容之上，但在底部导航之下 */
-    padding: 16px 24px 12px 24px; /* 增加顶部内边距，防止激活头像边框被截断 */
-    border-bottom: 0px solid #000000; /* 使用更明显的颜色匹配底部导航栏 */
-}
 
 /* --- 页面标题和用户信息 --- */
 .page-header {
@@ -360,18 +349,6 @@
     padding: 0 24px;
 }
 
-.user-list { 
-    display: flex; 
-    gap: 20px; 
-    align-items: center; 
-    overflow-x: auto; 
-    padding-bottom: 4px; /* 进一步减少底部padding */
-    scrollbar-width: none; 
-}
-
-.user-list::-webkit-scrollbar { 
-    display: none; 
-}
 
 .main-card { 
     flex-grow: 1; 
