@@ -615,6 +615,58 @@
     height: 24px;
 }
 
+/* --- Split FAB Container for two buttons --- */
+.fab-container-split {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+}
+
+.fab-container-split .fab {
+    flex: 1;
+    width: auto;
+    animation: none; /* Disable pulse animation for split buttons */
+}
+
+.fab-container-split .fab.primary {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
+.fab-container-split .fab.primary:hover {
+    box-shadow: 0 12px 30px rgba(22, 163, 74, 0.5);
+}
+
+/* --- Split FAB Container --- */
+.fab-container-split {
+    position: absolute;
+    bottom: 24px;
+    left: 24px;
+    right: 24px;
+    display: flex;
+    gap: 16px;
+    z-index: 100;
+}
+
+.fab-container-split .fab {
+    flex: 1;
+    width: auto;
+    animation: none;
+}
+
+.fab-container-split .fab.primary {
+    background: linear-gradient(135deg, #16a34a 0%, #15803d 100%);
+    box-shadow: 0 8px 25px rgba(22, 163, 74, 0.4);
+}
+
+.fab-container-split .fab.primary:hover {
+    box-shadow: 0 12px 30px rgba(22, 163, 74, 0.5);
+}
+
 /* --- 测量流程页面 --- */
 #page-measure-guide { 
     justify-content: center; 

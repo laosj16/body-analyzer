@@ -1,0 +1,237 @@
+/* report.css */
+
+/* --- 颜色变量定义 --- */
+:root {
+    --primary-color: #4f46e5; /* 主色调，用于评分等突出显示 */
+    --secondary-color: #10b981; /* 辅助色 */
+    --background-color: #111827; /* 页面背景色 */
+    --card-background-color: #1f2937; /* 卡片/模块背景色 */
+    --text-primary-color: #f9fafb; /* 主要文字颜色 */
+    --text-secondary-color: #9ca3af; /* 次要文字颜色 */
+    --border-color: #374151; /* 边框颜色 */
+    --low-color: #ef4444; /* 低于标准范围的颜色 */
+    --normal-color: #22c55e; /* 正常范围的颜色 */
+    --high-color: #f97316; /* 高于标准范围的颜色 */
+}
+
+/* --- 报告页面整体布局 --- */
+#page-report {
+    background-color: var(--background-color);
+    padding-bottom: 100px; /* 为底部的浮动按钮留出空间 */
+}
+
+/* --- 报告头部 --- */
+.report-header {
+    background: linear-gradient(145deg, #1f2937, #111827);
+    padding: 20px;
+    border-radius: 16px;
+    margin-bottom: 16px;
+    border: 1px solid var(--border-color);
+    margin-top: 40px; /* 与顶部状态栏的间距 */
+}
+
+/* --- 用户信息 --- */
+.report-user-info {
+    display: flex;
+    justify-content: space-around;
+    padding-bottom: 16px;
+    border-bottom: 1px solid var(--border-color);
+    margin-bottom: 16px;
+    text-align: center;
+}
+
+.info-item .label {
+    font-size: 14px;
+    color: var(--text-secondary-color);
+}
+
+.info-item .value {
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--text-primary-color);
+}
+
+/* --- 综合评分 --- */
+.report-score-container {
+    text-align: center;
+}
+
+.report-score-value {
+    font-size: 56px;
+    font-weight: 700;
+    color: var(--primary-color);
+    line-height: 1;
+}
+
+.report-score-label {
+    font-size: 16px;
+    color: var(--text-secondary-color);
+    margin-top: 4px;
+}
+
+/* --- 内容模块通用样式 --- */
+.report-section {
+    background-color: var(--card-background-color);
+    padding: 16px;
+    border-radius: 12px;
+    margin-bottom: 16px;
+}
+
+.section-title {
+    font-size: 20px;
+    font-weight: 600;
+    color: var(--text-primary-color);
+    margin-bottom: 16px;
+}
+
+/* --- 人体成分分析 --- */
+.composition-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.composition-item {
+    background-color: #374151;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.composition-item .value {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.composition-item .label {
+    font-size: 14px;
+    color: var(--text-secondary-color);
+}
+
+/* --- 肌肉-脂肪分析（状态条） --- */
+.bar-analysis-item {
+    margin-bottom: 16px;
+}
+
+.bar-analysis-item .header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 8px;
+}
+
+.bar-analysis-item .label {
+    font-size: 16px;
+    color: var(--text-secondary-color);
+}
+
+.bar-analysis-item .value {
+    font-size: 16px;
+    font-weight: 600;
+    color: var(--text-primary-color);
+}
+
+/* 状态条背景 */
+.status-bar-bg {
+    height: 10px;
+    background-color: #374151;
+    border-radius: 5px;
+    overflow: hidden;
+    display: flex;
+}
+
+/* 状态条分段 */
+.status-segment {
+    height: 100%;
+}
+
+/* 状态指示器容器 */
+.status-indicator {
+    position: relative;
+    height: 12px;
+    margin-top: 4px;
+}
+
+/* 指示器圆点 */
+.indicator-dot {
+    width: 12px;
+    height: 12px;
+    border-radius: 50%;
+    background-color: white;
+    position: absolute;
+    top: 0;
+    transform: translateX(-50%);
+    border: 2px solid var(--background-color);
+}
+
+/* --- 肥胖分析 --- */
+.obesity-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 12px;
+}
+
+.obesity-item {
+    background-color: #374151;
+    padding: 12px;
+    border-radius: 8px;
+    text-align: center;
+}
+
+.obesity-item .value {
+    font-size: 24px;
+    font-weight: 600;
+}
+
+.obesity-item .label {
+    font-size: 14px;
+    color: var(--text-secondary-color);
+}
+
+/* --- 与上次测量对比 --- */
+.comparison-table {
+    width: 100%;
+}
+
+.comparison-table tr {
+    border-bottom: 1px solid var(--border-color);
+}
+
+.comparison-table td {
+    padding: 10px 4px;
+    font-size: 16px;
+}
+
+.comparison-table .label {
+    color: var(--text-secondary-color);
+}
+
+.comparison-table .value {
+    text-align: right;
+    font-weight: 500;
+}
+
+.comparison-change {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    gap: 4px;
+}
+
+.change-arrow.up {
+    color: var(--high-color); /* 上升箭头颜色 */
+}
+
+.change-arrow.down {
+    color: var(--normal-color); /* 下降箭头颜色 */
+}
+
+/* --- 综合评价 --- */
+.evaluation-text {
+    font-size: 16px;
+    line-height: 1.6;
+    color: var(--text-secondary-color);
+}
+
+/* The following styles are now in pages.css */
+/* .fab-container-split, .fab-container-split .fab, etc. */

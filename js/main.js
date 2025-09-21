@@ -135,7 +135,7 @@ function calculateBMR(userData) {
 
 // 查看详细数据
 function viewMoreData() {
-    window.location.href = 'detail.html';
+    window.location.href = 'report.html';
 }
 
 // 模拟称重功能
