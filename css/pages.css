@@ -580,46 +580,41 @@
     margin-top: 4px; 
 }
 
-.bottom-nav { 
+/* --- 浮动操作按钮 --- */
+.fab-container {
     position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    width: 100%;
-    height: 88px; 
-    display: flex; 
-    justify-content: space-around; 
-    align-items: center; 
-    background-color: #1C1C1E; 
-    flex-shrink: 0; 
-    border-top: 1px solid #616161;
+    bottom: 32px;
+    left: 50%;
+    transform: translateX(-50%);
     z-index: 100;
 }
 
-.nav-item { 
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
-    gap: 6px; 
-    color: #BDBDBD; 
-    font-size: 18px; 
-    cursor: pointer; 
-    padding: 10px 8px; 
-    border-radius: 8px; 
-    min-width: 80px; 
+.fab {
+    background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+    color: white;
+    border: none;
+    width: 160px;
+    height: 64px;
+    border-radius: 32px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 18px;
+    font-weight: 600;
+    cursor: pointer;
+    box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    transition: all 0.3s ease;
 }
 
-.nav-item:hover { 
-    background-color: #333; 
+.fab:hover {
+    transform: translateY(-3px) scale(1.05);
+    box-shadow: 0 12px 30px rgba(79, 70, 229, 0.5);
 }
 
-.nav-item.active { 
-    color: #0D47A1; 
-}
-
-.nav-icon { 
-    width: 40px; 
-    height: 40px; 
+.fab svg {
+    width: 24px;
+    height: 24px;
 }
 
 /* --- 测量流程页面 --- */
@@ -986,4 +981,3 @@
     color: #BDBDBD; 
     line-height: 1.6; 
 }
-
