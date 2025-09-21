@@ -140,37 +140,5 @@ body {
 }
 
 /* ======================================== */
-/* 状态栏样式 */
+/* (状态栏样式已迁移到 components.css) */
 /* ======================================== */
-.status-bar {
-    position: fixed;
-    top: 20px; /* 配合 body 的 padding */
-    left: 50%;
-    transform: translateX(-50%);
-    width: 480px; /* 与 screen-container 宽度一致 */
-    right: 0;
-    height: 44px;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 0 24px;
-    color: #ffffff;
-    z-index: 10;
-    background-color: #000000; /* 改为不透明背景 */
-}
-
-.status-bar .time {
-    font-size: 16px;
-    font-weight: 600;
-}
-
-.status-bar .status-icons {
-    display: flex;
-    align-items: center;
-    gap: 8px;
-}
-
-.status-bar .status-icons svg {
-    width: 20px;
-    height: 20px;
-}
