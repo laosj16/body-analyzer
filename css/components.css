@@ -284,6 +284,7 @@
     font-size: 18px;
     font-weight: 600;
     color: #e5e7eb;
+    background-color: #1C1C1E; /* 新增：添加背景色以防止滚动内容透出 */
 }
 
 .status-bar .time {

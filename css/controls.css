@@ -1,0 +1,83 @@
+/* ======================================== */
+/* 底部控制区域 */
+/* ======================================== */
+.control-area {
+    position: fixed; /* 改为fixed以始终停留在底部 */
+    bottom: 0;
+    left: 0;
+    right: 0;
+    width: 100%;
+    background-color: #111827; /* 深灰色背景 */
+    padding: 20px 0;
+    z-index: 200;
+    border-top: 1px solid #374151; /* 顶部边框 */
+    box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
+}
+
+.control-btn-container {
+    display: flex;
+    justify-content: center; /* 居中对齐 */
+    align-items: center;
+    gap: 12px; /* 按钮间距 */
+    max-width: 100%;
+    margin: 0 auto;
+    padding: 0 20px;
+    flex-wrap: wrap; /* 允许换行 */
+}
+
+.control-btn {
+    background-color: #374151; /* 按钮背景色 */
+    color: #d1d5db; /* 文字颜色 */
+    border: none;
+    border-radius: 10px;
+    padding: 12px 18px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s;
+    min-width: 100px;
+    text-align: center;
+}
+
+.control-btn:hover {
+    background-color: #4b5563;
+    color: #ffffff;
+    transform: translateY(-2px);
+}
+
+/* 特定功能按钮颜色 */
+.control-btn.measure {
+    background-color: #1d4ed8; /* 测量按钮主题色 */
+    color: #ffffff;
+}
+.control-btn.measure:hover { background-color: #2563eb; }
+
+.control-btn.save {
+    background-color: #059669;
+    color: #ffffff;
+}
+.control-btn.save:hover { background-color: #10b981; }
+
+.control-btn.delete {
+    background-color: #dc2626;
+    color: #ffffff;
+}
+.control-btn.delete:hover { background-color: #ef4444; }
+
+.control-btn.back {
+    background-color: #6b7280;
+    color: #ffffff;
+}
+.control-btn.back:hover { background-color: #9ca3af; }
+
+.control-btn.print {
+    background-color: #16a34a; /* 绿色 */
+    color: #ffffff;
+}
+.control-btn.print:hover { background-color: #15803d; }
+
+/* 用户特定按钮颜色 */
+.control-btn.user-华仔 { background-color: #2563EB; color: white; }
+.control-btn.user-亦菲 { background-color: #DB2777; color: white; }
+.control-btn.user-志玲 { background-color: #059669; color: white; }
+.control-btn.user-访客 { background-color: #616161; color: white; }

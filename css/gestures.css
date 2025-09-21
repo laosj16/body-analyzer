@@ -1,0 +1,59 @@
+/* ======================================== */
+/* 全屏手势支持 */
+/* ======================================== */
+
+.gesture-edge {
+    position: absolute;
+    z-index: 500;
+    opacity: 0; /* 平时不可见 */
+    /* 用于调试时可以取消注释以下行 */
+    /* background: rgba(255, 0, 0, 0.2); */
+}
+
+.gesture-edge.top {
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 50px;
+}
+
+.gesture-edge.left {
+    top: 0;
+    left: 0;
+    width: 40px;
+    height: 100%;
+}
+
+.gesture-edge.right {
+    top: 0;
+    right: 0;
+    width: 40px;
+    height: 100%;
+}
+
+/* 滑动指示器 */
+.swipe-indicator {
+    position: absolute;
+    background-color: rgba(255, 255, 255, 0.7);
+    border-radius: 4px;
+    opacity: 0;
+    transition: opacity 0.3s ease-out;
+    pointer-events: none;
+    z-index: 1000;
+}
+
+.swipe-indicator.horizontal {
+    bottom: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 100px;
+    height: 5px;
+}
+
+.swipe-indicator.vertical {
+    top: 50%;
+    right: 20px;
+    transform: translateY(-50%);
+    width: 5px;
+    height: 100px;
+}

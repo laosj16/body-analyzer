@@ -64,10 +64,11 @@
     top: 60px; /* 状态栏高度 */
     left: 0;
     right: 0;
-    background-color: #000000; /* 与屏幕背景一致 */
+    /* 使用与底部导航栏一致的纯色背景，以解决滚动内容透出问题 */
+    background-color: #000000; 
     z-index: 90; /* 确保在内容之上，但在底部导航之下 */
-    padding: 8px 24px 12px 24px; /* 进一步减少上下padding */
-    border-bottom: 1px solid rgba(255, 255, 255, 0.1); /* 添加分隔线 */
+    padding: 16px 24px 12px 24px; /* 增加顶部内边距，防止激活头像边框被截断 */
+    border-bottom: 0px solid #000000; /* 使用更明显的颜色匹配底部导航栏 */
 }
 
 /* --- 页面标题和用户信息 --- */
@@ -985,3 +986,4 @@
     color: #BDBDBD; 
     line-height: 1.6; 
 }
+

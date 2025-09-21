@@ -9,51 +9,160 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/pages.css">
     <link rel="stylesheet" href="css/controls.css">
+    <style>
+        .screen-container {
+            background-color: #000000;
+        }
+        .page {
+            color: #ffffff;
+            padding: 16px;
+            padding-top: 60px; /* 为状态栏留出空间 */
+            padding-bottom: 24px; /* 恢复正常内边距 */
+        }
+        #report-content {
+            font-family: 'Noto Sans SC', sans-serif;
+        }
+        .report-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 12px;
+        }
+        .grid-col-span-2 {
+            grid-column: span 2;
+        }
+        .report-module {
+            background-color: #1f2937;
+            border-radius: 12px;
+            padding: 16px;
+            border: 1px solid #374151;
+        }
+        .module-title {
+            font-size: 18px;
+            font-weight: 600;
+            color: #e5e7eb;
+            margin-bottom: 16px;
+            border-bottom: 1px solid #374151;
+            padding-bottom: 10px;
+        }
+        .info-table .info-row {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            font-size: 16px;
+            padding: 6px 0;
+        }
+        .info-table .label { color: #9ca3af; }
+        .info-table .value { color: #ffffff; font-weight: 500; }
+        .info-table .range { color: #6b7280; font-size: 12px; }
+
+        /* 条形图样式 */
+        .bar-chart-item { margin-bottom: 12px; }
+        .bar-chart-label { font-size: 16px; color: #9ca3af; margin-bottom: 6px; }
+        .bar-container { background-color: #374151; border-radius: 4px; overflow: hidden; height: 22px; position: relative; }
+        .bar { background-color: #3b82f6; height: 100%; transition: width 1s ease-out; }
+        .bar-value { position: absolute; right: 8px; top: 50%; transform: translateY(-50%); font-size: 12px; color: white; font-weight: 600; }
+        .standard-range { position: absolute; top: 0; bottom: 0; background-color: rgba(255, 255, 255, 0.1); }
+
+        .fixed-bottom-btn {
+            position: absolute;
+            bottom: 24px;
+            left: 24px;
+            right: 24px;
+            padding: 16px;
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            background-color: #16a34a;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            text-align: center;
+        }
+    </style>
 </head>
 <body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container" id="screen-container">
-        <!-- 状态栏 -->
-        <div class="status-bar">
-            <span class="time" id="current-time">14:35</span>
-            <div class="status-icons">
-                <!-- 蓝牙图标 -->
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
-                    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
-                </svg>
-                <!-- WiFi图标 -->
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
-                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
-                </svg>
+        <div id="page-report" class="page active">
+            <!-- 状态栏 -->
+            <div class="status-bar">
+                <span class="time" id="current-time">14:35</span>
+                <div class="status-icons">
+                    <!-- 蓝牙图标 -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                        <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                    </svg>
+                    <!-- WiFi图标 -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                        <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                    </svg>
+                </div>
+            </div>
+            <div id="report-content">
+                <div class="report-grid">
+                    <!-- 用户信息 -->
+                    <div class="report-module grid-col-span-2">
+                        <div class="info-table">
+                            <div class="info-row">
+                                <span class="label">ID:</span><span class="value" id="user-name">--</span>
+                                <span class="label">身高:</span><span class="value" id="user-height">-- cm</span>
+                                <span class="label">年龄:</span><span class="value" id="user-age">--</span>
+                                <span class="label">性别:</span><span class="value" id="user-gender">--</span>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- 人体成分分析 -->
+                    <div class="report-module grid-col-span-2">
+                        <h3 class="module-title">人体成分分析</h3>
+                        <div class="info-table" id="composition-analysis"></div>
+                    </div>
+
+                    <!-- 肌肉脂肪分析 -->
+                    <div class="report-module grid-col-span-2">
+                        <h3 class="module-title">肌肉脂肪分析</h3>
+                        <div id="muscle-fat-analysis"></div>
+                    </div>
+
+                    <!-- 肥胖分析 -->
+                    <div class="report-module">
+                        <h3 class="module-title">肥胖分析</h3>
+                        <div id="obesity-analysis"></div>
+                    </div>
+
+                    <!-- InBody评分 -->
+                    <div class="report-module">
+                        <h3 class="module-title">InBody 评分</h3>
+                        <div class="text-center">
+                            <span id="inbody-score" class="text-6xl font-bold">--</span>
+                            <span class="text-2xl text-gray-400">/ 100</span>
+                        </div>
+                    </div>
+
+                    <!-- 节段脂肪分析 -->
+                    <div class="report-module grid-col-span-2">
+                        <h3 class="module-title">节段脂肪分析</h3>
+                        <div class="info-table" id="segmental-fat-analysis"></div>
+                    </div>
+
+                    <!-- 研究项目 -->
+                    <div class="report-module grid-col-span-2">
+                        <h3 class="module-title">研究项目</h3>
+                        <div class="info-table" id="research-items"></div>
+                    </div>
+                </div>
+                <!-- 打印按钮（屏幕内） -->
+                <button class="fixed-bottom-btn" id="print-btn">打印报告</button>
             </div>
         </div>
-
-        <div id="page-report" class="page active" style="padding-top: 60px;">
-            <h1 style="text-align: center; color: white; font-size: 24px; margin-top: 20px;">详细报告页面 - 待开发</h1>
+    </div>
+    <!-- 底部控制区域 -->
+    <div class="control-area">
+        <div class="control-btn-container">
+            <button class="control-btn nav" onclick="window.location.href='index.html'">返回导航页</button>
+            <button class="control-btn back" onclick="window.history.back()">返回</button>
         </div>
     </div>
-
-    <script>
-        // 实时时间更新
-        function updateTime() {
-            const now = new Date();
-            const hours = now.getHours().toString().padStart(2, '0');
-            const minutes = now.getMinutes().toString().padStart(2, '0');
-            const timeString = `${hours}:${minutes}`;
-            
-            const timeElement = document.querySelector('.status-bar .time');
-            if (timeElement) {
-                timeElement.textContent = timeString;
-            }
-        }
-
-        // 页面加载时初始化
-        document.addEventListener('DOMContentLoaded', function() {
-            updateTime();
-            setInterval(updateTime, 60000);
-        });
-    </script>
+    <script src="js/report.js"></script>
 </body>
 </html>
