@@ -10,108 +10,48 @@
     <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/pages.css">
-    <link rel="stylesheet" href="css/controls.css">
-    <link rel="stylesheet" href="css/gestures.css">
     <link rel="stylesheet" href="css/measure-guide.css">
 </head>
-<body class="bg-slate-50 text-slate-900 font-inter">
+<body class="bg-gray-900 text-slate-100 font-inter">
     <div class="screen-container" id="screen-container">
-        <!-- 手势边缘区域 -->
-        <div class="gesture-edge top" data-gesture="top"></div>
-        <div class="gesture-edge left" data-gesture="left"></div>
-        <div class="gesture-edge right" data-gesture="right"></div>
-        
-        <!-- 滑动指示器 -->
-        <div class="swipe-indicator horizontal" id="swipe-indicator-horizontal"></div>
-        
-        <!-- 测量引导页 -->
-        <div id="page-measure-guide" class="page active">
-            <!-- 顶部状态栏 -->
-            <div class="measure-header">
-                <div class="step-indicator">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span class="time" id="current-time"></span>
+            <div class="status-icons">
+                <svg viewBox="0 0 24 24" fill="#2196F3"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg>
+                <svg viewBox="0 0 24 24" fill="#4CAF50"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            </div>
+        </div>
+
+        <!-- 主内容区: 准备测量 -->
+        <div class="main-content" id="main-content">
+            <div class="step-section">
+                <div class="step-indicators">
                     <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
-                <div class="step-text">准备测量</div>
-                
-                <div class="user-badge" id="current-user-info">
-                    <div class="user-avatar-mini">
-                        <div class="avatar-circle-mini" id="user-avatar">华</div>
-                    </div>
-                    <span class="user-name-mini" id="current-user-name">华仔</span>
+                <div class="step-title">准备测量</div>
+                <div class="user-info">
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
                 </div>
             </div>
-            
-            <!-- 主要内容区域 -->
-            <div class="measure-content">
-                <!-- 设备示意图 -->
-                <div class="device-illustration">
-                    <div class="scale-platform">
-                        <div class="footprint-area">
-                            <div class="footprint left-foot">
-                                <div class="foot-icon">👣</div>
-                                <div class="foot-label">左脚</div>
-                            </div>
-                            <div class="footprint right-foot">
-                                <div class="foot-icon">👣</div>
-                                <div class="foot-label">右脚</div>
-                            </div>
-                        </div>
-                        <div class="handle-area">
-                            <div class="handle left-handle">
-                                <div class="handle-grip"></div>
-                                <div class="handle-label">左手握持</div>
-                            </div>
-                            <div class="handle right-handle">
-                                <div class="handle-grip"></div>
-                                <div class="handle-label">右手握持</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 测量指引 -->
-                <div class="measurement-instructions">
-                    <h2 class="instruction-title">测量准备</h2>
-                    <div class="instruction-list">
-                        <div class="instruction-item">
-                            <div class="instruction-number">1</div>
-                            <div class="instruction-content">
-                                <div class="instruction-text">脱下鞋袜，双脚站在金属电极上</div>
-                                <div class="instruction-subtext">确保脚部完全接触电极片</div>
-                            </div>
-                        </div>
-                        <div class="instruction-item">
-                            <div class="instruction-number">2</div>
-                            <div class="instruction-content">
-                                <div class="instruction-text">双手握住手柄，手心接触电极</div>
-                                <div class="instruction-subtext">保持手部干燥，紧握手柄</div>
-                            </div>
-                        </div>
-                        <div class="instruction-item">
-                            <div class="instruction-number">3</div>
-                            <div class="instruction-content">
-                                <div class="instruction-text">身体保持直立，双臂自然下垂</div>
-                                <div class="instruction-subtext">测量过程中请勿移动</div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                
-                <!-- 注意事项 -->
-                <div class="safety-notice">
-                    <div class="notice-header">
-                        <div class="notice-icon">⚠️</div>
-                        <span class="notice-title">测量注意事项</span>
-                    </div>
-                    <div class="notice-content">
-                        测量前2小时避免剧烈运动 • 测量前30分钟避免大量饮水
-                    </div>
-                </div>
+                                    <div class="device-section">
+                <img src="images/body-analyzer-device.png" alt="体脂秤" class="device-image">
+            </div>
+            <!-- 呼吸等待动画 -->
+            <div class="waiting-indicator-container">
+                <div class="waiting-indicator"></div>
+            </div>
+            <!-- 详细说明文字 -->
+            <div class="instruction-text-container">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="tip-icon">
+                    <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25.75.75 0 00.75.75h8.5a.75.75 0 00.75-.75A5.25 5.25 0 0012 1.5zM10.5 10.5a.75.75 0 00-1.5 0v.375a3 3 0 006 0v-.375a.75.75 0 00-1.5 0V12a1.5 1.5 0 01-3 0v-1.5zm-3.035 6.225A.75.75 0 006 17.25v.025a4.5 4.5 0 008.996 0v-.025a.75.75 0 00-1.465-.224 3 3 0 01-6.066 0z" clip-rule="evenodd" />
+                </svg>
+                <p>请赤脚站在电极片上，并双手握紧手柄</p>
             </div>
         </div>
     </div>
@@ -123,9 +63,7 @@
             <button class="control-btn back" onclick="goBack()">返回</button>
             <button class="control-btn measure" onclick="startMeasuring()">模拟上秤</button>
         </div>
-    </div>
-
-    <script>
+    </div>    <script>
         function goBack() {
             window.location.href = 'main.html';
         }
@@ -133,53 +71,37 @@
         function goToIndex() {
             window.location.href = 'index.html';
         }
-        
+
         function startMeasuring() {
-            window.location.href = 'measure-progress.html';
+            window.location.href = 'measure-guide1.html';
         }
         
-        // 页面加载时显示当前用户信息
-        window.onload = function() {
-            // 尝试从localStorage获取测量数据
-            const measurementData = localStorage.getItem('currentMeasurement');
-            let userName = '华仔';
-            let userAvatar = '华';
-            let userColor = '#3b82f6';
+        // 实时时间更新
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            const timeString = `${hours}:${minutes}`;
             
-            if (measurementData) {
-                const data = JSON.parse(measurementData);
-                userName = data.user || '华仔';
-                // 设置用户头像和颜色
-                switch(userName) {
-                    case '华仔':
-                        userAvatar = '华';
-                        userColor = '#3b82f6';
-                        break;
-                    case '亦菲':
-                        userAvatar = '亦';
-                        userColor = '#db2777';
-                        break;
-                    case '志玲':
-                        userAvatar = '志';
-                        userColor = '#059669';
-                        break;
-                    case '访客':
-                        userAvatar = 'G';
-                        userColor = '#616161';
-                        break;
-                    default:
-                        userAvatar = userName.substring(0, 1);
-                        userColor = '#3b82f6';
-                }
+            const timeElement = document.querySelector('.status-bar .time');
+            if (timeElement) {
+                timeElement.textContent = timeString;
             }
-            
-            // 更新页面显示
-            document.getElementById('current-user-name').textContent = userName;
-            const avatarElement = document.getElementById('user-avatar');
-            avatarElement.textContent = userAvatar;
-            avatarElement.style.background = userColor;
-        };
+        }
+
+        // 页面加载时初始化
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+        });
+
+        // 快捷键支持
+        document.addEventListener('keydown', function(event) {
+            if (event.key === 'Escape') {
+                goBack();
+            } else if (event.key === 'Enter' || event.key === ' ') {
+                startMeasuring();
+            }
+        });
     </script>
-    <script src="js/gestures.js"></script>
 </body>
-</html>

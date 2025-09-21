@@ -1,0 +1,307 @@
+/* 测量引导页面 - 完全按照图片设计 */
+
+/* ======================================== 
+   页面基础设置
+======================================== */
+#page-measure-guide {
+    background: #000000;
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+}
+
+/* 确保body背景为白色 */
+body {
+    background-color: #f8fafc !important;
+}
+
+.screen-container {
+    background: #000000;
+}
+
+/* ======================================== 
+   状态栏样式 - 按图片精确复制
+======================================== */
+.status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 20px;
+    background-color: #000000;
+    color: #ffffff;
+    font-size: 16px;
+    font-weight: 600;
+    flex-shrink: 0;
+    height: 44px;
+}
+
+.status-time {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+}
+
+.status-icons {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.bluetooth-icon,
+.wifi-icon {
+    opacity: 1;
+}
+
+/* ======================================== 
+   主内容区域 - 垂直布局
+======================================== */
+.main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+    overflow-y: auto;
+    align-items: center;
+}
+
+/* ======================================== 
+   步骤指示器区域 - 顶部居中
+======================================== */
+.step-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 12px;
+    padding: 20px 0;
+    width: 100%;
+}
+
+.step-indicators {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.step-dot {
+    width: 8px;
+    height: 8px;
+    border-radius: 50%;
+    background: #666666;
+    transition: all 0.3s ease;
+}
+
+.step-dot.active {
+    background: #00d4ff;
+    width: 12px;
+    height: 12px;
+}
+
+.step-line {
+    width: 20px;
+    height: 1px;
+    background: #666666;
+}
+
+.step-title {
+    font-size: 18px;
+    font-weight: 600;
+    color: #ffffff;
+    text-align: center;
+    margin: 8px 0;
+}
+
+.user-info {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    background: rgba(0, 212, 255, 0.15);
+    padding: 6px 12px;
+    border-radius: 15px;
+    border: 1px solid rgba(0, 212, 255, 0.4);
+}
+
+.user-avatar {
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: #00d4ff;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+}
+
+.user-name {
+    font-size: 12px;
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* ======================================== 
+   产品图片区域 - 居中显示
+======================================== */
+.device-section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 10px 0;
+    width: 100%;
+}
+
+.device-image {
+    width: 140px;
+    height: auto;
+    object-fit: contain;
+    margin: 0 auto;
+}
+
+.device-instructions {
+    display: flex;
+    justify-content: space-between;
+    width: 200px;
+    margin-top: 8px;
+}
+
+.instruction-label {
+    background: #00d4ff;
+    color: #000000;
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    text-align: center;
+}
+
+/* ======================================== 
+   测量准备区域 - 深蓝色边框
+======================================== */
+.preparation-section {
+    background: rgba(0, 30, 60, 0.8);
+    border: 1.5px solid rgba(0, 100, 200, 0.6);
+    border-radius: 8px;
+    padding: 16px;
+    margin: 15px 20px;
+    width: calc(100% - 40px);
+}
+
+.section-title {
+    font-size: 16px;
+    font-weight: 600;
+    color: #ffffff;
+    margin-bottom: 12px;
+    text-align: left;
+}
+
+.preparation-list {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.preparation-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 10px;
+}
+
+.item-number {
+    width: 18px;
+    height: 18px;
+    border-radius: 50%;
+    background: #00d4ff;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 11px;
+    font-weight: 700;
+    flex-shrink: 0;
+    margin-top: 1px;
+}
+
+.item-content {
+    flex: 1;
+}
+
+.item-main {
+    font-size: 13px;
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.3;
+    margin-bottom: 2px;
+}
+
+.item-sub {
+    font-size: 11px;
+    color: #aaaaaa;
+    line-height: 1.3;
+}
+
+/* ======================================== 
+   注意事项区域 - 黄色警告框
+======================================== */
+.notice-section {
+    background: rgba(40, 30, 0, 0.9);
+    border: 1.5px solid rgba(200, 150, 0, 0.8);
+    border-radius: 8px;
+    padding: 12px 16px;
+    margin: 8px 20px 20px 20px;
+    width: calc(100% - 40px);
+}
+
+.notice-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    margin-bottom: 6px;
+}
+
+.notice-icon {
+    font-size: 14px;
+}
+
+.notice-title {
+    font-size: 13px;
+    font-weight: 600;
+    color: #ffcc00;
+}
+
+.notice-content {
+    font-size: 11px;
+    color: #e8e8e8;
+    line-height: 1.4;
+}
+
+/* ======================================== 
+   响应式微调
+======================================== */
+@media (max-height: 800px) {
+    .step-section {
+        padding: 15px 0;
+        gap: 8px;
+    }
+    
+    .device-section {
+        padding: 8px 0;
+    }
+    
+    .device-image {
+        width: 120px;
+    }
+    
+    .preparation-section {
+        margin: 10px 20px;
+        padding: 14px;
+    }
+    
+    .notice-section {
+        margin: 6px 20px 15px 20px;
+        padding: 10px 14px;
+    }
+}

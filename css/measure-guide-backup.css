@@ -1,0 +1,379 @@
+/* 测量引导页面专用样式 - 统一背景色 */
+
+/* ======================================== 
+   页面背景统一为白色，优化屏幕利用率
+======================================== */
+#page-measure-guide {
+    background: #000000;  /* 屏幕内保持黑色 */
+    color: #ffffff;
+    display: flex;
+    flex-direction: column;
+    height: 100%;
+    overflow: hidden;
+    font-size: 16px;  /* 增大基础字体 */
+    padding: 0;  /* 移除默认内边距 */
+}
+
+.screen-container {
+    background: #000000;  /* 屏幕容器黑色 */
+}
+
+/* 确保body背景为白色 */
+body {
+    background-color: #f8fafc !important;
+}
+
+/* ======================================== 
+   独立状态栏样式
+======================================== */
+.measure-status-bar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: 60px;
+    padding: 0 24px;
+    background-color: #000000;
+    color: #ffffff;
+    border-bottom: 1px solid #1f2937;
+    font-weight: 600;
+    flex-shrink: 0;
+}
+
+.status-time {
+    font-size: 20px;
+    color: #ffffff;
+}
+
+.status-right {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.bluetooth-icon,
+.wifi-icon {
+    opacity: 0.9;
+    transition: opacity 0.2s ease;
+}
+
+.bluetooth-icon:hover,
+.wifi-icon:hover {
+    opacity: 1;
+}
+
+/* ======================================== 
+   主内容区域 - 参考main.html布局
+======================================== */
+.measure-main-content {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+}
+
+/* ======================================== 
+   步骤指示器区域 - 固定在顶部
+======================================== */
+.measure-header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 8px 20px 8px 20px;  /* 减少上下内边距 */
+    background: transparent;  /* 移除背景色 */
+    border-bottom: none;      /* 移除边框 */
+    flex-shrink: 0;
+}
+
+.step-indicator {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;  /* 增加底部间距 */
+}
+
+.step-dot {
+    width: 10px;   /* 增大尺寸 */
+    height: 10px;
+    border-radius: 50%;
+    background: #666666;
+    transition: all 0.3s ease;
+}
+
+.step-dot.active {
+    background: #00d4ff;
+    transform: scale(1.4);  /* 增大激活状态 */
+    box-shadow: 0 0 0 3px rgba(0, 212, 255, 0.3);
+}
+
+.step-line {
+    width: 28px;  /* 增加长度 */
+    height: 1px;
+    background: #666666;
+    margin: 0 8px;  /* 增加间距 */
+}
+
+.step-text {
+    font-size: 16px;  /* 增大字体 */
+    font-weight: 600;
+    color: #00d4ff;
+    margin-bottom: 10px;  /* 增加间距 */
+}
+
+.user-badge {
+    display: flex;
+    align-items: center;
+    background: rgba(0, 212, 255, 0.1);
+    padding: 6px 16px;  /* 增加内边距 */
+    border-radius: 14px;  /* 增大圆角 */
+    border: 1px solid rgba(0, 212, 255, 0.3);
+}
+
+.user-avatar-mini {
+    margin-right: 8px;  /* 增加间距 */
+}
+
+.avatar-circle-mini {
+    width: 24px;  /* 增大尺寸 */
+    height: 24px;
+    border-radius: 50%;
+    background: #00d4ff;
+    color: #000000;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;  /* 增大字体 */
+    font-weight: 600;
+}
+
+.user-name-mini {
+    font-size: 14px;  /* 增大字体 */
+    font-weight: 500;
+    color: #ffffff;
+}
+
+/* ======================================== 
+   可滚动内容区域 - 减少底部留白
+======================================== */
+.measure-content {
+    flex: 1;
+    padding: 4px 20px 8px 20px;  /* 进一步减少上下内边距 */
+    display: flex;
+    flex-direction: column;
+    gap: 8px;  /* 减少元素间距 */
+    overflow-y: auto;
+    min-height: 0;
+}
+
+/* ======================================== 
+   真实产品示意图样式 - 替换CSS绘制
+======================================== */
+.device-illustration {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 120px;  /* 大幅减少高度避免重叠 */
+    flex-shrink: 0;
+    margin-top: 20px;  /* 图片区域总共往下移动20px，确保边框显示完全 */
+    margin-bottom: 16px;  /* 增加底部间距避免重叠 */
+}
+
+.measurement-diagram {
+    text-align: center;
+    width: 100%;
+    max-width: 350px;
+}
+
+.diagram-title {
+    font-size: 13px;  /* 稍微减小字体 */
+    color: #00d4ff;
+    margin-bottom: 8px;  /* 减少底部间距 */
+    font-weight: 500;
+}
+
+.diagram-image {
+    position: relative;
+    width: 100%;
+    max-width: 100%;
+    margin: 0 auto;
+    background: transparent;  /* 取消背景色 */
+    border-radius: 0;  /* 取消圆角 */
+    border: none;  /* 取消外框 */
+    padding: 16px;  /* 恢复正常内边距 */
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+}
+
+.device-photo {
+    width: 100%;
+    max-width: 180px;  /* 减小图片最大宽度 */
+    height: auto;
+    object-fit: contain;
+    border-radius: 6px;  /* 减小圆角 */
+    margin-bottom: 8px;  /* 减少底部间距 */
+}
+
+.usage-instruction {
+    position: relative;
+    width: 100%;
+    height: 20px;  /* 减小高度 */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    font-size: 10px;  /* 减小字体 */
+    color: #00d4ff;
+    font-weight: 500;
+}
+
+.instruction-arrow {
+    background: rgba(0, 212, 255, 0.1);
+    border: 1px solid rgba(0, 212, 255, 0.3);
+    border-radius: 6px;
+    padding: 4px 8px;
+    position: relative;
+}
+
+.left-arrow {
+    margin-left: 10px;
+}
+
+.right-arrow {
+    margin-right: 10px;
+}
+
+/* ======================================== 
+   优化测量指引样式 - 增大字体和间距
+======================================== */
+.measurement-instructions {
+    background: rgba(0, 212, 255, 0.05);
+    border-radius: 10px;
+    padding: 16px;
+    border: 1px solid rgba(0, 212, 255, 0.2);
+    flex-shrink: 0;
+    margin-top: 50px;
+    width: calc(100% + 40px);  /* 减少宽度扩展，只增加40px */
+    margin-left: -20px;  /* 正好抵消容器内边距 */
+    margin-right: -20px;  /* 正好抵消容器内边距 */
+}
+
+.instruction-title {
+    font-size: 16px;  /* 增大字体 */
+    font-weight: 600;
+    color: #00d4ff;
+    margin-bottom: 12px;  /* 增加间距 */
+    text-align: center;
+}
+
+.instruction-list {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;  /* 增加间距 */
+}
+
+.instruction-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 12px;  /* 增加间距 */
+}
+
+.instruction-number {
+    width: 20px;  /* 增大尺寸 */
+    height: 20px;
+    background: #00d4ff;
+    color: #000000;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 12px;  /* 增大字体 */
+    font-weight: 600;
+    flex-shrink: 0;
+    margin-top: 2px;
+}
+
+.instruction-content {
+    flex: 1;
+}
+
+.instruction-text {
+    font-size: 13px;  /* 增大字体 */
+    font-weight: 500;
+    color: #ffffff;
+    line-height: 1.4;  /* 增加行高 */
+    margin-bottom: 4px;  /* 增加间距 */
+}
+
+.instruction-subtext {
+    font-size: 11px;  /* 增大字体 */
+    color: #888888;
+    line-height: 1.3;  /* 增加行高 */
+}
+
+/* ======================================== 
+   优化注意事项样式 - 增大字体和间距
+======================================== */
+.safety-notice {
+    background: rgba(255, 193, 7, 0.1);
+    border: 1px solid rgba(255, 193, 7, 0.3);
+    border-radius: 8px;
+    padding: 12px;
+    flex-shrink: 0;
+    width: calc(100% + 40px);  /* 减少宽度扩展，只增加40px */
+    margin-left: -20px;  /* 正好抵消容器内边距 */
+    margin-right: -20px;  /* 正好抵消容器内边距 */
+}
+
+.notice-header {
+    display: flex;
+    align-items: center;
+    gap: 6px;  /* 增加间距 */
+    margin-bottom: 6px;  /* 增加间距 */
+}
+
+.notice-icon {
+    font-size: 14px;  /* 增大字体 */
+}
+
+.notice-title {
+    font-size: 13px;  /* 增大字体 */
+    font-weight: 600;
+    color: #ffc107;
+}
+
+.notice-content {
+    font-size: 11px;  /* 增大字体 */
+    color: #cccccc;
+    line-height: 1.4;  /* 增加行高 */
+    padding-left: 20px;  /* 增加左边距 */
+}
+
+/* ======================================== 
+   响应式适配 - 固定尺寸优化
+======================================== */
+@media (max-width: 479px) {
+    .measure-content {
+        padding: 12px;
+        gap: 10px;
+    }
+    
+    .scale-platform {
+        width: 160px;
+        height: 70px;
+    }
+    
+    .footprint-area {
+        gap: 16px;
+    }
+    
+    .foot-icon {
+        font-size: 16px;
+    }
+    
+    .handle-grip {
+        height: 28px;
+    }
+}
+
+/* ======================================== 
+   移除原有的页面背景
+======================================== */

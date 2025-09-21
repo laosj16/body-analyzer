@@ -42,33 +42,6 @@
     position: relative;
 }
 
-/* --- 状态栏 --- */
-.status-bar { 
-    display: flex; 
-    justify-content: space-between; 
-    align-items: center; 
-    padding: 20px 24px 16px 24px; 
-    background-color: #000000; 
-    position: relative;
-    border-bottom: 1px solid #1f2937;
-    font-size: 20px; 
-    font-weight: 600; 
-}
-
-.status-icons {
-    display: flex;
-    align-items: center;
-    gap: 16px;
-}
-
-.status-icons svg {
-    opacity: 0.9;
-    transition: opacity 0.2s ease;
-}
-
-.status-icons svg:hover {
-    opacity: 1;
-}
 
 .home-content { 
     padding: 0 0 100px 0; /* 移除左右padding，为固定区域让位 */

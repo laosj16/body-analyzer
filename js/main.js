@@ -243,16 +243,15 @@ function goToIndex() {
 // 时间更新
 // ======================================== 
 
-function updateTime() {
-    const now = new Date();
-    const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
-                      now.getMinutes().toString().padStart(2, '0');
-    
-    const timeElement = document.getElementById('current-time');
-    if (timeElement) {
-        timeElement.textContent = timeString;
+    function updateTime() {
+        const now = new Date();
+        const hours = now.getHours().toString().padStart(2, '0');
+        const minutes = now.getMinutes().toString().padStart(2, '0');
+        const timeString = `${hours}:${minutes}`;
+        
+        const timeElements = document.querySelectorAll('.status-bar .time');
+        timeElements.forEach(el => el.textContent = timeString);
     }
-}
 
 // ======================================== 
 // 自动关机管理
