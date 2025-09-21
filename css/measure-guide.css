@@ -17,7 +17,7 @@ body {
     flex-grow: 1;
     padding: 44px 40px 0 40px; /* 顶部留出状态栏高度，底部不再需要padding */
     overflow: hidden;
-    gap: 24px; /* 增大各部分之间的垂直间距 */
+    gap: 15px; /* 增大各部分之间的垂直间距 */
 }
 
 /* ======================================== 
@@ -138,31 +138,41 @@ body {
 /* ======================================== */
 /* 详细说明文字 */
 /* ======================================== */
-.instruction-text-container {
+/* ======================================== */
+/* 详细说明文字 - 新布局 */
+/* ======================================== */
+.instruction-card {
     width: 100%;
-    background-color: #1e293b; /* 深蓝灰色背景 */
-    border-radius: 12px;
-    border-left: 4px solid #3b82f6; /* 左侧蓝色高亮边框 */
-    padding: 16px;
+    background-color: #29446e; /* 深蓝灰色背景 */
+    border-radius: 16px; /* 增大圆角 */
+    padding: 24px; /* 增大内边距 */
     margin-bottom: 30px; /* 增加与屏幕底部的间距，实现上移效果 */
     flex-shrink: 0;
     display: flex; /* 使用flex布局 */
-    align-items: center; /* 垂直居中对齐图标和文字 */
-    gap: 12px; /* 图标和文字之间的间距 */
+    flex-direction: column; /* 垂直排列图标和文字 */
+    align-items: center; /* 水平居中对齐 */
+    gap: 16px; /* 图标和文字之间的间距 */
+    box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3); /* 添加阴影 */
 }
 
-.tip-icon {
-    width: 24px;
-    height: 24px;
-    color: #60a5fa; /* 浅蓝色图标 */
-    flex-shrink: 0; /* 防止图标被压缩 */
+.instruction-icon {
+    width: 48px; /* 增大图标 */
+    height: 48px;
+    color: #3b82f6; /* 蓝色图标 */
+    flex-shrink: 0;
 }
 
-.instruction-text-container p {
-    color: #cbd5e1; /* 浅灰色文字 */
-    font-size: 16px;
-    line-height: 1.6;
-    text-align: left; /* 文字左对齐 */
+.instruction-icon svg {
+    width: 100%;
+    height: 100%;
+}
+
+.instruction-text {
+    color: #e5e7eb; /* 浅色文字 */
+    font-size: 20px; /* 增大字体 */
+    font-weight: 500; /* 增加字重 */
+    line-height: 1.5;
+    text-align: center; /* 文字居中对齐 */
     margin: 0;
 }
 

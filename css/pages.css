@@ -345,7 +345,7 @@
 }
 
 .scrollable-content {
-    margin-top: 110px; /* 增加上边距，确保文字完全可见 */
+    margin-top: 86px; /* 增加上边距，确保文字完全可见 */
     padding: 0 24px;
 }
 
@@ -414,7 +414,7 @@
 .body-data-grid {
     display: grid;
     grid-template-columns: 1fr 1fr;
-    gap: 20px;
+    gap: 16px;
     margin-top: -8px;
     width: 100%;
 }
@@ -560,9 +560,14 @@
 /* --- 浮动操作按钮 --- */
 .fab-container {
     position: absolute;
-    bottom: 32px;
-    left: 50%;
-    transform: translateX(-50%);
+    bottom: 0; /* 调整到底部 */
+    left: 0;
+    right: 0;
+    height: 80px; /* 降低高度 */
+    background-color: #000000; /* 添加背景色 */
+    display: flex; /* 使按钮居中 */
+    justify-content: center;
+    align-items: center;
     z-index: 100;
 }
 
@@ -571,8 +576,8 @@
     color: white;
     border: none;
     width: 160px;
-    height: 64px;
-    border-radius: 32px;
+    height: 50px; /* 缩小高度 */
+    border-radius: 28px; /* 调整圆角 */
     display: flex;
     align-items: center;
     justify-content: center;
@@ -582,6 +587,22 @@
     cursor: pointer;
     box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
     transition: all 0.3s ease;
+    animation: pulse-animation 2s infinite; /* 添加呼吸效果 */
+}
+
+@keyframes pulse-animation {
+    0% {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    }
+    50% {
+        background: linear-gradient(135deg, #7c3aed 0%, #4f46e5 100%);
+        box-shadow: 0 12px 30px rgba(79, 70, 229, 0.6);
+    }
+    100% {
+        background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
+        box-shadow: 0 8px 25px rgba(79, 70, 229, 0.4);
+    }
 }
 
 .fab:hover {

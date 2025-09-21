@@ -95,15 +95,18 @@
             const radius = progressCircleFg.r.baseVal.value;
             const circumference = 2 * Math.PI * radius;
             progressCircleFg.style.strokeDasharray = `${circumference} ${circumference}`;
-            
+            progressCircleFg.style.strokeDashoffset = circumference; // 确保初始状态为0%
+
             let progress = 0;
-            const duration = 4000; // 模拟4秒测量时间
+            const duration = 3000; // 3秒内跑完进度条
             const interval = 50;
             const increment = 100 / (duration / interval);
 
             const progressInterval = setInterval(() => {
                 progress += increment;
-                if (progress > 100) progress = 100;
+                if (progress > 100) {
+                    progress = 100;
+                }
 
                 progressText.textContent = `${Math.floor(progress)}%`;
                 const offset = circumference - (progress / 100) * circumference;

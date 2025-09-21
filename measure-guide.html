@@ -11,6 +11,7 @@
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
     <link rel="stylesheet" href="css/measure-guide.css">
+    <link rel="stylesheet" href="css/controls.css">
 </head>
 <body class="bg-gray-900 text-slate-100 font-inter">
     <div class="screen-container" id="screen-container">
@@ -53,11 +54,8 @@
                 <div class="waiting-indicator"></div>
             </div>
             <!-- 详细说明文字 -->
-            <div class="instruction-text-container">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor" class="tip-icon">
-                    <path fill-rule="evenodd" d="M12 1.5a5.25 5.25 0 00-5.25 5.25.75.75 0 00.75.75h8.5a.75.75 0 00.75-.75A5.25 5.25 0 0012 1.5zM10.5 10.5a.75.75 0 00-1.5 0v.375a3 3 0 006 0v-.375a.75.75 0 00-1.5 0V12a1.5 1.5 0 01-3 0v-1.5zm-3.035 6.225A.75.75 0 006 17.25v.025a4.5 4.5 0 008.996 0v-.025a.75.75 0 00-1.465-.224 3 3 0 01-6.066 0z" clip-rule="evenodd" />
-                </svg>
-                <p>请赤脚站在电极片上，并双手握紧手柄</p>
+            <div class="instruction-card">
+                <p class="instruction-text">请赤脚站在电极片上，并双手握紧手柄</p>
             </div>
         </div>
     </div>
@@ -66,10 +64,11 @@
     <div class="control-area" id="control-area">
         <div class="control-btn-container">
             <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
-            <button class="control-btn back" onclick="goBack()">返回</button>
+            <button class="control-btn back" onclick="goBack()">返回主页</button>
             <button class="control-btn measure" onclick="startMeasuring()">模拟上秤</button>
         </div>
-    </div>    <script>
+    </div>
+    <script>
         function goBack() {
             window.location.href = 'main.html';
         }
