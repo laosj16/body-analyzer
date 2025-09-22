@@ -1,19 +1,19 @@
 const allMetrics = {
     core: {
-        title: '核心指标',
-        items: [ { id: 'weight', label: '体重', unit: 'kg' }, { id: 'heart_rate', label: '心率', unit: 'bpm' }, { id: 'bmr', label: 'BMR', unit: 'kcal' }, { id: 'bmi', label: 'BMI', unit: '' }, { id: 'body_fat_rate', label: '体脂率', unit: '%' }, { id: 'fat_mass', label: '脂肪量', unit: 'kg' }, { id: 'muscle_rate', label: '肌肉率', unit: '%' }, { id: 'muscle_mass', label: '肌肉量', unit: 'kg' }, { id: 'protein_rate', label: '蛋白质率', unit: '%' }, { id: 'protein_mass', label: '蛋白质量', unit: 'kg' }, { id: 'body_water_rate', label: '水分率', unit: '%' }, { id: 'body_water_mass', label: '体水分量', unit: 'kg' }, { id: 'subcutaneous_fat_rate', label: '皮下脂肪率', unit: '%' }, { id: 'subcutaneous_fat_mass', label: '皮下脂肪量', unit: 'kg' }, { id: 'visceral_fat', label: '内脏脂肪', unit: '等级' }, { id: 'bone_mass', label: '骨量', unit: 'kg' }, ]
+        title: 'Core Metrics',
+        items: [ { id: 'weight', label: 'Weight', unit: 'kg' }, { id: 'heart_rate', label: 'Heart Rate', unit: 'bpm' }, { id: 'bmr', label: 'BMR', unit: 'kcal' }, { id: 'bmi', label: 'BMI', unit: '' }, { id: 'body_fat_rate', label: 'Body Fat Rate', unit: '%' }, { id: 'fat_mass', label: 'Fat Mass', unit: 'kg' }, { id: 'muscle_rate', label: 'Muscle Rate', unit: '%' }, { id: 'muscle_mass', label: 'Muscle Mass', unit: 'kg' }, { id: 'protein_rate', label: 'Protein Rate', unit: '%' }, { id: 'protein_mass', label: 'Protein Mass', unit: 'kg' }, { id: 'body_water_rate', label: 'Body Water Rate', unit: '%' }, { id: 'body_water_mass', label: 'Body Water Mass', unit: 'kg' }, { id: 'subcutaneous_fat_rate', label: 'Subcutaneous Fat Rate', unit: '%' }, { id: 'subcutaneous_fat_mass', label: 'Subcutaneous Fat Mass', unit: 'kg' }, { id: 'visceral_fat', label: 'Visceral Fat', unit: 'Level' }, { id: 'bone_mass', label: 'Bone Mass', unit: 'kg' }, ]
     },
     composition: {
-        title: '身体成分',
-        items: [ { id: 'intracellular_water', label: '细胞内水量', unit: 'kg' }, { id: 'extracellular_water', label: '细胞外水量', unit: 'kg' }, { id: 'skeletal_muscle_rate', label: '骨骼肌率', unit: '%' }, { id: 'skeletal_muscle_mass', label: '骨骼肌量', unit: 'kg' }, { id: 'lean_body_mass', label: '去脂体重', unit: 'kg' }, { id: 'inorganic_salt', label: '无机盐量', unit: 'kg' }, { id: 'body_cell_mass', label: '身体细胞量', unit: 'kg' }, { id: 'smi', label: '骨骼肌质量指数', unit: '' }, ]
+        title: 'Body Composition',
+        items: [ { id: 'intracellular_water', label: 'Intracellular Water', unit: 'kg' }, { id: 'extracellular_water', label: 'Extracellular Water', unit: 'kg' }, { id: 'skeletal_muscle_rate', label: 'Skeletal Muscle Rate', unit: '%' }, { id: 'skeletal_muscle_mass', label: 'Skeletal Muscle Mass', unit: 'kg' }, { id: 'lean_body_mass', label: 'Lean Body Mass', unit: 'kg' }, { id: 'inorganic_salt', label: 'Inorganic Salt', unit: 'kg' }, { id: 'body_cell_mass', label: 'Body Cell Mass', unit: 'kg' }, { id: 'smi', label: 'Skeletal Muscle Index', unit: '' }, ]
     },
     segmental: {
-        title: '部位分析',
-        items: [ { id: 'left_arm_fat_mass', label: '左臂脂肪', unit: 'kg' }, { id: 'right_arm_fat_mass', label: '右臂脂肪', unit: 'kg' }, { id: 'left_arm_muscle_mass', label: '左臂肌肉', unit: 'kg' }, { id: 'right_arm_muscle_mass', label: '右臂肌肉', unit: 'kg' }, { id: 'left_leg_fat_mass', label: '左腿脂肪', unit: 'kg' }, { id: 'right_leg_fat_mass', label: '右腿脂肪', unit: 'kg' }, { id: 'left_leg_muscle_mass', label: '左腿肌肉', unit: 'kg' }, { id: 'right_leg_muscle_mass', label: '右腿肌肉', unit: 'kg' }, { id: 'trunk_fat_mass', label: '躯干脂肪', unit: 'kg' }, { id: 'trunk_muscle_mass', label: '躯干肌肉', unit: 'kg' }, ]
+        title: 'Segmental Analysis',
+        items: [ { id: 'left_arm_fat_mass', label: 'Left Arm Fat', unit: 'kg' }, { id: 'right_arm_fat_mass', label: 'Right Arm Fat', unit: 'kg' }, { id: 'left_arm_muscle_mass', label: 'Left Arm Muscle', unit: 'kg' }, { id: 'right_arm_muscle_mass', label: 'Right Arm Muscle', unit: 'kg' }, { id: 'left_leg_fat_mass', label: 'Left Leg Fat', unit: 'kg' }, { id: 'right_leg_fat_mass', label: 'Right Leg Fat', unit: 'kg' }, { id: 'left_leg_muscle_mass', label: 'Left Leg Muscle', unit: 'kg' }, { id: 'right_leg_muscle_mass', label: 'Right Leg Muscle', unit: 'kg' }, { id: 'trunk_fat_mass', label: 'Trunk Fat', unit: 'kg' }, { id: 'trunk_muscle_mass', label: 'Trunk Muscle', unit: 'kg' }, ]
     },
     evaluation: {
-        title: '健康评估',
-        items: [ { id: 'obesity_degree', label: '肥胖等级', unit: '' }, { id: 'fat_control', label: '脂肪控制', unit: 'kg' }, { id: 'muscle_control', label: '肌肉控制', unit: 'kg' }, { id: 'weight_control', label: '体重控制', unit: 'kg' }, { id: 'standard_weight', label: '标准体重', unit: 'kg' }, { id: 'body_age', label: '身体年龄', unit: '岁' }, { id: 'health_evaluation', label: '健康评价', unit: '' }, { id: 'whr', label: '推测腰臀比', unit: '' }, { id: 'recommended_calories', label: '建议卡路里', unit: 'kcal' }, ]
+        title: 'Health Evaluation',
+        items: [ { id: 'obesity_degree', label: 'Obesity Degree', unit: '' }, { id: 'fat_control', label: 'Fat Control', unit: 'kg' }, { id: 'muscle_control', label: 'Muscle Control', unit: 'kg' }, { id: 'weight_control', label: 'Weight Control', unit: 'kg' }, { id: 'standard_weight', label: 'Standard Weight', unit: 'kg' }, { id: 'body_age', label: 'Body Age', unit: 'years' }, { id: 'health_evaluation', label: 'Health Evaluation', unit: '' }, { id: 'whr', label: 'WHR (Waist-Hip Ratio)', unit: '' }, { id: 'recommended_calories', label: 'Recommended Calories', unit: 'kcal' }, ]
     }
 };
 
@@ -21,8 +21,8 @@ function goBack() { window.location.href = 'main.html'; }
 function goToIndex() { window.location.href = 'index.html'; }
 function measureAgain() { window.location.href = 'measure-guide.html'; }
 function generateReport() { window.location.href = 'report.html'; }
-function saveResult() { alert('测量结果已保存！'); window.location.href = 'main.html'; }
-function deleteResult() { if (confirm('确定要删除这次测量结果吗？')) { alert('测量结果已删除！'); window.location.href = 'main.html'; } }
+function saveResult() { alert('Measurement saved!'); window.location.href = 'main.html'; }
+function deleteResult() { if (confirm('Are you sure you want to delete this measurement?')) { alert('Measurement deleted!'); window.location.href = 'main.html'; } }
 
 function updateTime() {
     const now = new Date();
@@ -80,11 +80,11 @@ function generateMeasurementResults(userData = null) {
     data.weight_control = (weight - data.ideal_weight).toFixed(1);
     data.fat_control = (data.fat_mass - (data.ideal_weight * 0.18)).toFixed(1);
     data.muscle_control = ((data.ideal_weight * 0.4) - data.muscle_mass).toFixed(1);
-    data.obesity_degree = '正常';
-    data.body_type = '标准肌肉型';
-    data.health_evaluation = '良好';
-    return data;
-}
+            data.obesity_degree = 'Normal';
+            data.body_type = 'Standard Muscular';
+            data.health_evaluation = 'Good';
+            return data;
+        }
 
 function populateData(results) {
     // 填充摘要卡
@@ -137,14 +137,14 @@ window.onload = function() {
 
     const measurementData = localStorage.getItem('currentMeasurement');
     let data;
-    if (measurementData) {
-        const parsedData = JSON.parse(measurementData);
-        document.getElementById('current-user-name').textContent = parsedData.user;
-        data = generateMeasurementResults(parsedData);
-    } else {
-        document.getElementById('current-user-name').textContent = '访客';
-        data = generateMeasurementResults();
-    }
+            if (measurementData) {
+                const parsedData = JSON.parse(measurementData);
+                document.getElementById('current-user-name').textContent = parsedData.user;
+                data = generateMeasurementResults(parsedData);
+            } else {
+                document.getElementById('current-user-name').textContent = 'Guest';
+                data = generateMeasurementResults();
+            }
 
     populateData(data);
 };

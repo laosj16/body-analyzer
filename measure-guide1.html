@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 测量中</title>
+    <title>Body Composition Analyzer - Measuring</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,34 +29,29 @@
             </div>
         </div>
 
-        <!-- 主内容区: 测量中 -->
+        <!-- 主内容区: 握手柄 -->
         <div class="main-content" id="main-content-measure">
             <!-- 步骤和用户信息 -->
             <div class="step-section">
                 <div class="step-indicators">
-                    <div class="step-dot"></div>
+                    <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
-                <div class="step-title">测量中</div>
+                <div class="step-title">Weighing Complete</div>
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar-measuring">华</div>
                     <span class="user-name" id="user-name-measuring">华仔</span>
                 </div>
             </div>
 
-            <!-- 进度圈 -->
+            <!-- 握手柄提示 -->
             <div class="measure-process-content flex flex-col items-center justify-center flex-grow">
-                <div class="progress-circle">
-                    <svg class="progress-ring" width="200" height="200">
-                        <circle class="progress-ring-bg" cx="100" cy="100" r="90"></circle>
-                        <circle class="progress-ring-fg" cx="100" cy="100" r="90"></circle>
-                    </svg>
-                    <div class="progress-text">0%</div>
+                <div class="instruction-card">
+                    <p class="instruction-text">Please hold the handle with both hands to start measuring body fat</p>
                 </div>
-                <div class="progress-message">正在进行体成分分析，请保持不动</div>
             </div>
         </div>
     </div>
@@ -90,36 +85,18 @@
             setInterval(updateTime, 60000);
             updateUserInfo();
 
-            const progressText = document.querySelector('.progress-text');
-            const progressCircleFg = document.querySelector('.progress-ring-fg');
-            const radius = progressCircleFg.r.baseVal.value;
-            const circumference = 2 * Math.PI * radius;
-            progressCircleFg.style.strokeDasharray = `${circumference} ${circumference}`;
-            progressCircleFg.style.strokeDashoffset = circumference; // 确保初始状态为0%
+            // 播放语音提示
+            try {
+                const audio = new Audio('audio/step2_hold_handles.mp3');
+                audio.play().catch(e => console.error("语音播放失败:", e));
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+            }
 
-            let progress = 0;
-            const duration = 3000; // 3秒内跑完进度条
-            const interval = 50;
-            const increment = 100 / (duration / interval);
-
-            const progressInterval = setInterval(() => {
-                progress += increment;
-                if (progress > 100) {
-                    progress = 100;
-                }
-
-                progressText.textContent = `${Math.floor(progress)}%`;
-                const offset = circumference - (progress / 100) * circumference;
-                progressCircleFg.style.strokeDashoffset = offset;
-
-                if (progress >= 100) {
-                    clearInterval(progressInterval);
-                    // 延迟一小段时间再跳转，让用户看到100%
-                    setTimeout(() => {
-                         window.location.href = 'measure-guide2.html';
-                    }, 500);
-                }
-            }, interval);
+            // 2秒后自动跳转
+            setTimeout(() => {
+                window.location.href = 'measure-guide2.html';
+            }, 2000);
         });
     </script>
 </body>

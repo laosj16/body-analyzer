@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 主界面</title>
+    <title>Body Composition Analyzer - Main</title> <!-- 页面标题 -->
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -45,6 +45,7 @@
                 <!-- 用户切换（固定） -->
                 <div class="user-switcher">
                     <div class="user-list" id="user-list">
+                        <!-- 用户头像 -->
                         <div class="user-avatar active" data-user="华仔">
                             <div class="avatar-circle" style="background-color: #2563EB;">华</div>
                             <div class="avatar-name">华仔</div>
@@ -59,11 +60,12 @@
                         </div>
                         <div class="user-avatar" data-user="访客">
                             <div class="avatar-circle" style="background-color: #616161;">G</div>
-                            <div class="avatar-name">访客</div>
+                            <div class="avatar-name">Guest</div>
                         </div>
+                        <!-- 添加用户按钮 -->
                         <div class="user-avatar add-user-btn" onclick="window.location.href='add-user.html'">
                             <div class="avatar-circle">+</div>
-                            <div class="avatar-name">添加用户</div>
+                            <div class="avatar-name">Add User</div>
                         </div>
                     </div>
                 </div>
@@ -72,7 +74,7 @@
                 <div class="scrollable-content">
                     <!-- 主卡片 -->
                     <div class="main-card">
-                        <div class="main-card-title">上次测量数据</div>
+                        <div class="main-card-title">Last Measurement</div>
                         <div class="main-card-value">
                             <span id="main-weight"><span class="weight-integer">75</span><span class="weight-decimal">.5</span></span>
                             <span class="main-card-unit">kg</span>
@@ -87,11 +89,12 @@
                                 <path d="M7 10l5 5 5-5z"/>
                             </svg>
                         </div>
-                        <span class="scroll-text">下滑查看更多</span>
+                        <span class="scroll-text">Scroll for more</span>
                     </div>
 
                     <!-- 身体数据网格 (2x3布局) -->
                     <div class="body-data-grid">
+                        <!-- BMI -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
                                 <svg viewBox="0 0 24 24" fill="currentColor" style="color: #3B82F6;">
@@ -103,49 +106,54 @@
                                 <div class="body-data-label">BMI</div>
                             </div>
                         </div>
+                        <!-- 体脂率 -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
-                                <img src="icon/bdf.svg" alt="体脂率" style="filter: brightness(0) saturate(100%) invert(29%) sepia(77%) saturate(6816%) hue-rotate(353deg) brightness(97%) contrast(90%);">
+                                <img src="icon/bdf.svg" alt="Body Fat" style="filter: brightness(0) saturate(100%) invert(29%) sepia(77%) saturate(6816%) hue-rotate(353deg) brightness(97%) contrast(90%);">
                             </div>
                             <div class="body-data-content">
                                 <div class="body-data-value" id="fat-percentage">16.2%</div>
-                                <div class="body-data-label">体脂率</div>
+                                <div class="body-data-label">Body Fat</div>
                             </div>
                         </div>
+                        <!-- 肌肉量 -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
-                                <img src="icon/ms.svg" alt="肌肉量" style="filter: brightness(0) saturate(100%) invert(44%) sepia(53%) saturate(6613%) hue-rotate(142deg) brightness(101%) contrast(101%); transform: scale(0.75);">
+                                <img src="icon/ms.svg" alt="Muscle Mass" style="filter: brightness(0) saturate(100%) invert(44%) sepia(53%) saturate(6613%) hue-rotate(142deg) brightness(101%) contrast(101%); transform: scale(0.75);">
                             </div>
                             <div class="body-data-content">
                                 <div class="body-data-value" id="muscle-mass">48.6kg</div>
-                                <div class="body-data-label">肌肉量</div>
+                                <div class="body-data-label">Muscle Mass</div>
                             </div>
                         </div>
+                        <!-- 水分率 -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
-                                <img src="icon/wt.svg" alt="水分率" style="filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1077%) hue-rotate(168deg) brightness(101%) contrast(101%); transform: scale(0.75);">
+                                <img src="icon/wt.svg" alt="Body Water" style="filter: brightness(0) saturate(100%) invert(52%) sepia(98%) saturate(1077%) hue-rotate(168deg) brightness(101%) contrast(101%); transform: scale(0.75);">
                             </div>
                             <div class="body-data-content">
                                 <div class="body-data-value" id="water-percentage">58.8%</div>
-                                <div class="body-data-label">水分率</div>
+                                <div class="body-data-label">Body Water</div>
                             </div>
                         </div>
+                        <!-- 骨量 -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
-                                <img src="icon/bn.svg" alt="骨量" style="filter: brightness(0) saturate(100%) invert(71%) sepia(95%) saturate(1284%) hue-rotate(16deg) brightness(94%) contrast(94%); transform: scale(0.75);">
+                                <img src="icon/bn.svg" alt="Bone Mass" style="filter: brightness(0) saturate(100%) invert(71%) sepia(95%) saturate(1284%) hue-rotate(16deg) brightness(94%) contrast(94%); transform: scale(0.75);">
                             </div>
                             <div class="body-data-content">
                                 <div class="body-data-value" id="bone-mass">2.9kg</div>
-                                <div class="body-data-label">骨量</div>
+                                <div class="body-data-label">Bone Mass</div>
                             </div>
                         </div>
+                        <!-- 基础代谢 -->
                         <div class="body-data-item">
                             <div class="body-data-icon">
-                                <img src="icon/kcal.svg" alt="基础代谢" style="filter: brightness(0) saturate(100%) invert(55%) sepia(77%) saturate(2925%) hue-rotate(14deg) brightness(103%) contrast(102%); transform: scale(0.75);">
+                                <img src="icon/kcal.svg" alt="BMR" style="filter: brightness(0) saturate(100%) invert(55%) sepia(77%) saturate(2925%) hue-rotate(14deg) brightness(103%) contrast(102%); transform: scale(0.75);">
                             </div>
                             <div class="body-data-content">
                                 <div class="body-data-value" id="bmr-value">1695</div>
-                                <div class="body-data-label">基础代谢</div>
+                                <div class="body-data-label">BMR</div>
                             </div>
                         </div>
                     </div>
@@ -153,7 +161,7 @@
                     <!-- 查看更多按钮 -->
                     <div class="more-data-container">
                         <button class="more-data-btn" onclick="viewMoreData()">
-                            <span>查看详细数据</span>
+                            <span>View Details</span>
                             <svg width="24" height="24" viewBox="0 0 24 24" fill="currentColor">
                                 <path d="M9 18l6-6-6-6v12z"/>
                             </svg>
@@ -168,7 +176,7 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
                     </svg>
-                    <span>开始测量</span>
+                    <span>Start Measure</span>
                 </button>
             </div>
         </div>

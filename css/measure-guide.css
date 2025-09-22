@@ -275,3 +275,52 @@ body {
     80% { transform: scale(1.1); opacity: 1; }
     100% { transform: scale(1); opacity: 1; }
 }
+
+/* --- Weighing Display --- */
+.weighing-display {
+    display: flex;
+    align-items: baseline;
+    justify-content: center;
+    gap: 12px;
+    margin: auto 0;
+}
+
+.weight-value {
+    font-size: 120px;
+    font-weight: 700;
+    color: #e5e7eb;
+    line-height: 1;
+}
+
+.weight-unit {
+    font-size: 32px;
+    font-weight: 600;
+    color: #9ca3af;
+}
+
+/* --- Heart Rate Display --- */
+.heart-rate-display {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 16px;
+    margin: auto 0;
+}
+
+.heart-icon {
+    font-size: 80px;
+    animation: heartbeat 1.2s ease-in-out infinite;
+}
+
+@keyframes heartbeat {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.15); }
+}
+
+.heart-rate-value {
+    font-size: 96px;
+    font-weight: 700;
+    color: #e5e7eb;
+    line-height: 1;
+}

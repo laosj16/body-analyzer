@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Composition Analyzer - Weighing</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/measure-guide.css">
+</head>
+<body class="bg-gray-900 text-slate-100 font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span class="time" id="current-time">14:35</span>
+            <div class="status-icons">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            </div>
+        </div>
+
+        <!-- 主内容区: 正在称重 -->
+        <div class="main-content" id="main-content-weighing">
+            <div class="step-section">
+                <div class="step-indicators">
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-title">Weighing</div>
+            </div>
+
+            <div class="weighing-display">
+                <div class="weight-value" id="weight-value">0.0</div>
+                <div class="weight-unit">kg</div>
+            </div>
+
+            <div class="instruction-card">
+                <p class="instruction-text">Please stand still and keep your balance</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            // 播放语音提示
+            try {
+                const audio = new Audio('audio/weighing_in_progress.mp3');
+                audio.play().catch(e => console.error("语音播放失败:", e));
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+            }
+
+            const weightValueEl = document.getElementById('weight-value');
+            const targetWeight = (Math.random() * 30 + 50).toFixed(1);
+            let currentWeight = 0.0;
+
+            const weighingInterval = setInterval(() => {
+                currentWeight += Math.random() * 5;
+                if (currentWeight >= targetWeight) {
+                    currentWeight = targetWeight;
+                    clearInterval(weighingInterval);
+                    
+                    // 存储体重结果
+                    const measurementData = JSON.parse(localStorage.getItem('currentMeasurement')) || {};
+                    measurementData.weight = currentWeight;
+                    localStorage.setItem('currentMeasurement', JSON.stringify(measurementData));
+
+                    setTimeout(() => {
+                        window.location.href = 'heart-rate.html';
+                    }, 1000);
+                }
+                weightValueEl.textContent = currentWeight.toFixed(1);
+            }, 100);
+        });
+    </script>
+</body>
+</html>

@@ -1,0 +1,98 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Composition Analyzer - Measuring Heart Rate</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/measure-guide.css">
+</head>
+<body class="bg-gray-900 text-slate-100 font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <span class="time" id="current-time">14:35</span>
+            <div class="status-icons">
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg>
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            </div>
+        </div>
+
+        <!-- 主内容区: 正在测量心率 -->
+        <div class="main-content" id="main-content-heart-rate">
+            <div class="step-section">
+                <div class="step-indicators">
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                </div>
+                <div class="step-title">Measuring Heart Rate</div>
+            </div>
+
+            <div class="heart-rate-display">
+                <div class="heart-icon" id="heart-icon">❤️</div>
+                <div class="heart-rate-value" id="heart-rate-value">--</div>
+            </div>
+
+            <div class="instruction-card">
+                <p class="instruction-text">Please keep still, we are measuring your heart rate</p>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function updateTime() {
+            const now = new Date();
+            const hours = now.getHours().toString().padStart(2, '0');
+            const minutes = now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = `${hours}:${minutes}`;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            // 播放语音提示
+            try {
+                const audio = new Audio('audio/heart_rate_in_progress.mp3');
+                audio.play().catch(e => console.error("语音播放失败:", e));
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+            }
+
+            const heartRateValueEl = document.getElementById('heart-rate-value');
+            const heartIconEl = document.getElementById('heart-icon');
+            let heartRate = 75;
+
+            const heartRateInterval = setInterval(() => {
+                heartRate += Math.floor(Math.random() * 5) - 2;
+                if (heartRate < 60) heartRate = 60;
+                if (heartRate > 90) heartRate = 90;
+                heartRateValueEl.textContent = heartRate;
+                heartIconEl.style.transform = `scale(${1 + Math.random() * 0.1})`;
+            }, 800);
+
+            setTimeout(() => {
+                clearInterval(heartRateInterval);
+                heartRateValueEl.textContent = heartRate; // Show final heart rate
+                heartIconEl.style.transform = 'scale(1)';
+                
+                // 存储心率结果
+                const measurementData = JSON.parse(localStorage.getItem('currentMeasurement')) || {};
+                measurementData.heartRate = heartRate;
+                localStorage.setItem('currentMeasurement', JSON.stringify(measurementData));
+
+                setTimeout(() => {
+                    window.location.href = 'measure-guide1.html';
+                }, 1000);
+            }, 5000); // 5秒后完成
+        });
+    </script>
+</body>
+</html>

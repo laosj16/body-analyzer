@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 详细报告</title>
+    <title>Body Composition Analyzer - Detailed Report</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,31 +30,31 @@
                 <div class="report-header">
                     <div class="report-user-info">
                         <div class="info-item">
-                            <div class="label">用户ID</div>
+                            <div class="label">User ID</div>
                             <div class="value" id="user-name">--</div>
                         </div>
                         <div class="info-item">
-                            <div class="label">身高</div>
+                            <div class="label">Height</div>
                             <div class="value" id="user-height">-- cm</div>
                         </div>
                         <div class="info-item">
-                            <div class="label">年龄</div>
+                            <div class="label">Age</div>
                             <div class="value" id="user-age">--</div>
                         </div>
                         <div class="info-item">
-                            <div class="label">性别</div>
+                            <div class="label">Gender</div>
                             <div class="value" id="user-gender">--</div>
                         </div>
                     </div>
                     <div class="report-score-container">
                         <div class="report-score-value" id="inbody-score">--</div>
-                        <div class="report-score-label">身体综合评分</div>
+                        <div class="report-score-label">Overall Score</div>
                     </div>
                 </div>
 
                 <!-- Body Composition -->
                 <div class="report-section">
-                    <h3 class="section-title">人体成分分析</h3>
+                    <h3 class="section-title">Body Composition Analysis</h3>
                     <div class="composition-grid" id="composition-analysis">
                         <!-- JS-generated -->
                     </div>
@@ -62,7 +62,7 @@
 
                 <!-- Muscle-Fat Analysis -->
                 <div class="report-section">
-                    <h3 class="section-title">肌肉-脂肪分析</h3>
+                    <h3 class="section-title">Muscle-Fat Analysis</h3>
                     <div id="muscle-fat-analysis">
                         <!-- JS-generated -->
                     </div>
@@ -70,7 +70,7 @@
 
                 <!-- Obesity Analysis -->
                 <div class="report-section">
-                    <h3 class="section-title">肥胖分析</h3>
+                    <h3 class="section-title">Obesity Analysis</h3>
                     <div class="obesity-grid" id="obesity-analysis">
                         <!-- JS-generated -->
                     </div>
@@ -78,7 +78,7 @@
 
                 <!-- Comparison with Previous -->
                 <div class="report-section">
-                    <h3 class="section-title">与上次测量对比</h3>
+                    <h3 class="section-title">Comparison with Last Measurement</h3>
                     <table class="comparison-table" id="comparison-table">
                         <!-- JS-generated -->
                     </table>
@@ -86,15 +86,15 @@
 
                 <!-- Overall Evaluation -->
                 <div class="report-section">
-                    <h3 class="section-title">综合评价</h3>
+                    <h3 class="section-title">Overall Evaluation</h3>
                     <p class="evaluation-text" id="evaluation-text">--</p>
                 </div>
             </div>
 
             <!-- Floating Action Buttons -->
             <div class="fab-container-split">
-                <button class="fab" onclick="measureAgain()">再次测量</button>
-                <button class="fab primary" onclick="window.print()">打印报告</button>
+                <button class="fab" onclick="measureAgain()">Measure Again</button>
+                <button class="fab primary" onclick="window.print()">Print Report</button>
             </div>
         </div>
     </div>

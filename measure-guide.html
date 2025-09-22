@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 测量准备</title>
+    <title>Body Composition Analyzer - Preparation</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -40,14 +40,14 @@
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
-                <div class="step-title">准备测量</div>
+                <div class="step-title">Preparation</div>
                 <div class="user-info">
                     <div class="user-avatar">华</div>
                     <span class="user-name">华仔</span>
                 </div>
             </div>
                                     <div class="device-section">
-                <img src="images/body-analyzer-device.png" alt="体脂秤" class="device-image">
+                <img src="images/body-analyzer-device.png" alt="Body Analyzer" class="device-image">
             </div>
             <!-- 呼吸等待动画 -->
             <div class="waiting-indicator-container">
@@ -55,7 +55,7 @@
             </div>
             <!-- 详细说明文字 -->
             <div class="instruction-card">
-                <p class="instruction-text">请赤脚站在电极片上，并双手握紧手柄</p>
+                <p class="instruction-text">Please step on the scale with bare feet, <br>and keep your arms down naturally. Do not hold the handle.</p>
             </div>
         </div>
     </div>
@@ -65,7 +65,7 @@
         <div class="control-btn-container">
             <button class="control-btn nav" onclick="goToIndex()">返回导航页</button>
             <button class="control-btn back" onclick="goBack()">返回主页</button>
-            <button class="control-btn measure" onclick="startMeasuring()">模拟上秤</button>
+            <button class="control-btn measure" onclick="startWeighing()">模拟上秤</button>
         </div>
     </div>
     <script>
@@ -77,8 +77,8 @@
             window.location.href = 'index.html';
         }
 
-        function startMeasuring() {
-            window.location.href = 'measure-guide1.html';
+        function startWeighing() {
+            window.location.href = 'weighing.html';
         }
         
         // 实时时间更新
@@ -98,6 +98,14 @@
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
             setInterval(updateTime, 60000);
+            
+            // 播放语音提示
+            try {
+                const audio = new Audio('audio/step1_weighing.mp3');
+                audio.play().catch(e => console.error("语音播放失败:", e));
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+            }
         });
 
         // 快捷键支持
@@ -105,7 +113,7 @@
             if (event.key === 'Escape') {
                 goBack();
             } else if (event.key === 'Enter' || event.key === ' ') {
-                startMeasuring();
+                startWeighing();
             }
         });
     </script>

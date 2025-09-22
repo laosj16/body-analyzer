@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 生成报告</title>
+    <title>Body Composition Analyzer - Generating Report</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -29,31 +29,40 @@
             </div>
         </div>
 
-        <!-- 主内容区: 等待结果 -->
+        <!-- 主内容区: 测脂进度与完成 -->
         <div class="main-content" id="main-content-report">
             <!-- 步骤和用户信息 -->
             <div class="step-section">
                 <div class="step-indicators">
-                    <div class="step-dot"></div>
+                    <div class="step-dot active"></div>
                     <div class="step-line"></div>
-                    <div class="step-dot"></div>
+                    <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot active"></div>
                 </div>
-                <div class="step-title">测量完成</div>
+                <div class="step-title" id="step-title">Analyzing</div>
                 <div class="user-info">
                     <div class="user-avatar" id="user-avatar-report">华</div>
                     <span class="user-name" id="user-name-report">华仔</span>
                 </div>
             </div>
-            <div class="measure-process-content">
-
-            <div class="finish-icon">
-                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
-                    <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
-                </svg>
+            <div class="measure-process-content" id="measure-process-content">
+                <!-- 进度圈 -->
+                <div class="progress-circle" id="progress-circle">
+                    <svg class="progress-ring" width="200" height="200">
+                        <circle class="progress-ring-bg" cx="100" cy="100" r="90"></circle>
+                        <circle class="progress-ring-fg" cx="100" cy="100" r="90"></circle>
+                    </svg>
+                    <div class="progress-text">0%</div>
+                </div>
+                <!-- 完成图标 -->
+                <div class="finish-icon" id="finish-icon" style="display: none;">
+                    <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
+                        <path d="M9 16.17L4.83 12l-1.42 1.41L9 19 21 7l-1.41-1.41z"/>
+                    </svg>
+                </div>
+                <div class="progress-message" id="progress-message">Analyzing body composition, please hold still</div>
             </div>
-            <div class="progress-message">正在生成报告...</div>
         </div>
     </div>
 
@@ -69,10 +78,57 @@
             updateTime();
             setInterval(updateTime, 60000);
 
-            // 1秒后跳转到结果页
-            setTimeout(() => {
-                window.location.href = 'measure-result.html';
-            }, 1000);
+            // 播放测脂语音
+            try {
+                const audio = new Audio('audio/step3_measuring.mp3');
+                audio.play().catch(e => console.error("语音播放失败:", e));
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+            }
+
+            const progressText = document.querySelector('.progress-text');
+            const progressCircleFg = document.querySelector('.progress-ring-fg');
+            const radius = progressCircleFg.r.baseVal.value;
+            const circumference = 2 * Math.PI * radius;
+            progressCircleFg.style.strokeDasharray = `${circumference} ${circumference}`;
+            progressCircleFg.style.strokeDashoffset = circumference;
+
+            let progress = 0;
+            const duration = 5000; // 5秒测脂
+            const interval = 50;
+            const increment = 100 / (duration / interval);
+
+            const progressInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    
+                    // 更新UI为完成状态
+                    document.getElementById('step-title').textContent = 'Measurement Complete';
+                    document.getElementById('progress-circle').style.display = 'none';
+                    document.getElementById('finish-icon').style.display = 'block';
+                    document.getElementById('progress-message').textContent = 'Generating report...';
+
+                    // 播放完成语音
+                    try {
+                        const audio = new Audio('audio/step4_complete.mp3');
+                        audio.play().catch(e => console.error("语音播放失败:", e));
+                    } catch (e) {
+                        console.error("无法创建语音对象:", e);
+                    }
+
+                    // 延迟跳转
+                    setTimeout(() => {
+                        window.location.href = 'measure-result.html';
+                    }, 1500);
+                }
+                
+                progressText.textContent = `${Math.floor(progress)}%`;
+                const offset = circumference - (progress / 100) * circumference;
+                progressCircleFg.style.strokeDashoffset = offset;
+
+            }, interval);
         });
     </script>
 </body>

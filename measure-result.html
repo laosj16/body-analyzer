@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>体成分分析仪 - 测量结果</title>
+    <title>Body Composition Analyzer - Results</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -30,21 +30,21 @@
             <!-- 内容区 -->
             <div class="page-content overflow-y-auto">
                  <div class="page-header mt-[24px]">
-                    <h1 class="page-title">测量报告</h1>
+                    <h1 class="page-title">Measurement Report</h1>
                     <div class="current-user-info text-center text-sm text-gray-400 mt-1" id="current-user-info">
-                        <span>用户: </span><span id="current-user-name">--</span>
+                        <span>User: </span><span id="current-user-name">--</span>
                     </div>
                 </div>
 
                 <!-- 核心摘要 -->
                 <div class="summary-card">
                     <div class="summary-score">
-                        <p class="score-label">健康评分</p>
+                        <p class="score-label">Health Score</p>
                         <p class="score-value" id="summary-score">--</p>
                     </div>
                     <div class="summary-grid">
                         <div class="summary-item">
-                            <p class="label">体重</p>
+                            <p class="label">Weight</p>
                             <p class="value"><span id="summary-weight">--</span><span class="unit"> kg</span></p>
                         </div>
                         <div class="summary-item">
@@ -52,7 +52,7 @@
                             <p class="value" id="summary-bmi">--</p>
                         </div>
                         <div class="summary-item">
-                            <p class="label">身体类型</p>
+                            <p class="label">Body Type</p>
                             <p class="value" id="summary-body-type">--</p>
                         </div>
                     </div>
@@ -72,13 +72,13 @@
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm-1 14H9V8h2v8zm4 0h-2V8h2v8z"/>
                     </svg>
-                    <span>再次测量</span>
+                    <span>Measure Again</span>
                 </button>
                 <button class="fab primary" onclick="generateReport()">
                     <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" fill="currentColor">
                         <path d="M14 2H6c-1.1 0-1.99.9-1.99 2L4 20c0 1.1.89 2 1.99 2H18c1.1 0 2-.9 2-2V8l-6-6zm2 16H8v-2h8v2zm0-4H8v-2h8v2zm-3-5V3.5L18.5 9H13z"/>
                     </svg>
-                    <span>生成报告</span>
+                    <span>View Report</span>
                 </button>
             </div>
         </div>
