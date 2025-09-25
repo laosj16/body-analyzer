@@ -1,0 +1,33 @@
+.toast-container {
+    position: fixed;
+    top: 60px; /* 状态栏下方 */
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 12px 24px;
+    border-radius: 8px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    z-index: 10000;
+    opacity: 0;
+    transition: opacity 0.4s ease, top 0.4s ease;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.2);
+}
+
+.toast-container.show {
+    opacity: 1;
+    top: 80px; /* 滑入后的位置 */
+}
+
+/* 不同类型的样式 */
+.toast-container.info {
+    background-color: #2563eb; /* Blue */
+}
+
+.toast-container.success {
+    background-color: #16a34a; /* Green */
+}
+
+.toast-container.error {
+    background-color: #dc2626; /* Red */
+}

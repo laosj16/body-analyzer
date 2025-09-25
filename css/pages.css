@@ -575,7 +575,7 @@
     background: linear-gradient(135deg, #4f46e5 0%, #7c3aed 100%);
     color: white;
     border: none;
-    width: 160px;
+    padding: 0 24px;
     height: 50px; /* 缩小高度 */
     border-radius: 28px; /* 调整圆角 */
     display: flex;

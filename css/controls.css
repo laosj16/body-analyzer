@@ -1,34 +1,34 @@
 /* ======================================== */
-/* 控制器样式 */
+/* Controller Styles */
 /* ======================================== */
 
 .control-area {
-    position: fixed; /* 改为fixed以始终停留在底部 */
+    position: fixed; /* Changed to fixed to always stay at the bottom */
     bottom: 0;
     left: 0;
     right: 0;
     width: 100%;
-    background-color: #111827; /* 深灰色背景 */
+    background-color: #111827; /* Dark gray background */
     padding: 20px 0;
     z-index: 200;
-    border-top: 1px solid #374151; /* 顶部边框 */
+    border-top: 1px solid #374151; /* Top border */
     box-shadow: 0 -5px 15px rgba(0,0,0,0.2);
 }
 
 .control-btn-container {
     display: flex;
-    justify-content: center; /* 居中对齐 */
+    justify-content: center; /* Center align */
     align-items: center;
-    gap: 12px; /* 按钮间距 */
+    gap: 12px; /* Gap between buttons */
     max-width: 100%;
     margin: 0 auto;
     padding: 0 20px;
-    flex-wrap: wrap; /* 允许换行 */
+    flex-wrap: wrap; /* Allow wrapping */
 }
 
 .control-btn {
-    background-color: #374151; /* 按钮背景色 */
-    color: #d1d5db; /* 文字颜色 */
+    background-color: #374151; /* Button background color */
+    color: #d1d5db; /* Text color */
     border: none;
     border-radius: 10px;
     padding: 12px 18px;
@@ -46,9 +46,9 @@
     transform: translateY(-2px);
 }
 
-/* 特定功能按钮颜色 */
+/* Specific function button colors */
 .control-btn.measure {
-    background-color: #1d4ed8; /* 测量按钮主题色 */
+    background-color: #1d4ed8; /* Measure button theme color */
     color: #ffffff;
 }
 .control-btn.measure:hover { background-color: #2563eb; }
@@ -72,12 +72,12 @@
 .control-btn.back:hover { background-color: #9ca3af; }
 
 .control-btn.print {
-    background-color: #16a34a; /* 绿色 */
+    background-color: #16a34a; /* Green */
     color: #ffffff;
 }
 .control-btn.print:hover { background-color: #15803d; }
 
-/* 用户特定按钮颜色 */
+/* User-specific button colors */
 .control-btn.user-华仔 { background-color: #2563EB; color: white; }
 .control-btn.user-亦菲 { background-color: #DB2777; color: white; }
 .control-btn.user-志玲 { background-color: #059669; color: white; }
