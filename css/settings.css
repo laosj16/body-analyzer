@@ -1,0 +1,541 @@
+/* 设置页面特定样式 */
+
+/* 页面容器 */
+.screen-container {
+    width: 480px;
+    height: 800px;
+    margin: 0 auto;
+    background: #000000;
+    font-family: 'Inter', sans-serif;
+    color: white;
+    overflow: hidden;
+    position: relative;
+}
+
+/* 主内容区域 */
+#main-content-settings {
+    display: flex;
+    flex-direction: column;
+    height: calc(800px - 80px);
+    padding-top: 80px;
+    overflow: hidden;
+}
+
+/* 头部区域 */
+.header-section {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 20px;
+    margin-bottom: 0;
+    flex-shrink: 0;
+}
+
+.back-button {
+    position: absolute;
+    left: 20px;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.back-button:hover {
+    background: rgba(255, 255, 255, 0.2);
+    transform: translateY(-50%) scale(1.05);
+}
+
+.back-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) invert(1);
+}
+
+.page-title {
+    font-size: 24px;
+    font-weight: 600;
+    color: white;
+    margin: 0;
+    text-align: center;
+}
+
+/* 设置内容区域 */
+.settings-content {
+    flex: 1;
+    padding: 0 20px 40px 20px;
+    overflow-y: auto;
+    scrollbar-width: none;
+    -ms-overflow-style: none;
+}
+
+.settings-content::-webkit-scrollbar {
+    display: none;
+}
+
+/* 设置卡片 */
+.setting-card {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(10px);
+    border-radius: 16px;
+    padding: 20px;
+    margin-bottom: 16px;
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    transition: all 0.3s ease;
+}
+
+.setting-card:hover {
+    background: rgba(255, 255, 255, 0.15);
+    transform: translateY(-2px);
+}
+
+.setting-card.danger {
+    background: rgba(255, 69, 58, 0.1);
+    border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+.setting-card.danger:hover {
+    background: rgba(255, 69, 58, 0.2);
+}
+
+/* 设置头部 */
+.setting-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 16px;
+}
+
+.setting-icon {
+    width: 24px;
+    height: 24px;
+    margin-right: 12px;
+    opacity: 0.9;
+}
+
+.setting-header h3 {
+    font-size: 18px;
+    font-weight: 600;
+    margin: 0;
+    color: white;
+}
+
+/* 单位选择器 */
+.unit-selector {
+    display: flex;
+    gap: 8px;
+}
+
+.unit-btn {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 12px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.unit-btn:hover {
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.unit-btn.active {
+    background: rgba(255, 255, 255, 0.3);
+    border-color: rgba(255, 255, 255, 0.5);
+    box-shadow: 0 4px 12px rgba(255, 255, 255, 0.2);
+}
+
+/* 滑块容器 */
+.slider-container {
+    display: flex;
+    align-items: center;
+    gap: 16px;
+}
+
+.volume-slider,
+.brightness-slider {
+    flex: 1;
+    height: 6px;
+    border-radius: 3px;
+    background: rgba(255, 255, 255, 0.2);
+    outline: none;
+    cursor: pointer;
+    -webkit-appearance: none;
+    appearance: none;
+}
+
+.volume-slider::-webkit-slider-thumb,
+.brightness-slider::-webkit-slider-thumb {
+    -webkit-appearance: none;
+    appearance: none;
+    width: 20px;
+    height: 20px;
+    border-radius: 50%;
+    background: white;
+    cursor: pointer;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+}
+
+.volume-slider::-webkit-slider-thumb:hover,
+.brightness-slider::-webkit-slider-thumb:hover {
+    transform: scale(1.1);
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+}
+
+.slider-value {
+    font-size: 16px;
+    font-weight: 500;
+    min-width: 45px;
+    text-align: right;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* WiFi控制区域 */
+.wifi-controls {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.wifi-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wifi-info {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+}
+
+.current-connection {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.wifi-status {
+    padding: 6px 12px;
+    border-radius: 20px;
+    font-size: 14px;
+    font-weight: 500;
+}
+
+.wifi-status.connected {
+    background: rgba(52, 199, 89, 0.2);
+    color: #34c759;
+    border: 1px solid rgba(52, 199, 89, 0.3);
+}
+
+.wifi-status.disconnected {
+    background: rgba(255, 69, 58, 0.2);
+    color: #ff453a;
+    border: 1px solid rgba(255, 69, 58, 0.3);
+}
+
+.wifi-name {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.8);
+}
+
+/* WiFi网络选择器 */
+.wifi-network-selector {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.wifi-network-selector label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.wifi-dropdown {
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 16px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    -webkit-appearance: none;
+    appearance: none;
+    background-image: url("data:image/svg+xml;charset=UTF-8,%3csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='white' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3e%3cpolyline points='6,9 12,15 18,9'%3e%3c/polyline%3e%3c/svg%3e");
+    background-repeat: no-repeat;
+    background-position: right 12px center;
+    background-size: 16px;
+    padding-right: 40px;
+}
+
+.wifi-dropdown:hover {
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(255, 255, 255, 0.3);
+}
+
+.wifi-dropdown:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(0, 122, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.wifi-dropdown option {
+    background: #1a1a1a;
+    color: white;
+    padding: 8px;
+}
+
+/* WiFi密码输入区域 */
+.wifi-password-section {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding: 16px;
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.1);
+    border-radius: 8px;
+    margin-top: 8px;
+}
+
+.wifi-password-section label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.8);
+    font-weight: 500;
+}
+
+.password-input-container {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
+.wifi-password-input {
+    flex: 1;
+    background: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    border-radius: 8px;
+    padding: 12px 50px 12px 16px;
+    color: white;
+    font-size: 16px;
+    font-family: 'Inter', sans-serif;
+    transition: all 0.3s ease;
+}
+
+.wifi-password-input:focus {
+    outline: none;
+    background: rgba(255, 255, 255, 0.15);
+    border-color: rgba(0, 122, 255, 0.5);
+    box-shadow: 0 0 0 2px rgba(0, 122, 255, 0.2);
+}
+
+.wifi-password-input::placeholder {
+    color: rgba(255, 255, 255, 0.5);
+}
+
+.show-password-btn {
+    position: absolute;
+    right: 12px;
+    background: none;
+    border: none;
+    color: rgba(255, 255, 255, 0.6);
+    cursor: pointer;
+    padding: 4px;
+    border-radius: 4px;
+    transition: all 0.3s ease;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.show-password-btn:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: rgba(255, 255, 255, 0.8);
+}
+
+.wifi-connect-btn {
+    background: rgba(0, 122, 255, 0.2);
+    border: 1px solid rgba(0, 122, 255, 0.4);
+    border-radius: 8px;
+    padding: 12px 20px;
+    color: #007aff;
+    font-size: 16px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    align-self: flex-start;
+}
+
+.wifi-connect-btn:hover {
+    background: rgba(0, 122, 255, 0.3);
+    border-color: rgba(0, 122, 255, 0.6);
+}
+
+.wifi-connect-btn:disabled {
+    opacity: 0.5;
+    cursor: not-allowed;
+}
+
+/* 蓝牙开关 */
+.bluetooth-toggle {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+}
+
+.switch {
+    position: relative;
+    display: inline-block;
+    width: 50px;
+    height: 28px;
+}
+
+.switch input {
+    opacity: 0;
+    width: 0;
+    height: 0;
+}
+
+.switch-slider {
+    position: absolute;
+    cursor: pointer;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: rgba(255, 255, 255, 0.2);
+    transition: 0.3s;
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 28px;
+}
+
+.switch-slider:before {
+    position: absolute;
+    content: "";
+    height: 20px;
+    width: 20px;
+    left: 3px;
+    bottom: 3px;
+    background-color: white;
+    transition: 0.3s;
+    border-radius: 50%;
+}
+
+.switch input:checked + .switch-slider {
+    background: rgba(52, 199, 89, 0.3);
+    border-color: rgba(52, 199, 89, 0.5);
+}
+
+.switch input:checked + .switch-slider:before {
+    transform: translateX(22px);
+}
+
+.switch-label {
+    font-size: 16px;
+    color: rgba(255, 255, 255, 0.9);
+}
+
+/* 系统信息 */
+.system-info {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.info-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 0;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.info-item:last-child {
+    border-bottom: none;
+}
+
+.info-label {
+    font-size: 14px;
+    color: rgba(255, 255, 255, 0.7);
+}
+
+.info-value {
+    font-size: 16px;
+    font-weight: 500;
+    color: white;
+}
+
+/* 设置描述 */
+.setting-description {
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    line-height: 1.5;
+    margin: 0 0 16px 0;
+}
+
+/* 恢复出厂设置按钮 */
+.factory-reset-btn {
+    width: 100%;
+    background: rgba(255, 69, 58, 0.2);
+    border: 1px solid rgba(255, 69, 58, 0.4);
+    border-radius: 12px;
+    padding: 14px 20px;
+    color: #ff453a;
+    font-size: 16px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.3s ease;
+}
+
+.factory-reset-btn:hover {
+    background: rgba(255, 69, 58, 0.3);
+    border-color: rgba(255, 69, 58, 0.6);
+    transform: translateY(-1px);
+}
+
+.factory-reset-btn:active {
+    transform: translateY(0);
+}
+
+
+
+/* 响应式调整 */
+@media (max-width: 480px) {
+    .screen-container {
+        width: 100vw;
+        height: 100vh;
+    }
+    
+    .settings-content {
+        padding: 16px;
+    }
+    
+    .setting-card {
+        padding: 16px;
+        margin-bottom: 12px;
+    }
+    
+    .unit-selector {
+        gap: 6px;
+    }
+    
+    .unit-btn {
+        padding: 10px 12px;
+        font-size: 14px;
+    }
+}

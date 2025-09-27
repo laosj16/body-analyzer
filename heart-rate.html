@@ -7,41 +7,80 @@
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/measure-guide.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/heart-rate.css">
 </head>
-<body class="bg-gray-900 text-slate-100 font-inter">
+<body class="bg-white text-slate-900 font-inter">
     <div class="screen-container" id="screen-container">
         <!-- 状态栏 -->
         <div class="status-bar">
-            <span class="time" id="current-time">14:35</span>
-            <div class="status-icons">
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg>
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <div class="status-left">
+                <!-- 蓝牙图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                </svg>
+                <!-- WiFi图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                </svg>
+            </div>
+            <span class="time" id="current-time">18:20</span>
+            <div class="status-right">
+                <!-- 设置图标 -->
+                <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
             </div>
         </div>
 
-        <!-- 主内容区: 正在测量心率 -->
-        <div class="main-content" id="main-content-heart-rate">
+        <!-- 主内容区 -->
+        <div id="main-content-heart-rate">
+            <!-- 顶部信息区域 -->
             <div class="step-section">
+                <!-- 步骤指示器 -->
                 <div class="step-indicators">
                     <div class="step-dot active"></div>
                     <div class="step-line"></div>
-                    <div class="step-dot"></div>
+                    <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
-                <div class="step-title">Measuring Heart Rate</div>
+
+                <!-- 步骤标题 -->
+                <h1 class="step-title">Measuring Heart Rate</h1>
+
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
+                </div>
             </div>
 
+            <!-- 中间心率图标区域 -->
             <div class="heart-rate-display">
-                <div class="heart-icon" id="heart-icon">❤️</div>
-                <div class="heart-rate-value" id="heart-rate-value">--</div>
+                <div class="heart-icon" id="heart-icon">
+                    <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 心形背景 -->
+                        <path d="M75 130 C 65 120, 20 85, 20 60 C 20 40, 35 25, 55 25 C 65 25, 70 30, 75 35 C 80 30, 85 25, 95 25 C 115 25, 130 40, 130 60 C 130 85, 85 120, 75 130 Z" fill="#FF6B6B"/>
+                        
+                        <!-- 心电图波形 -->
+                        <g id="heartbeat-line" stroke="#FF4444" stroke-width="3" fill="none">
+                            <path d="M 30 75 L 40 75 L 43 60 L 47 90 L 50 60 L 53 75 L 65 75 L 68 65 L 72 85 L 75 65 L 78 75 L 90 75 L 93 65 L 97 85 L 100 65 L 103 75 L 120 75" opacity="0.9"/>
+                        </g>
+                        
+                        <!-- 心形高光 -->
+                        <ellipse cx="65" cy="50" rx="8" ry="5" fill="#FF8888" opacity="0.6"/>
+                    </svg>
+                </div>
             </div>
 
+            <!-- 底部提示区域 -->
             <div class="instruction-card">
-                <p class="instruction-text">Please keep still, we are measuring your heart rate</p>
+                <div class="instruction-text">
+                    Please keep still,measuring your heart rate
+                </div>
             </div>
         </div>
     </div>
@@ -58,40 +97,48 @@
             updateTime();
             setInterval(updateTime, 60000);
 
-            // 播放语音提示
+            // 播放心率测量语音
             try {
-                const audio = new Audio('audio/heart_rate_in_progress.mp3');
-                audio.play().catch(e => console.error("语音播放失败:", e));
-            } catch (e) {
-                console.error("无法创建语音对象:", e);
-            }
-
-            const heartRateValueEl = document.getElementById('heart-rate-value');
-            const heartIconEl = document.getElementById('heart-icon');
-            let heartRate = 75;
-
-            const heartRateInterval = setInterval(() => {
-                heartRate += Math.floor(Math.random() * 5) - 2;
-                if (heartRate < 60) heartRate = 60;
-                if (heartRate > 90) heartRate = 90;
-                heartRateValueEl.textContent = heartRate;
-                heartIconEl.style.transform = `scale(${1 + Math.random() * 0.1})`;
-            }, 800);
-
-            setTimeout(() => {
-                clearInterval(heartRateInterval);
-                heartRateValueEl.textContent = heartRate; // Show final heart rate
-                heartIconEl.style.transform = 'scale(1)';
+                const audio = new Audio('audio/Measuring Heart Rate.mp3');
+                console.log('播放心率测量语音...');
                 
-                // 存储心率结果
-                const measurementData = JSON.parse(localStorage.getItem('currentMeasurement')) || {};
-                measurementData.heartRate = heartRate;
-                localStorage.setItem('currentMeasurement', JSON.stringify(measurementData));
-
+                // 监听语音播放完成事件
+                audio.onended = function() {
+                    console.log('心率测量语音播放完毕！');
+                    // 语音播放完成后2秒跳转到分析页面
+                    setTimeout(() => {
+                        console.log('跳转到分析页面...');
+                        window.location.href = 'measure-guide1.html';
+                    }, 2000);
+                };
+                
+                // 监听语音播放错误
+                audio.onerror = function(e) {
+                    console.error("心率测量语音播放出错:", e);
+                    console.log('语音播放失败，3秒后跳转到分析页面');
+                    setTimeout(() => {
+                        window.location.href = 'measure-guide1.html';
+                    }, 3000);
+                };
+                
+                // 开始播放语音
+                audio.play().catch(e => {
+                    console.error("心率测量语音播放失败:", e);
+                    console.log('语音播放失败，3秒后跳转到分析页面');
+                    setTimeout(() => {
+                        window.location.href = 'measure-guide1.html';
+                    }, 3000);
+                });
+                
+            } catch (e) {
+                console.error("无法创建心率测量语音对象:", e);
+                console.log('无法创建语音对象，3秒后跳转到分析页面');
                 setTimeout(() => {
                     window.location.href = 'measure-guide1.html';
-                }, 1000);
-            }, 5000); // 5秒后完成
+                }, 3000);
+            }
+
+            console.log('心率测量页面已加载');
         });
     </script>
 </body>

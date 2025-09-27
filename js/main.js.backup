@@ -77,31 +77,6 @@ const appState = {
 const INACTIVITY_TIMEOUT = 0; // 禁用自动关机
 
 // ======================================== 
-// 自动关机管理
-// ======================================== 
-
-function resetShutdownTimer() {
-    // 清除现有的计时器
-    if (appState.inactivityTimer) {
-        clearTimeout(appState.inactivityTimer);
-        appState.inactivityTimer = null;
-    }
-    
-    // 如果禁用了自动关机或正在关机过程中，则不设置新的计时器
-    if (INACTIVITY_TIMEOUT === 0 || appState.isShuttingDown) {
-        return;
-    }
-    
-    // 设置新的计时器
-    appState.inactivityTimer = setTimeout(() => {
-        if (!appState.isShuttingDown) {
-            // 跳转到关机页面
-            window.location.href = 'shutdown.html';
-        }
-    }, INACTIVITY_TIMEOUT);
-}
-
-// ======================================== 
 // 用户管理
 // ======================================== 
 
@@ -188,32 +163,12 @@ function initializeMain() {
         });
     });
     
-    // 设置图标点击事件
-    const settingsBtn = document.getElementById('settings-btn');
-    if (settingsBtn) {
-        settingsBtn.addEventListener('click', function(e) {
-            e.preventDefault();
-            e.stopPropagation();
-            console.log('Settings button clicked!');
-            window.location.href = 'settings.html';
-        });
-    }
-    
     // 启动自动关机计时器
     resetShutdownTimer();
     
-    // 添加用户活动监听（手势操作支持）- 修复：排除设置图标的点击事件
-    ['touchstart', 'mousedown', 'mousemove', 'keydown'].forEach(eventType => {
+    // 添加用户活动监听（手势操作支持）
+    ['click', 'touchstart', 'mousedown', 'mousemove', 'keydown'].forEach(eventType => {
         document.addEventListener(eventType, resetShutdownTimer);
-    });
-    
-    // 单独处理click事件，避免干扰特定元素
-    document.addEventListener('click', function(event) {
-        // 如果点击的是设置图标，不处理
-        if (event.target.classList.contains('settings-icon')) {
-            return;
-        }
-        resetShutdownTimer();
     });
 }
 

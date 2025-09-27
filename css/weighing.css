@@ -1,0 +1,186 @@
+/* ======================================== */
+/* 称重页面专用样式 - 整合版 */
+/* ======================================== */
+
+/* 重置所有通用样式，使用固定布局 */
+#main-content-weighing {
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    height: 756px; /* 800px - 44px 状态栏 = 756px */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: absolute;
+    top: 44px; /* 状态栏下方 */
+    left: 0;
+    background-color: #000000;
+    z-index: 1;
+}
+
+/* ======================================== */
+/* 顶部信息区域 */
+/* ======================================== */
+#main-content-weighing .step-section {
+    flex-shrink: 0;
+    width: 480px; /* 绝对宽度 */
+    height: 120px; /* 固定高度 */
+    text-align: center;
+    margin: 0;
+    padding: 20px 40px 0 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 步骤指示器 */
+#main-content-weighing .step-indicators {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 12px 0;
+    padding: 0;
+}
+
+#main-content-weighing .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4a5568;
+}
+
+#main-content-weighing .step-dot.active {
+    background-color: #3b82f6;
+}
+
+#main-content-weighing .step-line {
+    width: 35px;
+    height: 2px;
+    background-color: #4a5568;
+}
+
+/* 步骤标题 */
+#main-content-weighing .step-title {
+    font-size: 26px;
+    font-weight: 700;
+    color: #e5e7eb;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+/* 用户信息 */
+#main-content-weighing .user-info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    border: 1px solid #4b5563; /* 恢复原来的边框颜色和粗细 */
+    border-radius: 16px;
+    padding: 6px 12px;
+    margin: 0 auto; /* 添加水平居中 */
+    box-sizing: border-box;
+    
+    /* 明确限制宽度 */
+    width: auto; /* 自适应内容宽度 */
+    max-width: 120px; /* 最大宽度限制 */
+    min-width: 90px; /* 最小宽度 */
+}
+
+#main-content-weighing .user-avatar {
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background-color: #2563eb;
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+}
+
+#main-content-weighing .user-name {
+    font-size: 18px;
+    color: #d1d5db;
+}
+
+/* ======================================== */
+/* 中间重量显示区域 */
+/* ======================================== */
+#main-content-weighing .weighing-display {
+    width: 480px; /* 绝对宽度 */
+    height: 556px; /* 756px - 120px(顶部) - 80px(底部) = 556px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    padding: 0 40px;
+    box-sizing: border-box;
+    flex-shrink: 0;
+}
+
+#main-content-weighing .weight-value {
+    font-size: 120px;
+    font-weight: 700;
+    color: #e5e7eb;
+    line-height: 1;
+    margin: 0;
+    padding: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#main-content-weighing .weight-value.blink-hidden {
+    opacity: 0 !important;
+}
+
+#main-content-weighing .weight-unit {
+    font-size: 32px;
+    font-weight: 600;
+    color: #9ca3af;
+    margin: 0;
+    padding: 0;
+    transition: opacity 0.1s ease-in-out;
+}
+
+#main-content-weighing .weight-unit.blink-hidden {
+    opacity: 0 !important;
+}
+
+/* ======================================== */
+/* 底部提示区域 */
+/* ======================================== */
+#main-content-weighing .instruction-card {
+    flex-shrink: 0;
+    width: 480px; /* 绝对宽度 */
+    height: 80px;
+    margin: 0;
+    padding: 15px 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* 外观样式 */
+    background-color: #29446e;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    /* 布局控制 */
+    flex-direction: row;
+    gap: 0;
+}
+
+#main-content-weighing .instruction-text {
+    color: #e5e7eb;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1.4;
+    width: 400px; /* 绝对宽度：480px - 40px左padding - 40px右padding = 400px */
+    display: block;
+}

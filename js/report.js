@@ -32,7 +32,7 @@ function updateTime() {
 
 // Event handler for the "Measure Again" button
 function measureAgain() {
-    window.location.href = 'measure-guide.html';
+    window.location.href = 'Preparation.html';
 }
 
 // Generate professional report data

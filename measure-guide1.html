@@ -3,21 +3,21 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Body Composition Analyzer - Measuring</title>
+    <title>Body Composition Analyzer - Generating Report</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
-    <script src="https://cdn.tailwindcss.com"></script>
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/measure-guide.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/analyzing.css">
 </head>
-<body class="bg-gray-900 text-slate-100 font-inter">
+<body class="bg-slate-50 text-slate-900 font-inter">
     <div class="screen-container" id="screen-container">
         <!-- 状态栏 -->
         <div class="status-bar">
-            <span class="time" id="current-time">14:35</span>
-            <div class="status-icons">
+            <div class="status-left">
                 <!-- 蓝牙图标 -->
                 <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
                     <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
@@ -27,12 +27,18 @@
                     <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
                 </svg>
             </div>
+            <span class="time" id="current-time">18:20</span>
+            <div class="status-right">
+                <!-- 设置图标 -->
+                <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
+            </div>
         </div>
 
-        <!-- 主内容区: 握手柄 -->
-        <div class="main-content" id="main-content-measure">
-            <!-- 步骤和用户信息 -->
+        <!-- 主内容区 -->
+        <div id="main-content-analyzing">
+            <!-- 顶部信息区域 -->
             <div class="step-section">
+                <!-- 步骤指示器 -->
                 <div class="step-indicators">
                     <div class="step-dot active"></div>
                     <div class="step-line"></div>
@@ -40,17 +46,34 @@
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
-                <div class="step-title">Weighing Complete</div>
+
+                <!-- 步骤标题 -->
+                <h1 class="step-title">Analyzing</h1>
+
+                <!-- 用户信息 -->
                 <div class="user-info">
-                    <div class="user-avatar" id="user-avatar-measuring">华</div>
-                    <span class="user-name" id="user-name-measuring">华仔</span>
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
                 </div>
             </div>
 
-            <!-- 握手柄提示 -->
-            <div class="measure-process-content flex flex-col items-center justify-center flex-grow">
-                <div class="instruction-card">
-                    <p class="instruction-text">Please hold the handle with both hands to start measuring body fat</p>
+            <!-- 中间进度圆环区域 -->
+            <div class="progress-display">
+                <div class="progress-circle" id="progress-circle">
+                    <svg class="progress-ring" width="180" height="180" viewBox="0 0 180 180">
+                        <!-- 背景圆环 -->
+                        <circle class="progress-ring-bg" cx="90" cy="90" r="75" stroke="#4a5568" stroke-width="8" fill="none"/>
+                        <!-- 进度圆环 -->
+                        <circle class="progress-ring-fg" cx="90" cy="90" r="75" stroke="#10b981" stroke-width="8" fill="none" stroke-linecap="round"/>
+                    </svg>
+                    <div class="progress-text" id="progress-text">0%</div>
+                </div>
+            </div>
+
+            <!-- 底部提示区域 -->
+            <div class="instruction-card">
+                <div class="instruction-text">
+                    Analyzing body composition, please hold still
                 </div>
             </div>
         </div>
@@ -64,39 +87,68 @@
             document.getElementById('current-time').textContent = `${hours}:${minutes}`;
         }
 
-        // 更新用户信息显示
-        function updateUserInfo() {
-            try {
-                const measurementData = JSON.parse(localStorage.getItem('currentMeasurement'));
-                const userName = measurementData?.user || '华仔';
-                const userAvatar = document.getElementById('user-avatar-measuring');
-                const userNameEl = document.getElementById('user-name-measuring');
-                
-                if (userNameEl) userNameEl.textContent = userName;
-                if (userAvatar) userAvatar.textContent = userName.charAt(0);
-
-            } catch (e) {
-                console.error("Could not parse user data from localStorage", e);
-            }
-        }
-
         document.addEventListener('DOMContentLoaded', function() {
             updateTime();
             setInterval(updateTime, 60000);
-            updateUserInfo();
 
-            // 播放语音提示
-            try {
-                const audio = new Audio('audio/step2_hold_handles.mp3');
-                audio.play().catch(e => console.error("语音播放失败:", e));
-            } catch (e) {
-                console.error("无法创建语音对象:", e);
+            // 尝试播放分析语音
+            function playAnalyzingAudio() {
+                try {
+                    const audio = new Audio('audio/Analyzing.mp3');
+                    console.log('尝试播放分析语音...');
+                    
+                    audio.play().then(() => {
+                        console.log('分析语音播放成功');
+                    }).catch(e => {
+                        console.log("自动播放被阻止，等待用户交互:", e.message);
+                        // 添加点击事件监听器，等待用户交互
+                        document.addEventListener('click', function playOnClick() {
+                            audio.play().then(() => {
+                                console.log('用户交互后分析语音播放成功');
+                                document.removeEventListener('click', playOnClick);
+                            }).catch(err => {
+                                console.error("用户交互后仍然播放失败:", err);
+                            });
+                        }, { once: true });
+                    });
+                } catch (e) {
+                    console.error("无法创建分析语音对象:", e);
+                }
             }
 
-            // 2秒后自动跳转
-            setTimeout(() => {
-                window.location.href = 'measure-guide2.html';
-            }, 2000);
+            // 立即尝试播放
+            playAnalyzingAudio();
+
+            const progressText = document.getElementById('progress-text');
+            const progressCircleFg = document.querySelector('.progress-ring-fg');
+            const circumference = 471; // 2 * π * 75 = 471
+            progressCircleFg.style.strokeDasharray = circumference;
+            progressCircleFg.style.strokeDashoffset = circumference;
+
+            let progress = 0;
+            const duration = 5000; // 5秒测脂
+            const interval = 50;
+            const increment = 100 / (duration / interval);
+
+            const progressInterval = setInterval(() => {
+                progress += increment;
+                if (progress >= 100) {
+                    progress = 100;
+                    clearInterval(progressInterval);
+                    console.log('分析完成，进度条已达到100%');
+                    
+                    // 分析完成后1秒跳转到分析完成页面
+                    setTimeout(() => {
+                        console.log('跳转到分析完成页面...');
+                        window.location.href = 'Analyzing-Complete.html';
+                    }, 1000);
+                }
+                
+                progressText.textContent = `${Math.floor(progress)}%`;
+                const offset = circumference - (progress / 100) * circumference;
+                progressCircleFg.style.strokeDashoffset = offset;
+
+            }, interval);
         });
     </script>
 </body>

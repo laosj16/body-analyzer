@@ -1,0 +1,176 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Composition Analyzer - Weighing Complete</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/weighing-complete.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">
+                <!-- 蓝牙图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                </svg>
+                <!-- WiFi图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                </svg>
+            </div>
+            <span class="time" id="current-time">18:20</span>
+            <div class="status-right">
+                <!-- 设置图标 -->
+                <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div id="main-content-weighing-complete">
+            <!-- 顶部信息区域 -->
+            <div class="step-section">
+                <!-- 步骤指示器 -->
+                <div class="step-indicators">
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot"></div>
+                </div>
+
+                <!-- 步骤标题 -->
+                <h1 class="step-title">Weighing Complete</h1>
+
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
+                </div>
+            </div>
+
+            <!-- 中间人体图示区域 -->
+            <div class="body-illustration">
+                <img src="images/Weighing Complete.png" alt="Weighing Complete" class="weighing-complete-image">
+            </div>
+
+            <!-- 底部提示区域 -->
+            <div class="instruction-card">
+                <div class="instruction-text">
+                    Please hold the handle with both hands to<br>
+                    start measuring your heart rate
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            // 播放第一个语音文件
+            function playFirstAudio() {
+                try {
+                    const audio1 = new Audio('audio/Weighing Complete.mp3');
+                    console.log('播放称重完成语音...');
+                    
+                    // 监听第一个语音播放完成事件
+                    audio1.onended = function() {
+                        console.log('称重完成语音播放完毕！开始播放第二个语音...');
+                        playSecondAudio(); // 第一个语音播放完毕后播放第二个
+                    };
+                    
+                    // 监听第一个语音播放错误
+                    audio1.onerror = function(e) {
+                        console.error("称重完成语音播放出错:", e);
+                        console.log('第一个语音播放失败，直接播放第二个语音');
+                        playSecondAudio();
+                    };
+                    
+                    // 开始播放第一个语音
+                    audio1.play().catch(e => {
+                        console.error("称重完成语音播放失败:", e);
+                        console.log('第一个语音播放失败，直接播放第二个语音');
+                        playSecondAudio();
+                    });
+                    
+                } catch (e) {
+                    console.error("无法创建称重完成语音对象:", e);
+                    console.log('无法创建第一个语音对象，直接播放第二个语音');
+                    playSecondAudio();
+                }
+            }
+
+            // 播放第二个语音文件
+            function playSecondAudio() {
+                try {
+                    const audio2 = new Audio('audio/Weighing Complete1.mp3');
+                    console.log('播放称重完成语音1...');
+                    
+                    // 监听第二个语音播放完成事件
+                    audio2.onended = function() {
+                        console.log('称重完成语音1播放完毕！');
+                        // 第二个语音播放完成后1秒跳转到心率测量页面
+                        setTimeout(() => {
+                            console.log('跳转到心率测量页面...');
+                            window.location.href = 'heart-rate.html';
+                        }, 1000);
+                    };
+                    
+                    // 监听第二个语音播放错误
+                    audio2.onerror = function(e) {
+                        console.error("称重完成语音1播放出错:", e);
+                        console.log('第二个语音播放失败，3秒后跳转到心率测量页面');
+                        setTimeout(() => {
+                            window.location.href = 'heart-rate.html';
+                        }, 3000);
+                    };
+                    
+                    // 开始播放第二个语音
+                    audio2.play().catch(e => {
+                        console.error("称重完成语音1播放失败:", e);
+                        console.log('第二个语音播放失败，3秒后跳转到心率测量页面');
+                        setTimeout(() => {
+                            window.location.href = 'heart-rate.html';
+                        }, 3000);
+                    });
+                    
+                } catch (e) {
+                    console.error("无法创建称重完成语音1对象:", e);
+                    console.log('无法创建第二个语音对象，3秒后跳转到心率测量页面');
+                    setTimeout(() => {
+                        window.location.href = 'heart-rate.html';
+                    }, 3000);
+                }
+            }
+
+            // 开始播放语音序列
+            playFirstAudio();
+
+            // 添加点击事件监听，让用户可以手动触发
+            document.getElementById('main-content-weighing-complete').addEventListener('click', function() {
+                console.log('用户点击页面，开始心率测量...');
+                // window.location.href = 'heart-rate.html';
+            });
+        });
+    </script>
+</body>
+</html>

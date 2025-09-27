@@ -19,7 +19,7 @@ const allMetrics = {
 
 function goBack() { window.location.href = 'main.html'; }
 function goToIndex() { window.location.href = 'index.html'; }
-function measureAgain() { window.location.href = 'measure-guide.html'; }
+function measureAgain() { window.location.href = 'Preparation.html'; }
 function generateReport() { window.location.href = 'report.html'; }
 function saveResult() { alert('Measurement saved!'); window.location.href = 'main.html'; }
 function deleteResult() { if (confirm('Are you sure you want to delete this measurement?')) { alert('Measurement deleted!'); window.location.href = 'main.html'; } }

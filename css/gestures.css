@@ -4,8 +4,9 @@
 
 .gesture-edge {
     position: absolute;
-    z-index: 500;
+    z-index: 50; /* 降低z-index，让状态栏在上面 */
     opacity: 0; /* 平时不可见 */
+    pointer-events: none; /* 确保不阻挡其他元素的点击 */
     /* 用于调试时可以取消注释以下行 */
     /* background: rgba(255, 0, 0, 0.2); */
 }

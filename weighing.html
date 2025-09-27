@@ -9,16 +9,26 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/style.css">
     <link rel="stylesheet" href="css/components.css">
-    <link rel="stylesheet" href="css/measure-guide.css">
+    <link rel="stylesheet" href="css/weighing.css">
 </head>
 <body class="bg-gray-900 text-slate-100 font-inter">
     <div class="screen-container" id="screen-container">
         <!-- 状态栏 -->
         <div class="status-bar">
-            <span class="time" id="current-time">14:35</span>
-            <div class="status-icons">
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/></svg>
-                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+            <div class="status-left">
+                <!-- 蓝牙图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                </svg>
+                <!-- WiFi图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                </svg>
+            </div>
+            <span class="time" id="current-time">18:20</span>
+            <div class="status-right">
+                <!-- 设置图标 -->
+                <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
             </div>
         </div>
 
@@ -28,16 +38,20 @@
                 <div class="step-indicators">
                     <div class="step-dot active"></div>
                     <div class="step-line"></div>
-                    <div class="step-dot"></div>
+                    <div class="step-dot active"></div>
                     <div class="step-line"></div>
                     <div class="step-dot"></div>
                 </div>
                 <div class="step-title">Weighing</div>
+                <div class="user-info">
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
+                </div>
             </div>
 
             <div class="weighing-display">
                 <div class="weight-value" id="weight-value">0.0</div>
-                <div class="weight-unit">kg</div>
+                <div class="weight-unit" id="weight-unit">kg</div>
             </div>
 
             <div class="instruction-card">
@@ -58,35 +72,119 @@
             updateTime();
             setInterval(updateTime, 60000);
 
-            // 播放语音提示
-            try {
-                const audio = new Audio('audio/weighing_in_progress.mp3');
-                audio.play().catch(e => console.error("语音播放失败:", e));
-            } catch (e) {
-                console.error("无法创建语音对象:", e);
-            }
-
             const weightValueEl = document.getElementById('weight-value');
+            const weightUnitEl = document.getElementById('weight-unit');
             const targetWeight = (Math.random() * 30 + 50).toFixed(1);
             let currentWeight = 0.0;
+            let weighingInterval = null;
 
-            const weighingInterval = setInterval(() => {
+            // 开始称重的函数
+            function startWeighing() {
+                console.log('语音播放完成，开始称重...');
+                
+                weighingInterval = setInterval(() => {
                 currentWeight += Math.random() * 5;
+                console.log('当前重量:', currentWeight.toFixed(1), '目标重量:', targetWeight);
+                
                 if (currentWeight >= targetWeight) {
-                    currentWeight = targetWeight;
+                    currentWeight = parseFloat(targetWeight);
                     clearInterval(weighingInterval);
+                    
+                    console.log('===== 称重完成，开始执行闪烁效果 =====');
+                    console.log('目标元素:', weightValueEl);
+                    console.log('元素是否存在:', !!weightValueEl);
+                    console.log('当前重量类型:', typeof currentWeight, '值:', currentWeight);
+                    
+                    // 锁定重量显示
+                    weightValueEl.textContent = currentWeight.toFixed(1);
                     
                     // 存储体重结果
                     const measurementData = JSON.parse(localStorage.getItem('currentMeasurement')) || {};
                     measurementData.weight = currentWeight;
                     localStorage.setItem('currentMeasurement', JSON.stringify(measurementData));
 
-                    setTimeout(() => {
-                        window.location.href = 'heart-rate.html';
-                    }, 1000);
+                    // 确保元素初始状态为显示
+                    weightValueEl.classList.remove('blink-hidden');
+                    weightUnitEl.classList.remove('blink-hidden');
+                    console.log('初始显示状态设置完成');
+
+                    // 称重完成后闪烁3次 (体重和单位同时出现-消失-出现)
+                    console.log('开始闪烁动画...');
+                    let blinkCount = 0;
+                    let isVisible = true; // 跟踪当前显示状态
+                    
+                    const blinkInterval = setInterval(() => {
+                        console.log('执行闪烁 - 次数:', blinkCount, '当前状态:', isVisible ? '显示' : '隐藏');
+                        
+                        if (isVisible) {
+                            // 当前显示，现在隐藏 (重量和单位都隐藏)
+                            weightValueEl.classList.add('blink-hidden');
+                            weightUnitEl.classList.add('blink-hidden');
+                            console.log('添加隐藏类 - 重量:', weightValueEl.className, '单位:', weightUnitEl.className);
+                            isVisible = false;
+                        } else {
+                            // 当前隐藏，现在显示 (重量和单位都显示)
+                            weightValueEl.classList.remove('blink-hidden');
+                            weightUnitEl.classList.remove('blink-hidden');
+                            console.log('移除隐藏类 - 重量:', weightValueEl.className, '单位:', weightUnitEl.className);
+                            isVisible = true;
+                            blinkCount++; // 完成一次完整的隐藏→显示循环
+                        }
+                        
+                        // 闪烁3次后停止
+                        if (blinkCount >= 3) {
+                            clearInterval(blinkInterval);
+                            weightValueEl.classList.remove('blink-hidden'); // 确保最后显示状态
+                            weightUnitEl.classList.remove('blink-hidden');
+                            
+                            console.log('===== 闪烁效果完成 =====');
+                            console.log('称重完成，体重:', currentWeight + 'kg');
+                            console.log('重量已锁定');
+                            
+                            // 闪烁完成后跳转到称重完成页面
+                            setTimeout(() => {
+                                console.log('跳转到称重完成页面...');
+                                window.location.href = 'weighing-complete.html';
+                            }, 1000);
+                        }
+                    }, 500); // 每500ms切换一次状态
+                    
+                    return; // 重量已达到目标，不再更新显示
                 }
                 weightValueEl.textContent = currentWeight.toFixed(1);
             }, 100);
+            }
+
+            // 播放语音提示，播放完毕后开始称重
+            try {
+                const audio = new Audio('audio/Weighing.mp3');
+                console.log('开始播放语音提示...');
+                
+                // 监听语音播放完成事件
+                audio.onended = function() {
+                    console.log('语音播放完成！');
+                    startWeighing(); // 语音播放完毕后开始称重
+                };
+                
+                // 监听语音播放错误
+                audio.onerror = function(e) {
+                    console.error("语音播放出错:", e);
+                    console.log('语音播放失败，直接开始称重');
+                    startWeighing(); // 如果语音播放失败，直接开始称重
+                };
+                
+                // 开始播放语音
+                audio.play().catch(e => {
+                    console.error("语音播放失败:", e);
+                    console.log('语音播放失败，直接开始称重');
+                    startWeighing(); // 如果语音播放失败，直接开始称重
+                });
+                
+            } catch (e) {
+                console.error("无法创建语音对象:", e);
+                console.log('无法创建语音对象，直接开始称重');
+                startWeighing(); // 如果无法创建语音对象，直接开始称重
+            }
         });
     </script>
 </body>

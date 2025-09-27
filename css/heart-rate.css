@@ -1,0 +1,207 @@
+/* ======================================== */
+/* 心率测量页面专用样式 */
+/* ======================================== */
+
+/* 重置所有通用样式，使用固定布局 */
+#main-content-heart-rate {
+    display: flex;
+    flex-direction: column;
+    width: 480px;
+    height: 756px; /* 800px - 44px 状态栏 = 756px */
+    padding: 0;
+    margin: 0;
+    box-sizing: border-box;
+    overflow: hidden;
+    position: absolute;
+    top: 44px; /* 状态栏下方 */
+    left: 0;
+    background-color: #000000;
+    z-index: 1;
+}
+
+/* ======================================== */
+/* 顶部信息区域 */
+/* ======================================== */
+#main-content-heart-rate .step-section {
+    flex-shrink: 0;
+    width: 480px; /* 绝对宽度 */
+    height: 140px; /* 固定高度 */
+    text-align: center;
+    margin: 0;
+    padding: 20px 40px 0 40px;
+    box-sizing: border-box;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+}
+
+/* 步骤指示器 */
+#main-content-heart-rate .step-indicators {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin: 0 0 16px 0;
+    padding: 0;
+}
+
+#main-content-heart-rate .step-dot {
+    width: 10px;
+    height: 10px;
+    border-radius: 50%;
+    background-color: #4a5568;
+}
+
+#main-content-heart-rate .step-dot.active {
+    background-color: #3b82f6;
+}
+
+#main-content-heart-rate .step-line {
+    width: 35px;
+    height: 2px;
+    background-color: #4a5568;
+}
+
+/* 步骤标题 */
+#main-content-heart-rate .step-title {
+    font-size: 28px;
+    font-weight: 700;
+    color: #e5e7eb;
+    margin: 0 0 20px 0;
+    padding: 0;
+    line-height: 1.2;
+}
+
+/* 用户信息 */
+#main-content-heart-rate .user-info {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    border: 1px solid #4b5563;
+    border-radius: 16px;
+    padding: 8px 16px;
+    margin: 0 auto;
+    box-sizing: border-box;
+    width: auto;
+    max-width: 140px;
+    min-width: 100px;
+}
+
+#main-content-heart-rate .user-avatar {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #10b981, #06b6d4, #3b82f6);
+    color: white;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 18px;
+    text-shadow: 0 1px 2px rgba(0, 0, 0, 0.5);
+}
+
+#main-content-heart-rate .user-name {
+    font-size: 18px;
+    color: #d1d5db;
+    font-weight: 500;
+}
+
+/* ======================================== */
+/* 中间心率图标区域 */
+/* ======================================== */
+#main-content-heart-rate .heart-rate-display {
+    width: 480px;
+    height: 456px; /* 756px - 140px(顶部) - 160px(底部) = 456px */
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    padding: 40px;
+    box-sizing: border-box;
+}
+
+#main-content-heart-rate .heart-icon {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 200px;
+    height: 200px;
+    animation: heartbeat 1.5s ease-in-out infinite;
+}
+
+#main-content-heart-rate .heart-icon svg {
+    width: 100%;
+    height: 100%;
+    filter: drop-shadow(0 4px 8px rgba(255, 107, 107, 0.3));
+}
+
+/* 心跳动画 */
+@keyframes heartbeat {
+    0%, 50%, 100% {
+        transform: scale(1);
+    }
+    25% {
+        transform: scale(1.1);
+    }
+    75% {
+        transform: scale(1.05);
+    }
+}
+
+/* 心电图波形动画 */
+#main-content-heart-rate #heartbeat-line {
+    animation: pulse 2s ease-in-out infinite;
+}
+
+@keyframes pulse {
+    0%, 100% {
+        opacity: 0.6;
+    }
+    50% {
+        opacity: 1;
+        filter: drop-shadow(0 0 5px #FF4444);
+    }
+}
+
+/* ======================================== */
+/* 底部提示区域 */
+/* ======================================== */
+#main-content-heart-rate .instruction-card {
+    flex-shrink: 0;
+    width: 480px;
+    height: 160px;
+    margin: 0;
+    padding: 30px 40px;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    
+    /* 外观样式 */
+    background-color: #1e40af; /* 蓝色背景 */
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4);
+    
+    /* 布局控制 */
+    flex-direction: row;
+    gap: 0;
+    
+    /* 位置调整 */
+    margin-left: 20px;
+    margin-right: 20px;
+    width: 440px; /* 调整宽度以适应边距 */
+}
+
+#main-content-heart-rate .instruction-text {
+    color: #ffffff;
+    font-size: 18px;
+    font-weight: 600;
+    text-align: center;
+    margin: 0;
+    padding: 0;
+    line-height: 1.5;
+    width: 100%;
+    display: block;
+}

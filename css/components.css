@@ -320,18 +320,40 @@
     font-family: 'Inter', sans-serif;
     font-size: 16px;
     font-weight: 600;
+    position: absolute;
+    left: 50%;
+    transform: translateX(-50%);
 }
 
-.status-bar .status-icons {
+.status-left {
     display: flex;
     align-items: center;
-    gap: 16px;
+    gap: 8px;
 }
 
-.status-bar .status-icons svg {
+.status-left svg {
+    width: 20px;
+    height: 20px;
+    opacity: 0.9;
+}
+
+.status-right {
+    display: flex;
+    align-items: center;
+}
+
+.status-right .settings-icon {
     width: 24px;
     height: 24px;
     opacity: 0.9;
+    filter: brightness(0) saturate(100%) invert(100%);
+    cursor: pointer;
+    transition: opacity 0.2s ease, transform 0.2s ease;
+}
+
+.status-right .settings-icon:hover {
+    opacity: 1;
+    transform: scale(1.1);
 }
 /* ======================================== */
 

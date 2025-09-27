@@ -1,0 +1,168 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Body Composition Analyzer - Analyzing Complete</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/style.css">
+    <link rel="stylesheet" href="css/components.css">
+    <link rel="stylesheet" href="css/pages.css">
+    <link rel="stylesheet" href="css/controls.css">
+    <link rel="stylesheet" href="css/analyzing-complete.css">
+</head>
+<body class="bg-slate-50 text-slate-900 font-inter">
+    <div class="screen-container" id="screen-container">
+        <!-- 状态栏 -->
+        <div class="status-bar">
+            <div class="status-left">
+                <!-- 蓝牙图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                    <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                </svg>
+                <!-- WiFi图标 -->
+                <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                    <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                </svg>
+            </div>
+            <span class="time" id="current-time">18:20</span>
+            <div class="status-right">
+                <!-- 设置图标 -->
+                <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
+            </div>
+        </div>
+
+        <!-- 主内容区 -->
+        <div id="main-content-analyzing-complete">
+            <!-- 返回按钮 -->
+            <div class="back-button" onclick="history.back()">
+                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M19 12H5M12 19L5 12L12 5" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+                </svg>
+            </div>
+
+            <!-- 顶部信息区域 -->
+            <div class="step-section">
+                <!-- 步骤指示器 -->
+                <div class="step-indicators">
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot active"></div>
+                    <div class="step-line"></div>
+                    <div class="step-dot active"></div>
+                </div>
+
+                <!-- 步骤标题 -->
+                <h1 class="step-title">Analyzing Complete</h1>
+
+                <!-- 用户信息 -->
+                <div class="user-info">
+                    <div class="user-avatar">华</div>
+                    <span class="user-name">华仔</span>
+                </div>
+            </div>
+
+            <!-- 中间完成图标区域 -->
+            <div class="complete-display">
+                <div class="complete-icon" id="complete-icon">
+                    <svg width="150" height="150" viewBox="0 0 150 150" xmlns="http://www.w3.org/2000/svg">
+                        <!-- 绿色圆环背景 -->
+                        <circle cx="75" cy="75" r="70" stroke="#10b981" stroke-width="10" fill="none"/>
+                        <!-- 对勾图标 -->
+                        <g id="checkmark" opacity="0">
+                            <path d="M45 75 L65 95 L105 55" stroke="#10b981" stroke-width="8" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+                        </g>
+                    </svg>
+                </div>
+            </div>
+
+            <!-- 底部提示区域 -->
+            <div class="instruction-card">
+                <div class="instruction-text">
+                    Body composition analysis is complete,<br>
+                    please check the measurement results
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // 更新时间显示
+        function updateTime() {
+            const now = new Date();
+            const timeString = now.getHours().toString().padStart(2, '0') + ':' + 
+                             now.getMinutes().toString().padStart(2, '0');
+            document.getElementById('current-time').textContent = timeString;
+        }
+
+        document.addEventListener('DOMContentLoaded', function() {
+            updateTime();
+            setInterval(updateTime, 60000);
+
+            // 页面加载后执行对勾淡入动画
+            setTimeout(() => {
+                const checkmark = document.getElementById('checkmark');
+                checkmark.style.transition = 'opacity 1s ease-in-out';
+                checkmark.style.opacity = '1';
+                console.log('对勾淡入动画完成');
+            }, 500); // 页面加载后0.5秒开始动画
+
+            // 播放分析完成语音
+            try {
+                const audio = new Audio('audio/Analyzing Complete.mp3');
+                console.log('播放分析完成语音...');
+                
+                // 监听语音播放完成事件
+                audio.onended = function() {
+                    console.log('分析完成语音播放完毕！');
+                    // 语音播放完成后1秒跳转到报告页面
+                    setTimeout(() => {
+                        console.log('跳转到报告页面...');
+                        window.location.href = 'report.html';
+                    }, 1000);
+                };
+                
+                // 监听语音播放错误
+                audio.onerror = function(e) {
+                    console.error("分析完成语音播放出错:", e);
+                    console.log('语音播放失败，3秒后跳转到报告页面');
+                    setTimeout(() => {
+                        window.location.href = 'report.html';
+                    }, 3000);
+                };
+                
+                // 开始播放语音
+                audio.play().then(() => {
+                    console.log('分析完成语音播放成功');
+                }).catch(e => {
+                    console.log("自动播放被阻止，等待用户交互:", e.message);
+                    // 添加点击事件监听器，等待用户交互
+                    document.addEventListener('click', function playOnClick() {
+                        audio.play().then(() => {
+                            console.log('用户交互后分析完成语音播放成功');
+                            document.removeEventListener('click', playOnClick);
+                        }).catch(err => {
+                            console.error("用户交互后仍然播放失败:", err);
+                            // 如果还是失败，3秒后跳转
+                            setTimeout(() => {
+                                window.location.href = 'report.html';
+                            }, 3000);
+                        });
+                    }, { once: true });
+                });
+                
+            } catch (e) {
+                console.error("无法创建分析完成语音对象:", e);
+                console.log('无法创建语音对象，3秒后跳转到报告页面');
+                setTimeout(() => {
+                    window.location.href = 'report.html';
+                }, 3000);
+            }
+
+            console.log('分析完成页面已加载');
+        });
+    </script>
+</body>
+</html>

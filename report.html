@@ -18,10 +18,20 @@
         <div id="page-report" class="page active">
             <!-- 状态栏 -->
             <div class="status-bar">
-                <span class="time" id="current-time">14:35</span>
-                <div class="status-icons">
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29z"/></svg>
-                    <svg viewBox="0 0 24 24" fill="currentColor" class="w-6 h-6"><path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/></svg>
+                <div class="status-left">
+                    <!-- 蓝牙图标 -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="color: #2196F3;">
+                        <path d="M17.71 7.71L12 2h-1v7.59L6.41 5 5 6.41 10.59 12 5 17.59 6.41 19 11 14.41V22h1l5.71-5.71-4.3-4.29 4.3-4.29zM13 5.83l1.88 1.88L13 9.59V5.83zm1.88 10.46L13 18.17v-3.76l1.88 1.88z"/>
+                    </svg>
+                    <!-- WiFi图标 -->
+                    <svg viewBox="0 0 24 24" fill="currentColor" style="color: #4CAF50;">
+                        <path d="M1 9l2 2c4.97-4.97 13.03-4.97 18 0l2-2C16.93 2.93 7.07 2.93 1 9zm8 8l3 3 3-3c-1.65-1.66-4.34-1.66-6 0zm-4-4l2 2c2.76-2.76 7.24-2.76 10 0l2-2C15.14 9.14 8.87 9.14 5 13z"/>
+                    </svg>
+                </div>
+                <span class="time" id="current-time">18:20</span>
+                <div class="status-right">
+                    <!-- 设置图标 -->
+                    <img src="icon/sz.svg" alt="Settings" class="settings-icon" onclick="window.location.href='settings.html'">
                 </div>
             </div>
 

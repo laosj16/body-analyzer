@@ -66,10 +66,10 @@ body {
     display: inline-flex; /* 改为inline-flex以包裹内容 */
     align-items: center;
     justify-content: center;
-    gap: 10px;
+    gap: 8px; /* 减少头像和文字间距 */
     border: 1px solid #4b5563; /* 添加线框 */
     border-radius: 16px;       /* 圆角 */
-    padding: 6px 16px;         /* 内边距 */
+    padding: 6px 12px;         /* 减少左右padding */
 }
 
 .user-avatar {
@@ -263,7 +263,8 @@ body {
     align-items: baseline;
     justify-content: center;
     gap: 12px;
-    margin: auto 0;
+    flex: 1;
+    align-items: center;
 }
 
 .weight-value {
@@ -277,6 +278,143 @@ body {
     font-size: 32px;
     font-weight: 600;
     color: #9ca3af;
+}
+
+/* --- Weighing Page Specific Styles --- */
+/* 强制重置主容器 - 使用固定像素高度 */
+#main-content-weighing {
+    display: flex !important;
+    flex-direction: column !important;
+    width: 480px !important; /* 匹配 screen-container 宽度 */
+    height: 756px !important; /* 800px - 44px 状态栏 = 756px */
+    padding: 0 !important;
+    margin: 0 !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    position: absolute !important;
+    top: 44px !important; /* 状态栏下方 */
+    left: 0 !important;
+    background-color: #111827 !important;
+    z-index: 1 !important;
+}
+
+/* 强制重置步骤区域 - 固定高度 */
+#main-content-weighing .step-section {
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    height: 120px !important; /* 固定高度，确保一致性 */
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 20px 40px 0 40px !important;
+    box-sizing: border-box !important;
+    display: flex !important;
+    flex-direction: column !important;
+    justify-content: flex-start !important;
+}
+
+#main-content-weighing .weighing-display {
+    /* 重量显示：占据中心区域 - 与截图匹配 */
+    width: 100% !important;
+    height: 556px !important; /* 756px - 120px(顶部) - 80px(底部) = 556px */
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 12px !important;
+    padding: 0 40px !important;
+    box-sizing: border-box !important;
+    flex-shrink: 0 !important;
+}
+
+#main-content-weighing .instruction-card {
+    /* 指令卡片：底部固定 - 与截图完全匹配 */
+    flex-shrink: 0 !important;
+    width: 100% !important;
+    height: 80px !important; /* 调整为更符合截图的高度 */
+    margin: 0 !important;
+    padding: 15px 40px !important; /* 稍微减少padding */
+    box-sizing: border-box !important;
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    
+    /* 与截图匹配的外观样式 */
+    background-color: #29446e !important;
+    border-radius: 12px !important; /* 稍微减少圆角 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.4) !important;
+    
+    /* 确保布局正确 */
+    flex-direction: row !important;
+    gap: 0 !important;
+}
+
+.instruction-text {
+    color: #e5e7eb;
+    font-size: 16px;
+    font-weight: 500;
+    text-align: center;
+    margin: 0;
+}
+
+/* 称重页面专用的指令文字样式 */
+#main-content-weighing .instruction-text {
+    color: #e5e7eb !important;
+    font-size: 16px !important;
+    font-weight: 500 !important;
+    text-align: center !important;
+    margin: 0 !important;
+    padding: 0 !important;
+    line-height: 1.4 !important;
+    width: 100% !important;
+    display: block !important;
+}
+
+/* 移除调试边框，布局已正确 */
+
+/* 确保称重页面的子元素样式正确 */
+#main-content-weighing .step-indicators {
+    display: flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 10px !important;
+    margin: 0 0 12px 0 !important;
+    padding: 0 !important;
+}
+
+#main-content-weighing .step-title {
+    font-size: 26px !important;
+    font-weight: 700 !important;
+    color: #e5e7eb !important;
+    margin: 0 0 16px 0 !important;
+    padding: 0 !important;
+}
+
+#main-content-weighing .user-info {
+    display: inline-flex !important;
+    align-items: center !important;
+    justify-content: center !important;
+    gap: 8px !important; /* 减少间距 */
+    border: 1px solid #4b5563 !important;
+    border-radius: 16px !important;
+    padding: 6px 12px !important; /* 减少左右padding */
+    margin: 0 !important;
+}
+
+/* 强制重置权重数字和单位样式 */
+#main-content-weighing .weight-value {
+    font-size: 120px !important;
+    font-weight: 700 !important;
+    color: #e5e7eb !important;
+    line-height: 1 !important;
+    margin: 0 !important;
+    padding: 0 !important;
+}
+
+#main-content-weighing .weight-unit {
+    font-size: 32px !important;
+    font-weight: 600 !important;
+    color: #9ca3af !important;
+    margin: 0 !important;
+    padding: 0 !important;
 }
 
 /* --- Heart Rate Display --- */
