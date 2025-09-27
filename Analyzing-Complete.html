@@ -34,14 +34,15 @@
             </div>
         </div>
 
+        <!-- 返回按钮 -->
+        <div class="back-button-container">
+            <button class="back-button" onclick="goBack()" title="返回主页">
+                <img src="icon/back.svg" alt="返回" class="back-icon">
+            </button>
+        </div>
+
         <!-- 主内容区 -->
         <div id="main-content-analyzing-complete">
-            <!-- 返回按钮 -->
-            <div class="back-button" onclick="history.back()">
-                <svg width="24" height="24" viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M19 12H5M12 19L5 12L12 5" stroke="#e5e7eb" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
-                </svg>
-            </div>
 
             <!-- 顶部信息区域 -->
             <div class="step-section">
@@ -89,6 +90,11 @@
     </div>
 
     <script>
+        // 返回主页功能
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
         // 更新时间显示
         function updateTime() {
             const now = new Date();
@@ -138,19 +144,8 @@
                     console.log('分析完成语音播放成功');
                 }).catch(e => {
                     console.log("自动播放被阻止，等待用户交互:", e.message);
-                    // 添加点击事件监听器，等待用户交互
-                    document.addEventListener('click', function playOnClick() {
-                        audio.play().then(() => {
-                            console.log('用户交互后分析完成语音播放成功');
-                            document.removeEventListener('click', playOnClick);
-                        }).catch(err => {
-                            console.error("用户交互后仍然播放失败:", err);
-                            // 如果还是失败，3秒后跳转
-                            setTimeout(() => {
-                                window.location.href = 'report.html';
-                            }, 3000);
-                        });
-                    }, { once: true });
+                    // 移除全局点击事件监听器以避免与返回按钮冲突
+                    // 音频播放失败时直接忽略，不影响页面功能
                 });
                 
             } catch (e) {

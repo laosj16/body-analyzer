@@ -2,6 +2,36 @@
 /* 称重页面专用样式 - 整合版 */
 /* ======================================== */
 
+/* ======================================== 
+   返回按钮样式
+======================================== */
+.back-button-container {
+    position: absolute;
+    top: 54px; /* 状态栏高度44px + 10px间距 */
+    left: 20px;
+    z-index: 200;
+}
+
+.back-button {
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) saturate(100%) invert(100%); /* 确保图标为白色 */
+}
+
 /* 重置所有通用样式，使用固定布局 */
 #main-content-weighing {
     display: flex;

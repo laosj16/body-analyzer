@@ -35,6 +35,13 @@
             </div>
         </div>
 
+        <!-- 返回按钮 -->
+        <div class="back-button-container">
+            <button class="back-button" onclick="goBack()" title="返回主页">
+                <img src="icon/back.svg" alt="返回" class="back-icon">
+            </button>
+        </div>
+
         <!-- 主内容区 -->
         <div id="main-content-heart-rate">
             <!-- 顶部信息区域 -->
@@ -86,6 +93,11 @@
     </div>
 
     <script>
+        // 返回主页功能
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
         function updateTime() {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');

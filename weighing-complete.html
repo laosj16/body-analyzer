@@ -35,6 +35,13 @@
             </div>
         </div>
 
+        <!-- 返回按钮 -->
+        <div class="back-button-container">
+            <button class="back-button" onclick="goBack()" title="返回主页">
+                <img src="icon/back.svg" alt="返回" class="back-icon">
+            </button>
+        </div>
+
         <!-- 主内容区 -->
         <div id="main-content-weighing-complete">
             <!-- 顶部信息区域 -->
@@ -74,6 +81,11 @@
     </div>
 
     <script>
+        // 返回主页功能
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
         // 更新时间显示
         function updateTime() {
             const now = new Date();
@@ -165,11 +177,7 @@
             // 开始播放语音序列
             playFirstAudio();
 
-            // 添加点击事件监听，让用户可以手动触发
-            document.getElementById('main-content-weighing-complete').addEventListener('click', function() {
-                console.log('用户点击页面，开始心率测量...');
-                // window.location.href = 'heart-rate.html';
-            });
+            // 移除全局点击事件监听器以避免与返回按钮冲突
         });
     </script>
 </body>

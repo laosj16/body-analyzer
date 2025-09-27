@@ -8,15 +8,52 @@ body {
 }
 
 /* ======================================== 
-   主内容区域 - 垂直布局
+   返回按钮样式
+======================================== */
+.back-button-container {
+    position: absolute;
+    top: 54px; /* 状态栏高度44px + 10px间距 */
+    left: 20px;
+    z-index: 200;
+}
+
+.back-button {
+    background: rgba(0, 0, 0, 0.4);
+    border: none;
+    border-radius: 50%;
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    backdrop-filter: blur(10px);
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.15);
+}
+
+.back-icon {
+    width: 20px;
+    height: 20px;
+    filter: brightness(0) saturate(100%) invert(100%); /* 确保图标为白色 */
+}
+
+/* ======================================== 
+   主内容区域 - 绝对定位布局 (与weighing.html一致)
 ======================================== */
 .main-content {
     display: flex;
     flex-direction: column;
     align-items: center;
-    flex-grow: 1;
-    padding: 44px 40px 0 40px; /* 顶部留出状态栏高度，底部不再需要padding */
+    width: 480px;
+    height: 756px; /* 800px - 44px 状态栏 = 756px */
+    padding: 15px 40px 0 40px; /* 顶部15px间距 */
+    margin: 0;
+    box-sizing: border-box;
     overflow: hidden;
+    position: absolute;
+    top: 44px; /* 状态栏下方 */
+    left: 0;
+    z-index: 1;
     gap: 10px; /* Reduced gap */
 }
 

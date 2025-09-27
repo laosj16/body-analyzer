@@ -32,6 +32,13 @@
             </div>
         </div>
 
+        <!-- 返回按钮 -->
+        <div class="back-button-container">
+            <button class="back-button" onclick="goBack()" title="返回">
+                <img src="icon/back.svg" alt="返回" class="back-icon">
+            </button>
+        </div>
+
         <!-- 主内容区: 正在称重 -->
         <div class="main-content" id="main-content-weighing">
             <div class="step-section">
@@ -61,6 +68,10 @@
     </div>
 
     <script>
+        function goBack() {
+            window.location.href = 'main.html';
+        }
+
         function updateTime() {
             const now = new Date();
             const hours = now.getHours().toString().padStart(2, '0');
